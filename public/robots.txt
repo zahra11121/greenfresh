@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /about/
+Allow: /gallery/
+Allow: /supplier-sayur/
+
+# Block system files
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Link ke sitemap
+Sitemap: https://greenfresh.co.id/sitemap.xml
