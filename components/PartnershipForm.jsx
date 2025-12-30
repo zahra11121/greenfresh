@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -28,12 +29,12 @@ export const PartnershipForm = () => {
     }
 
     const phoneNumber = "6287780937884";
-    const message = `Halo Sales Greenfresh.co.id, saya ingin mengajukan Inquiry Penawaran B2B:
+    const message = `Halo Sales Green Fresh, saya ingin mengajukan Inquiry Penawaran B2B:
     
-• Nama Perusahaan: ${company}
-• Estimasi Volume: ${volume}
-• Pilihan Termin: ${termin || 'Belum dipilih'}
-• Email Procurement: ${email}
+• Perusahaan: ${company}
+• Estimasi: ${volume}
+• Skema TOP: ${termin || 'Belum dipilih'}
+• Kontak: ${email}
 
 Mohon dapat dikirimkan harga katalog terbaru. Terima kasih.`;
 
@@ -41,122 +42,102 @@ Mohon dapat dikirimkan harga katalog terbaru. Terima kasih.`;
   };
 
   return (
-    /* PERUBAHAN: py-24 lg:py-40 dikurangi menjadi py-12 lg:py-24 untuk jarak yang lebih proposional */
-    <section id="kemitraan" className="py-12 lg:py-24 bg-[#f8faf8] px-6 lg:px-12 relative overflow-hidden font-sans">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-100/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      
-      <div className="max-w-[1300px] mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+    <section id="kemitraan" className="py-12 bg-white font-sans">
+      {/* Bingkai Utama: Mewah, Luas, & Bersih */}
+      <div className="max-w-[1800px] mx-auto bg-[#fcfdfc] border-2 border-green-100 rounded-[3rem] p-8 lg:p-16 relative overflow-hidden shadow-sm">
+        
+        {/* Dekorasi Halus */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-green-50 rounded-full blur-[100px] opacity-60 -mr-20 -mt-20 pointer-events-none" />
+
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start relative z-10">
           
-          {/* SISI KIRI */}
-          <div className="space-y-8 lg:space-y-10">
-            <div className="space-y-4">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-green-100 text-[#16a34a] rounded-full text-[9px] font-black uppercase tracking-[0.2em]"
-              >
-                <Lock size={12} /> B2B Partnership Portal
-              </motion.div>
+          {/* SISI KIRI: Value Proposition (Sopan & Berwibawa) */}
+          <div className="lg:col-span-5 space-y-10">
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-50 rounded-lg text-green-600 border border-green-100">
+                  <Lock size={16} />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-green-700/60">B2B Partnership Portal</span>
+              </div>
               
-              <h2 className="text-4xl lg:text-5xl font-serif italic text-[#052c17] leading-[1.1] tracking-tight">
-                Sistem Suplai <br /> <span className="text-[#16a34a]">Terintegrasi & Terukur.</span>
+              <h2 className="text-4xl lg:text-6xl font-serif italic font-black text-[#052c17] leading-[1.1] tracking-tighter">
+                Sistem Suplai <br /> 
+                <span className="text-green-600 not-italic font-sans">Terintegrasi.</span>
               </h2>
               
-              <p className="text-base lg:text-lg text-slate-500 font-light leading-relaxed max-w-md">
-                Kami memfasilitasi pengadaan sayur super untuk korporasi dengan dukungan legalitas lengkap dan fleksibilitas finansial.
+              <p className="text-lg text-slate-500 font-light leading-relaxed max-w-md border-l-4 border-green-500/20 pl-6">
+                Kami memfasilitasi pengadaan sayur super untuk korporasi dengan dukungan legalitas lengkap dan fleksibilitas finansial harian.
               </p>
             </div>
 
-            <div className="space-y-4">
+            {/* Keunggulan Ramping */}
+            <div className="grid gap-4 max-w-md">
               {[
-                { 
-                  title: "Dukungan Arus Kas", 
-                  desc: "Fasilitas pembayaran termin (TOP) hingga 30 hari untuk mitra kontrak tetap.",
-                  icon: <Briefcase size={20} />
-                },
-                { 
-                  title: "Kepastian Harga", 
-                  desc: "Stabilitas harga kontrak untuk mempermudah budgeting operasional Anda.",
-                  icon: <ShieldCheck size={20} />
-                }
+                { title: "Dukungan Arus Kas", icon: <Briefcase size={18} /> },
+                { title: "Kepastian Harga Kontrak", icon: <ShieldCheck size={18} /> }
               ].map((item, i) => (
-                <div key={i} className="flex gap-5 p-5 bg-white rounded-2xl shadow-sm border border-slate-50">
-                  <div className="text-[#16a34a]">{item.icon}</div>
-                  <div>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-[#052c17] mb-1">{item.title}</h4>
-                    <p className="text-sm text-slate-400 font-light leading-relaxed">{item.desc}</p>
-                  </div>
+                <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-2xl border-2 border-green-50 shadow-sm">
+                  <div className="text-green-600">{item.icon}</div>
+                  <h4 className="text-[11px] font-black uppercase tracking-widest text-[#052c17]">{item.title}</h4>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* SISI KANAN (FORM) */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            className="w-full"
-          >
-            <div className="bg-white rounded-[2rem] p-8 lg:p-10 shadow-[0_40px_80px_-20px_rgba(5,44,23,0.08)] border border-slate-100">
-              <div className="mb-8">
-                <h3 className="text-xl font-serif italic text-[#052c17]">Inquiry Form</h3>
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mt-1">Lengkapi detail pengadaan Anda</p>
+          {/* SISI KANAN: Form (Sentence Case & Clean) */}
+          <div className="lg:col-span-7">
+            <div className="bg-white rounded-[2rem] p-8 lg:p-12 border-2 border-green-100 shadow-xl shadow-green-900/5">
+              <div className="mb-10">
+                <h3 className="text-2xl font-serif italic font-black text-[#052c17]">Inquiry form</h3>
+                <p className="text-xs text-slate-400 font-medium mt-1">Lengkapi detail untuk mendapatkan Quotation resmi</p>
               </div>
 
-              <form className="space-y-5" onSubmit={handleInquiry}>
-                <div className="grid md:grid-cols-2 gap-5">
+              <form className="grid gap-6" onSubmit={handleInquiry}>
+                <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    {/* PERBAIKAN AKSESIBILITAS: Gunakan htmlFor dan id */}
-                    <label htmlFor="company" className="text-[9px] font-bold uppercase tracking-widest text-slate-400 ml-1">Nama Perusahaan</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nama Perusahaan</label>
                     <input 
-                      id="company"
-                      type="text" 
-                      required
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:bg-white focus:border-[#16a34a] outline-none transition-all" 
-                      placeholder="PT. Nama Hotel/Resto"
+                      type="text" required
+                      className="w-full bg-[#f7faf7] border-2 border-green-50 rounded-xl px-5 py-4 text-sm font-medium focus:bg-white focus:border-green-500 outline-none transition-all" 
+                      placeholder="Contoh: Hotel/Resto"
                       onChange={(e) => setFormData({...formData, company: e.target.value})}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="volume" className="text-[9px] font-bold uppercase tracking-widest text-slate-400 ml-1">Volume (KG/Hari)</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Volume per Hari</label>
                     <input 
-                      id="volume"
-                      type="text" 
-                      required
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:bg-white focus:border-[#16a34a] outline-none transition-all" 
-                      placeholder="Contoh: 50kg"
+                      type="text" required
+                      className="w-full bg-[#f7faf7] border-2 border-green-50 rounded-xl px-5 py-4 text-sm font-medium focus:bg-white focus:border-green-500 outline-none transition-all" 
+                      placeholder="Contoh: 50 - 100 kg"
                       onChange={(e) => setFormData({...formData, volume: e.target.value})}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  {/* PERBAIKAN AKSESIBILITAS UTAMA: Menambahkan Label pada Select */}
-                  <label htmlFor="termin" className="text-[9px] font-bold uppercase tracking-widest text-slate-400 ml-1">Pilihan Termin Pembayaran</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Termin Pembayaran (TOP)</label>
                   <div className="relative">
                     <select 
-                      id="termin"
                       required
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:bg-white focus:border-[#16a34a] outline-none transition-all appearance-none cursor-pointer text-[#052c17] font-medium"
+                      className="w-full bg-[#f7faf7] border-2 border-green-50 rounded-xl px-5 py-4 text-sm font-bold text-[#052c17] focus:bg-white focus:border-green-500 outline-none transition-all appearance-none cursor-pointer"
                       onChange={(e) => setFormData({...formData, termin: e.target.value})}
                     >
-                      <option value="">Pilih Skema TOP</option>
+                      <option value="">Pilih Skema Termin</option>
                       <option value="Cash on Delivery">Cash on Delivery (COD)</option>
                       <option value="TOP 14 Hari">Termin 14 Hari (TOP)</option>
                       <option value="TOP 30 Hari">Termin 30 Hari (TOP)</option>
-                      <option value="TOP 45 Hari">Termin 45 Hari (TOP - Kontrak)</option>
+                      <option value="TOP 45 Hari">Termin 45 Hari (Kontrak)</option>
                     </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
+                    <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-green-600 pointer-events-none" size={18} />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-[9px] font-bold uppercase tracking-widest text-slate-400 ml-1">Email Procurement</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Procurement</label>
                   <input 
-                    id="email"
-                    type="email" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:bg-white focus:border-[#16a34a] outline-none transition-all" 
+                    type="email" required
+                    className="w-full bg-[#f7faf7] border-2 border-green-50 rounded-xl px-5 py-4 text-sm font-medium focus:bg-white focus:border-green-500 outline-none transition-all" 
                     placeholder="purchasing@company.com"
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                   />
@@ -164,19 +145,19 @@ Mohon dapat dikirimkan harga katalog terbaru. Terima kasih.`;
 
                 <button 
                   type="submit"
-                  className="w-full bg-[#052c17] text-[#84cc16] py-4 rounded-xl font-black uppercase text-[11px] tracking-[0.2em] hover:bg-[#16a34a] hover:text-white transition-all shadow-lg flex items-center justify-center gap-3 group"
+                  className="w-full bg-[#052c17] text-[#84cc16] py-5 rounded-xl font-black uppercase text-[11px] tracking-[0.3em] hover:bg-green-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-3 group mt-4"
                 >
-                  Ajukan Penawaran
-                  <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  Ajukan Penawaran Sekarang
+                  <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </button>
 
                 <div className="flex items-center justify-center gap-2 opacity-50 pt-2">
-                  <CheckCircle2 size={12} className="text-[#16a34a]" />
-                  <p className="text-[8px] font-bold uppercase tracking-widest text-[#052c17]">Data bersifat rahasia & aman</p>
+                  <CheckCircle2 size={14} className="text-green-600" />
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Enkripsi Data Aman & Rahasia</p>
                 </div>
               </form>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,12 +1,11 @@
 "use client";
 import React from 'react';
-import { motion } from 'framer-motion';
+import * as motion from "framer-motion/client";
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { 
-  Users, Factory, ShieldCheck, 
-  MapPin, Award, ArrowRight, 
-  CheckCircle2, Building2, Truck 
+  Users, ShieldCheck, MapPin, 
+  CheckCircle2, Building2, Truck, ChevronRight 
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -17,29 +16,38 @@ export default function ProfilePage() {
     { label: "SLA Fulfillment", value: "100%", icon: <ShieldCheck size={20} /> },
   ];
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.6 }
+  };
+
   return (
-    <div className="bg-white min-h-screen font-sans selection:bg-[#16a34a] selection:text-white">
+    <div className="bg-white min-h-screen font-sans selection:bg-green-100 selection:text-[#052c17] overflow-x-hidden">
       <Header />
 
-      <main className="pt-32 lg:pt-48">
+      <main className="pt-24 lg:pt-32">
         {/* 1. HERO PROFILE: THE VISION */}
-        <section className="px-6 lg:px-20 mb-32">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="grid lg:grid-cols-12 gap-16 items-center">
-              <div className="lg:col-span-7 space-y-8">
+        <section className="px-6 lg:px-20 py-16 lg:py-24 border-b-2 border-green-100 relative">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-50/50 rounded-full blur-[120px] -z-10 pointer-events-none" />
+          
+          <div className="max-w-[1800px] mx-auto">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+              <div className="lg:col-span-7 space-y-6">
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="inline-flex items-center gap-3 px-4 py-2 bg-green-50 rounded-full text-[#16a34a] text-[10px] font-black uppercase tracking-[0.3em]"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="inline-flex items-center gap-3 px-4 py-2 bg-[#f7faf7] border-2 border-green-100 rounded-full text-green-700 text-[10px] font-black uppercase tracking-[0.3em]"
                 >
                   <Building2 size={14} /> Corporate Profile
                 </motion.div>
                 
-                <h1 className="text-6xl lg:text-[7rem] font-serif italic font-black text-[#052c17] leading-[0.85] tracking-tighter">
-                  Otoritas <br /> <span className="text-[#16a34a]">Suplai Cipanas.</span>
+                <h1 className="text-5xl lg:text-9xl font-serif italic font-black text-[#052c17] leading-[0.9] tracking-tighter uppercase">
+                  Otoritas <br /> <span className="text-green-600 not-italic font-sans">Suplai.</span>
                 </h1>
                 
-                <p className="text-xl lg:text-3xl text-slate-500 font-light leading-relaxed max-w-2xl italic">
+                <p className="text-lg lg:text-3xl text-slate-400 font-light leading-relaxed max-w-2xl border-l-4 border-green-500/20 pl-6 lg:pl-8 italic">
                   "Menghubungkan stabilitas retail modern dengan ekosistem agrikultur dataran tinggi melalui presisi logistik fajar."
                 </p>
               </div>
@@ -47,8 +55,8 @@ export default function ProfilePage() {
               <div className="lg:col-span-5">
                 <div className="grid grid-cols-2 gap-4">
                   {stats.map((stat, i) => (
-                    <div key={i} className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-[#16a34a] transition-all group">
-                      <div className="text-[#16a34a] mb-4 group-hover:scale-110 transition-transform">{stat.icon}</div>
+                    <div key={i} className="p-8 bg-[#f7faf7] rounded-[2rem] border-2 border-green-100 hover:bg-white hover:shadow-xl transition-all duration-500 group">
+                      <div className="text-green-600 mb-4 group-hover:scale-110 transition-transform">{stat.icon}</div>
                       <h3 className="text-3xl font-serif italic font-black text-[#052c17]">{stat.value}</h3>
                       <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-2">{stat.label}</p>
                     </div>
@@ -60,40 +68,38 @@ export default function ProfilePage() {
         </section>
 
         {/* 2. CORE VALUES: THE CORPORATE IDENTITY */}
-        <section className="py-32 bg-[#052c17] rounded-[4rem] lg:rounded-[6rem] mx-4 lg:mx-10 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#16a34a] rounded-full blur-[180px] opacity-10 -mr-64 -mt-64" />
-          
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-20 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-20">
-              <div className="space-y-10">
-                <h2 className="text-4xl lg:text-6xl font-serif italic font-black text-white leading-tight">
-                  Mengapa Korporat <br /> <span className="text-[#84cc16]">Memilih Kami?</span>
+        <section className="py-16 lg:py-24 bg-white border-b-2 border-green-100 relative overflow-hidden">
+          <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              <div className="space-y-8">
+                <h2 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[1] tracking-tighter uppercase">
+                  Mengapa <br /> <span className="text-green-600 not-italic font-sans">Memilih Kami?</span>
                 </h2>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {[
                     "Kemitraan langsung dengan 200+ petani tanpa makelar.",
-                    "Standar sortasi ketat (Grade A) sesuai spesifikasi Horeka.",
+                    "Standar sortasi ketat (Grade A) spesifikasi Horeka.",
                     "Skema pembayaran Term of Payment (TOP) fleksibel.",
-                    "Legalitas lengkap (CV, NPWP PKP, Izin Usaha Agrikultur)."
+                    "Legalitas lengkap (CV, NPWP PKP, Izin Agrikultur)."
                   ].map((list, i) => (
-                    <div key={i} className="flex items-center gap-4 text-white/80 group">
-                      <div className="w-6 h-6 rounded-full border border-[#84cc16] flex items-center justify-center group-hover:bg-[#84cc16] transition-colors">
-                        <CheckCircle2 size={12} className="text-[#84cc16] group-hover:text-[#052c17]" />
+                    <div key={i} className="flex items-center gap-4 group">
+                      <div className="w-8 h-8 rounded-full border-2 border-green-100 flex items-center justify-center bg-green-50 group-hover:bg-green-600 transition-colors duration-500">
+                        <CheckCircle2 size={14} className="text-green-600 group-hover:text-white" />
                       </div>
-                      <span className="text-lg font-light tracking-wide">{list}</span>
+                      <span className="text-base lg:text-lg font-bold text-slate-600 tracking-tight">{list}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-10 lg:p-16 rounded-[4rem] space-y-8">
-                <h4 className="text-[#84cc16] font-black uppercase tracking-[0.3em] text-xs">Visi Kami</h4>
-                <p className="text-2xl lg:text-4xl font-serif italic text-white leading-relaxed">
+              <div className="bg-[#f7faf7] border-2 border-green-100 p-10 lg:p-16 rounded-[3rem] space-y-6 shadow-sm">
+                <h4 className="text-green-700 font-black uppercase tracking-[0.4em] text-[10px]">Visi Korporasi</h4>
+                <p className="text-2xl lg:text-4xl font-serif italic text-[#052c17] leading-tight">
                   "Menjadi tulang punggung ketahanan pangan retail modern dengan memuliakan martabat petani lokal."
                 </p>
-                <div className="pt-6">
-                  <p className="text-white/40 text-xs uppercase font-black tracking-widest leading-relaxed">
-                    CV. Green Fresh Cipanas <br /> Established 2025
+                <div className="pt-6 border-t border-green-200">
+                  <p className="text-slate-400 text-[10px] uppercase font-black tracking-widest leading-relaxed">
+                    CV. Green Fresh Cipanas <br /> High-Altitude Supply Authority
                   </p>
                 </div>
               </div>
@@ -101,26 +107,28 @@ export default function ProfilePage() {
           </div>
         </section>
 
-        {/* 3. LOGISTIC STRENGTH (IMAGE & TEXT) */}
-        <section className="py-40 px-6 lg:px-20">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="flex flex-col lg:flex-row-reverse items-center gap-20">
+        {/* 3. LOGISTIC STRENGTH */}
+        <section className="py-16 lg:py-24 px-6 md:px-12 lg:px-20 border-b-2 border-green-100 bg-[#fcfdfc]">
+          <div className="max-w-[1800px] mx-auto">
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-24">
               <div className="w-full lg:w-1/2">
-                <div className="relative rounded-[4rem] overflow-hidden shadow-2xl aspect-square lg:aspect-video">
+                <div className="relative rounded-[3rem] lg:rounded-[4rem] overflow-hidden border-2 border-green-100 shadow-2xl aspect-square lg:aspect-video group">
                   <img 
                     src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=2000" 
                     alt="Infrastruktur Logistik" 
-                    className="w-full h-full object-cover grayscale-[0.2]"
+                    className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" />
                 </div>
               </div>
               <div className="w-full lg:w-1/2 space-y-8">
-                <h3 className="text-4xl lg:text-6xl font-serif italic font-black text-[#052c17]">Infrastruktur <br /> Logistik Mandiri.</h3>
-                <p className="text-xl text-slate-500 font-light leading-relaxed">
-                  Kami mengelola armada distribusi secara mandiri untuk memastikan jadwal pengiriman fajar (sebelum jam 07:00 pagi) terpenuhi secara konsisten di seluruh wilayah Jabodetabek.
+                <h3 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[0.9] tracking-tighter uppercase">
+                  Logistik <br /> <span className="text-green-600 not-italic font-sans">Mandiri.</span>
+                </h3>
+                <p className="text-lg lg:text-xl text-slate-500 font-light leading-relaxed">
+                  Kami mengelola armada distribusi secara mandiri untuk memastikan jadwal pengiriman fajar (sebelum jam 07:00 pagi) terpenuhi secara konsisten di wilayah Jabodetabek.
                 </p>
-                <div className="p-8 bg-green-50 rounded-3xl border border-green-100 italic font-serif text-[#16a34a] text-lg">
+                <div className="p-8 bg-white rounded-3xl border-2 border-green-100 italic font-serif text-green-700 text-lg lg:text-xl shadow-sm">
                   "Kontrol penuh atas rantai pasok dingin, meminimalkan penyusutan (waste) di sisi klien."
                 </div>
               </div>
@@ -129,16 +137,17 @@ export default function ProfilePage() {
         </section>
 
         {/* 4. FINAL CTA */}
-        <section className="pb-40 px-6">
-          <div className="max-w-[1000px] mx-auto bg-slate-50 rounded-[3rem] lg:rounded-[5rem] p-12 lg:p-32 text-center space-y-10 border border-slate-100">
-            <h2 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-none">
-              Siap Memulai <br /> <span className="text-[#16a34a]">Kemitraan?</span>
+        <section className="py-20 lg:py-32 px-6">
+          <div className="max-w-[1200px] mx-auto bg-[#f7faf7] border-2 border-green-100 rounded-[3rem] lg:rounded-[5rem] p-12 lg:p-24 text-center space-y-8 shadow-sm">
+            <h2 className="text-4xl lg:text-8xl font-serif italic font-black text-[#052c17] leading-none tracking-tighter uppercase">
+              Siap Menjalin <br /> <span className="text-green-600 not-italic font-sans">Kemitraan?</span>
             </h2>
-            <p className="text-lg lg:text-xl text-slate-400 max-w-xl mx-auto font-medium">
-              Dapatkan katalog harga khusus B2B dan skema kontrak yang dirancang untuk efisiensi bisnis Anda.
+            <p className="text-lg lg:text-xl text-slate-400 max-w-xl mx-auto font-bold uppercase tracking-widest">
+              Akses Katalog B2B & Company Profile
             </p>
-            <button className="px-12 py-6 bg-[#052c17] text-[#84cc16] rounded-2xl font-black uppercase tracking-[0.3em] text-xs hover:bg-[#16a34a] hover:text-white transition-all shadow-2xl">
-              Minta Company Profile PDF
+            <button className="px-12 py-6 bg-[#052c17] text-[#84cc16] rounded-2xl font-black uppercase tracking-[0.3em] text-[10px] hover:bg-green-600 hover:text-white transition-all shadow-2xl flex items-center gap-3 mx-auto group">
+              Unduh Profile PDF
+              <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </section>

@@ -1,4 +1,5 @@
 import React from 'react';
+import * as motion from "framer-motion/client"; 
 import { Header } from '@/components/Header'; 
 import { Footer } from '@/components/Footer';
 import { Hero } from '@/components/Hero';
@@ -9,7 +10,7 @@ import { VisualGallery } from '@/components/VisualGallery';
 import { CashFlow } from '@/components/CashFlow';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { vegetableData } from '@/components/data';
-import { Leaf, ShieldCheck, Zap, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 export const metadata = {
   title: 'Greenfresh.co.id | Supplier Sayur Segar Cipanas - Stok Stabil B2B',
@@ -17,9 +18,8 @@ export const metadata = {
 };
 
 export default function AuthorityPage() {
-  // --- SCHEMA MARKUP JSON-LD ---
+  // --- KEMBALIKAN SCHEMA MARKUP JSON-LD ---
   const homeSchemas = [
-    // 1. Organization & LocalBusiness
     {
       "@context": "https://schema.org",
       "@type": "WholesaleStore",
@@ -44,11 +44,8 @@ export default function AuthorityPage() {
         "longitude": 107.0394
       },
       "areaServed": ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi", "Cianjur"],
-      "sameAs": [
-        "https://www.instagram.com/greenfresh.cipanas" // Ganti jika ada sosial media lain
-      ]
+      "sameAs": ["https://www.instagram.com/greenfresh.cipanas"]
     },
-    // 2. FAQ Page - Authority Questions
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -66,23 +63,22 @@ export default function AuthorityPage() {
           "name": "Apakah Green Fresh melayani pembayaran termin untuk perusahaan?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Ya, kami menyediakan fasilitas pembayaran termin (TOP) hingga 30 hari untuk mitra kontrak korporasi (B2B) guna mendukung arus kas operasional klien."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Bagaimana standar kualitas sayuran di Green Fresh?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Setiap produk melalui sistem sortasi Grade-A yang ketat di Operational Hub kami untuk menjamin standar higienitas dan kesegaran hingga ke pintu gudang klien."
+            "text": "Ya, kami menyediakan fasilitas pembayaran termin (TOP) hingga 30 hari untuk mitra kontrak korporasi (B2B)."
           }
         }
       ]
     }
   ];
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 15 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.5 }
+  };
+
   return (
-    <div className="bg-white text-[#052c17] font-sans selection:bg-[#16a34a] selection:text-white overflow-x-hidden">
+    <div className="bg-white text-[#052c17] font-sans selection:bg-green-100 selection:text-[#052c17] overflow-x-hidden">
       {/* Script Injection */}
       {homeSchemas.map((schema, index) => (
         <script
@@ -98,89 +94,79 @@ export default function AuthorityPage() {
         {/* 1. HERO SECTION */}
         <Hero id="home" />
 
-        {/* 2. WHO WE ARE */}
-        <div className="-mt-20 lg:-mt-32 relative z-10 bg-white">
+        {/* 2. WHO WE ARE - Padat & Tegas */}
+        <div className="-mt-8 lg:-mt-12 relative z-10 bg-white border-b-2 border-green-100">
           <WhoWeAre id="tentang-kami" />
         </div>
 
         {/* 3. VISUAL GALLERY */}
-        <section className="py-4 lg:py-8 border-t border-slate-50">
+        <section className="py-2 border-b-2 border-green-100 bg-white">
           <VisualGallery id="lahan" />
         </section>
 
         {/* 4. KOMODITAS & PRICE SECTION */}
-        <section id="katalog" className="bg-slate-50 py-16 lg:py-24 border-y border-slate-100 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-          
-          <div className="max-w-[1400px] mx-auto px-6 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 items-end mb-16">
+        <section id="katalog" className="bg-[#f7faf7] py-10 lg:py-16 border-b-2 border-green-200 relative overflow-hidden">
+          <div className="max-w-[1500px] mx-auto px-6 relative z-10">
+            <motion.div {...fadeInUp} className="grid lg:grid-cols-2 gap-6 items-end mb-8">
               <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Star size={14} className="text-[#16a34a] fill-[#16a34a]" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#16a34a]">Premium Selection</span>
+                <div className="flex items-center gap-2 mb-2">
+                  <Star size={14} className="text-green-600 fill-green-600" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-700">Premium Selection</span>
                 </div>
-                <h2 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-none uppercase tracking-tighter">
-                  Komoditas <br/> <span className="text-[#16a34a]">Unggulan.</span>
+                <h2 className="text-4xl lg:text-6xl font-serif italic text-[#052c17] leading-[0.9] tracking-tighter">
+                  Komoditas <br/> <span className="text-green-600 not-italic font-sans font-bold">Unggulan.</span>
                 </h2>
               </div>
-              <div className="space-y-6">
-                <p className="text-slate-500 text-sm lg:text-base font-light leading-relaxed">
-                  Kami mengelola rantai pasok dari 9 klaster petani di Cipanas untuk memastikan 
-                  <span className="font-bold text-[#052c17]"> stabilitas stok 10 ton per hari </span> 
-                  dengan standar kualitas sortir yang ketat untuk industri Horeka.
+              <div>
+                <p className="text-slate-500 text-sm lg:text-lg font-light leading-relaxed max-w-xl border-l-4 border-green-500 pl-4">
+                  Rantai pasok terintegrasi dari 9 klaster petani untuk menjamin 
+                  <span className="text-[#052c17] font-bold"> stabilitas stok harian</span> grade-A.
                 </p>
-                <div className="flex flex-wrap gap-4">
-                  {[
-                    { icon: <Leaf size={14} />, text: "Zero Pestisida" },
-                    { icon: <Zap size={14} />, text: "Panen Fajar" },
-                    { icon: <ShieldCheck size={14} />, text: "Grade A Only" }
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
-                      <span className="text-[#16a34a]">{item.icon}</span>
-                      <span className="text-[9px] font-black uppercase tracking-widest">{item.text}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
-            </div>
-
-            <div className="mt-10">
-               <PriceTable data={vegetableData} showHeader={true} />
-            </div>
+            </motion.div>
+            <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
+              <PriceTable data={vegetableData} showHeader={true} />
+            </motion.div>
           </div>
         </section>
 
         {/* 5. IMPACT & CASHFLOW */}
-        <section className="py-16 bg-white">
-          <div className="max-w-[1200px] mx-auto">
-            <EconomicImpact id="ekonomi" />
-            <div className="mt-16 pt-16 border-t border-slate-50">
-              <CashFlow id="pembayaran" />
+        <section className="py-10 lg:py-16 bg-white px-6 border-b-2 border-green-100">
+          <div className="max-w-[1700px] mx-auto">
+            <motion.div {...fadeInUp}>
+              <EconomicImpact id="ekonomi" />
+            </motion.div>
+            <div className="mt-10 pt-10 border-t-2 border-green-100">
+              <motion.div {...fadeInUp}>
+                <CashFlow id="pembayaran" />
+              </motion.div>
             </div>
           </div>
         </section>
 
         {/* 6. PARTNERSHIP FORM */}
-        <section id="kemitraan" className="py-20 lg:py-32 bg-[#052c17] text-white rounded-t-[3rem] lg:rounded-t-[6rem] overflow-hidden">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="text-center mb-16">
-              <h3 className="text-[#84cc16] text-[10px] font-black uppercase tracking-[0.5em] mb-6">B2B Partnership</h3>
-              <h2 className="text-4xl lg:text-7xl font-serif italic font-black uppercase mb-8 tracking-tighter">
-                Ajukan <span className="text-[#84cc16]">Kontrak</span> Suplai
+        <section id="kemitraan" className="py-10 lg:py-16 bg-white border-t-2 border-green-200 relative">
+          <div className="max-w-[1800px] mx-auto px-6 relative z-10">
+            <motion.div {...fadeInUp} className="text-center mb-10">
+              <span className="text-green-700 text-[10px] font-black uppercase tracking-[0.5em] mb-2 block">
+                B2B Enterprise Portal
+              </span>
+              <h2 className="text-4xl lg:text-7xl font-serif italic text-[#052c17] leading-[0.9] tracking-tighter mb-4">
+                Ajukan <span className="text-green-600 not-italic font-sans font-bold">Kontrak</span> Suplai
               </h2>
-              <p className="text-white/60 max-w-xl mx-auto text-sm lg:text-base font-light leading-relaxed">
-                Khusus untuk entitas bisnis (PT/CV), dapatkan skema pembayaran tempo dan prioritas pengiriman fajar.
+              <p className="text-slate-500 max-w-2xl mx-auto text-sm lg:text-lg font-light">
+                Akses katalog harga grosir dan termin pembayaran (TOP) khusus entitas bisnis resmi.
               </p>
-            </div>
+            </motion.div>
             
-            <div className="bg-white p-2 lg:p-4 rounded-[3rem] shadow-2xl">
+            <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="w-full">
                <PartnershipForm />
-            </div>
+            </motion.div>
 
-            <div className="mt-16 flex justify-center items-center gap-4 opacity-40">
-               <div className="h-[1px] w-12 bg-white" />
-               <span className="text-[9px] font-black uppercase tracking-[0.3em]">Verified Supplier Profile 2025</span>
-               <div className="h-[1px] w-12 bg-white" />
+            <div className="mt-12 flex justify-center items-center gap-4">
+               <div className="h-[2px] w-16 bg-green-200" />
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-900">Official Partner 2025</span>
+               <div className="h-[2px] w-16 bg-green-200" />
             </div>
           </div>
         </section>

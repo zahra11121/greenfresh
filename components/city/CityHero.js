@@ -1,39 +1,73 @@
-import { MapPin } from 'lucide-react';
+import { MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const CityHero = ({ city }) => {
   return (
-    <section className="pt-28 pb-16 lg:pt-40 lg:pb-32 bg-white relative overflow-hidden">
-      {/* Background Decor - Diperhalus agar tidak mengganggu bacaan */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:40px_40px] opacity-10" />
+    <section className="relative bg-white pt-20 pb-12 lg:pt-28 lg:pb-16 overflow-hidden font-sans border-b-2 border-green-100">
       
-      <div className="max-w-[1200px] mx-auto text-center px-6 relative z-10">
-        {/* Badge Lokasi */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-100/50 mb-6">
-          <MapPin size={12} className="text-[#16a34a]" />
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#16a34a]">
-            Verified Partner • {city.name}
-          </span>
-        </div>
-        
-        {/* H1: Ukuran yang lebih waras dan elegan */}
-        {/* Mobile: 2xl (24px), Tablet: 4xl (36px), Desktop: 6xl (60px) */}
-        <h1 className="text-2xl md:text-4xl lg:text-6xl font-serif font-black mb-6 leading-tight uppercase tracking-tight text-[#052c17] max-w-5xl mx-auto">
-          {city.title}
-        </h1>
-        
-        {/* Paragraph: Ukuran font disesuaikan agar tidak kebanting */}
-        <p className="text-sm md:text-base lg:text-lg text-slate-500 max-w-3xl mx-auto font-light leading-relaxed mb-10">
-          {city.angle} Kami menjamin stabilitas distribusi hasil panen Cipanas untuk ekosistem bisnis di <span className="text-[#052c17] font-bold underline decoration-[#84cc16] decoration-2 underline-offset-4">{city.name}</span>.
-        </p>
+      {/* Soft Decorative Glow */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-green-50/30 rounded-full blur-[100px] pointer-events-none opacity-40" />
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <a href="#katalog" className="bg-[#052c17] text-[#84cc16] px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#16a34a] hover:text-white transition-all shadow-lg shadow-green-900/10">
-            E-Katalog Komoditas
-          </a>
-          <a href="#kemitraan" className="bg-slate-50 text-[#052c17] px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all">
-            Minta Quotation
-          </a>
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-10 items-start">
+          
+          {/* SISI KIRI: Headline Utama */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-2.5 py-1 bg-[#f7faf7] border border-green-100 rounded-lg">
+                  <MapPin size={12} className="text-green-600" />
+                  <span className="text-[11px] font-bold text-green-800 tracking-tight">{city.name} Hub</span>
+                </div>
+                <div className="h-px w-8 bg-green-100 hidden md:block" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-300">Official B2B Supply</span>
+              </div>
+
+              {/* PERBAIKAN: Langsung panggil "Supplier Sayur {city.name}" saja agar tidak berantakan */}
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif italic text-[#052c17] leading-[1.1] tracking-tighter">
+                Supplier Sayur <br />
+                <span className="text-green-600 not-italic font-sans font-bold">{city.name}.</span>
+              </h1>
+            </div>
+
+            <p className="text-lg lg:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl border-l-4 border-green-500/20 pl-6">
+              Distribusi hasil panen Cipanas untuk standar operasional dapur komersial di wilayah <span className="text-[#052c17] font-semibold">{city.name}</span>.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <a href="#katalog" className="group inline-flex items-center justify-center gap-3 bg-[#052c17] text-[#84cc16] px-10 py-5 rounded-2xl text-sm font-bold shadow-xl shadow-green-900/10 hover:bg-green-600 hover:text-white transition-all duration-300">
+                Katalog Harga
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a href="#kemitraan" className="inline-flex items-center justify-center bg-white text-[#052c17] border-2 border-green-100 px-10 py-5 rounded-2xl text-sm font-bold hover:border-green-500 transition-all duration-300">
+                Ajukan Penawaran
+              </a>
+            </div>
+          </div>
+
+          {/* SISI KANAN: Quick Specs Card */}
+          <div className="lg:col-span-4 lg:mt-4">
+            <div className="p-8 bg-[#fcfdfc] border-2 border-green-100 rounded-[2.5rem] space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 pb-5 border-b border-green-100">
+                <div className="p-2.5 bg-green-50 rounded-xl">
+                  <ShieldCheck size={20} className="text-green-600" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-1">Standard</p>
+                  <p className="text-sm font-bold text-[#052c17]">Sortir Grade A (Horeka)</p>
+                </div>
+              </div>
+              
+              <ul className="space-y-4">
+                {['Stok Stabil 10 Ton/Hari', 'Pengiriman Sebelum 07:00', 'Sistem Pembayaran TOP'].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                    <span className="text-sm font-medium text-slate-500 tracking-tight">{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

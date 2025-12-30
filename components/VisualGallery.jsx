@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Truck, PackageCheck, ShieldCheck, ChevronRight } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 
-// Helper untuk optimasi
 const getCloudinaryUrl = (url, width, height) => {
   const params = `f_auto,q_auto:eco,c_fill,g_auto,w_${width}${height ? `,h_${height}` : ''}`;
   return url.replace('/upload/', `/upload/${params}/`);
@@ -12,109 +11,104 @@ const getCloudinaryUrl = (url, width, height) => {
 const IMG_LAHAN = galleryData.images[2]; 
 const IMG_PACKING = galleryData.images[5]; 
 
-export const VisualGallery = () => (
-  <section id="lahan" className="py-16 lg:py-32 bg-white px-4 lg:px-12 overflow-hidden">
-    <div className="max-w-[1400px] mx-auto">
-      
-      {/* HEADER SECTION */}
-      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end mb-10 lg:mb-14 gap-6">
-        <div className="max-w-2xl text-center lg:text-left">
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-green-50 rounded-full"
-          >
-            <ShieldCheck size={14} className="text-[#16a34a]" />
-            <span className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] text-[#16a34a]">Standardisasi Suplai Ritel</span>
-          </motion.div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif italic text-[#052c17] leading-tight lowercase">
-            Kualitas <br className="hidden lg:block" /> <span className="text-[#16a34a]">Tanpa Kompromi.</span>
-          </h2>
-        </div>
-        <p className="text-slate-400 font-light text-xs lg:text-sm max-w-xs italic text-center lg:text-right leading-relaxed">
-          "Kami mengirim standar profesionalisme dari hulu hingga ke hilir untuk menjaga integritas bisnis Anda."
-        </p>
-      </div>
+export const VisualGallery = () => {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.6 }
+  };
 
-      {/* BENTO GRID VISUAL */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 lg:auto-rows-[320px]">
+  return (
+    <section id="lahan" className="py-12 lg:py-20 bg-white font-sans overflow-hidden border-b-2 border-green-100">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20">
         
-        {/* BIG CARD: LAHAN - Responsive implementation */}
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="md:col-span-8 md:row-span-2 relative rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden shadow-xl group min-h-[300px] lg:min-h-full bg-slate-100"
-        >
-          <img 
-            // Default untuk desktop besar
-            src={getCloudinaryUrl(IMG_LAHAN, 900, 650)} 
-            // Memberikan pilihan ukuran ke browser
-            srcSet={`
-              ${getCloudinaryUrl(IMG_LAHAN, 450, 350)} 450w,
-              ${getCloudinaryUrl(IMG_LAHAN, 900, 650)} 900w
-            `}
-            // Memberitahu browser ukuran kotak di layar
-            sizes="(max-width: 768px) 95vw, 850px"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 lg:group-hover:scale-110" 
-            alt="Kebun Cipanas Green Fresh"
-            loading="lazy" 
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#052c17] via-[#052c17]/20 to-transparent p-6 lg:p-10 flex flex-col justify-end text-white">
-            <p className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] text-[#84cc16] mb-2 lg:mb-3">Origin: Cipanas Highland</p>
-            <h4 className="text-2xl lg:text-4xl font-serif italic leading-none mb-3 lg:mb-4">Hulu Distribusi.</h4>
-            <p className="max-w-md text-xs lg:text-sm opacity-80 font-light leading-relaxed">
-              Membina 200+ petani mitra lokal dengan pengawasan kualitas tanah dan air secara berkala.
+        {/* HEADER: Editorial Style */}
+        <div className="grid lg:grid-cols-12 gap-10 items-end mb-16">
+          <div className="lg:col-span-8 space-y-4">
+            <div className="flex items-center gap-3">
+              <ShieldCheck size={16} className="text-green-600" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-700/60">Farm to Distribution</span>
+            </div>
+            <h2 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[0.9] tracking-tighter uppercase">
+              Kualitas <span className="text-green-600 not-italic font-sans">Tanpa Kompromi.</span>
+            </h2>
+          </div>
+          <div className="lg:col-span-4 border-l-4 border-green-500/20 pl-8">
+            <p className="text-slate-400 font-medium text-sm lg:text-lg leading-relaxed italic">
+              "Kami mengelola integritas suplai dari hulu hingga hilir untuk menjaga standar bisnis Anda."
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        {/* SMALL CARD 1: PACKING - Responsive implementation */}
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="md:col-span-4 relative rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden shadow-lg group min-h-[220px] lg:min-h-full bg-slate-100"
-        >
-          <img 
-            src={getCloudinaryUrl(IMG_PACKING, 450, 450)} 
-            srcSet={`
-              ${getCloudinaryUrl(IMG_PACKING, 350, 350)} 350w,
-              ${getCloudinaryUrl(IMG_PACKING, 500, 500)} 500w
-            `}
-            sizes="(max-width: 768px) 90vw, 400px"
-            className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] lg:group-hover:grayscale-0 transition-all duration-700" 
-            alt="Vegetable Packaging Standard"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-[#052c17]/30 lg:group-hover:bg-transparent transition-colors" />
-          <div className="absolute top-6 left-6 lg:top-8 lg:left-8">
-            <div className="bg-white p-3 lg:p-4 rounded-xl lg:rounded-2xl shadow-lg border border-slate-50">
-              <PackageCheck className="text-[#16a34a] w-5 h-5 lg:w-6 lg:h-6" />
+        {/* GALLERY GRID: Clean & Wide */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* BIG ASSET: FARMING */}
+          <motion.div {...fadeInUp} className="lg:col-span-7 space-y-6">
+            <div className="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden border-2 border-green-100 shadow-2xl group">
+              <img 
+                src={getCloudinaryUrl(IMG_LAHAN, 1200, 750)} 
+                className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+                alt="Kebun Cipanas"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" />
             </div>
-          </div>
-          <div className="absolute bottom-6 left-6 lg:bottom-8 lg:left-8 text-white">
-             <h5 className="text-lg lg:text-xl font-serif italic">Clean & Labelled.</h5>
-          </div>
-        </motion.div>
+            <div className="px-6">
+              <p className="text-green-600 text-[10px] font-black uppercase tracking-[0.4em] mb-2">Hulu Produksi</p>
+              <h4 className="text-2xl font-serif italic font-black text-[#052c17] mb-2">Highland cultivation.</h4>
+              <p className="text-slate-500 text-sm lg:text-base font-light max-w-xl">
+                Lahan subur Cipanas yang dikelola dengan standar GAP (Good Agricultural Practices) untuk hasil panen premium.
+              </p>
+            </div>
+          </motion.div>
 
-        {/* SMALL CARD 2: LOGISTICS */}
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="md:col-span-4 relative rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden bg-[#052c17] p-8 lg:p-10 flex flex-col justify-between shadow-lg group min-h-[250px] lg:min-h-full"
-        >
-          <Truck className="text-[#84cc16] lg:group-hover:translate-x-2 transition-transform w-10 h-10 lg:w-11 lg:h-11" />
-          <div>
-            <h4 className="text-xl lg:text-2xl font-serif italic text-white mb-2">Armada Logistik.</h4>
-            <p className="text-[9px] uppercase font-black tracking-widest text-[#84cc16] mb-4 lg:mb-5">Unit Pickup Daily Delivery</p>
-            <div className="h-[1px] w-full bg-white/10 mb-4 lg:mb-5" />
-            <ul className="grid grid-cols-1 gap-2 text-[9px] lg:text-[10px] font-bold uppercase tracking-widest text-white/50">
-              <li className="flex items-center gap-2"><ChevronRight size={10} className="text-[#84cc16]" /> JKT Route</li>
-              <li className="flex items-center gap-2"><ChevronRight size={10} className="text-[#84cc16]" /> Tangerang Route</li>
-              <li className="flex items-center gap-2"><ChevronRight size={10} className="text-[#84cc16]" /> Depok/Bogor Route</li>
-            </ul>
-          </div>
-        </motion.div>
+          {/* SIDE ASSETS: PACKING & LOGISTICS */}
+          <div className="lg:col-span-5 space-y-12 lg:space-y-16">
+            
+            {/* PACKING CARD */}
+            <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="flex flex-col md:flex-row gap-8 items-center">
+              <div className="w-full md:w-1/2 aspect-square rounded-[2rem] overflow-hidden border-2 border-green-100 shadow-xl relative group">
+                <img 
+                  src={getCloudinaryUrl(IMG_PACKING, 600, 600)} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  alt="Packing Sayur"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl text-green-600 shadow-lg">
+                  <PackageCheck size={20} />
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 space-y-3">
+                <h5 className="text-xl font-serif italic font-black text-[#052c17]">Standardized Packaging.</h5>
+                <p className="text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
+                  Proses pembersihan dan pengemasan higienis yang disesuaikan untuk kebutuhan Modern Retail & Fine Dining.
+                </p>
+              </div>
+            </motion.div>
 
+            {/* LOGISTICS CARD */}
+            <motion.div {...fadeInUp} transition={{ delay: 0.3 }} className="bg-[#f7faf7] border-2 border-green-100 rounded-[2.5rem] p-8 lg:p-10 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-green-100/50 rounded-full blur-3xl -mr-10 -mt-10" />
+              
+              <div className="relative z-10 flex flex-col justify-between h-full space-y-6">
+                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:translate-x-2 transition-transform">
+                  <Truck size={24} />
+                </div>
+                <div>
+                  <h4 className="text-2xl font-serif italic font-black text-[#052c17] mb-4">Armada Logistik Mandiri.</h4>
+                  <ul className="grid grid-cols-2 gap-y-3 gap-x-6 text-[10px] font-black uppercase tracking-widest text-green-800/60">
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Jakarta</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Tangerang</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Bekasi</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Bogor/Depok</li>
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
