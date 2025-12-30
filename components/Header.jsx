@@ -8,22 +8,36 @@ const MainLogo = () => (
   <a href="/" aria-label="GreenFresh Home" className="flex items-center group cursor-pointer w-fit">
     <div className="relative flex items-center">
       <svg 
-        className="h-10 lg:h-12 w-auto transition-all duration-300"
-        viewBox="0 5 320 70" 
+        className="h-10 lg:h-11 w-auto transition-all duration-300"
+        viewBox="0 0 450 80" 
         xmlns="http://www.w3.org/2000/svg"
         role="img"
       >
-        <title>GreenFresh.co.id Logo</title>
-        <g transform="translate(5, 12)">
-          <path d="M50 40 C 50 15, 10 15, 10 40 C 10 65, 50 65, 50 50" stroke="#052c17" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-          <path d="M50 40 C 65 25, 65 10, 40 10 C 40 10, 40 25, 50 40" fill="#16a34a" />
+        <title>GreenFresh Logo</title>
+        {/* Simbol Daun Simple Minimalis */}
+        <g transform="translate(10, 15)">
+          <path 
+            d="M35 50C35 50 70 20 35 0C0 20 35 50 35 50Z" 
+            fill="#16a34a" 
+            className="group-hover:fill-[#15803d] transition-colors"
+          />
+          <path 
+            d="M35 50V15" 
+            stroke="white" 
+            strokeWidth="3" 
+            strokeLinecap="round" 
+            opacity="0.6"
+          />
         </g>
-        <text x="75" y="48" fontFamily="Arial, sans-serif" fontWeight="600" fontSize="42" fill="#052c17">
+        
+        {/* Teks Logo */}
+        <text x="75" y="45" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="46" fill="#052c17" letterSpacing="-1">
           Green<tspan fill="#16a34a">Fresh</tspan>
-          <tspan fontSize="26" fontWeight="400" fill="#666">.co.id</tspan>
         </text>
-        <text x="77" y="70" fontFamily="Arial, sans-serif" fontWeight="400" fontSize="11" letterSpacing="2.5" fill="#999">
-          PREMIUM VEGETABLE SUPPLIER
+        
+        {/* Slogan */}
+        <text x="77" y="68" fontFamily="Inter, Arial, sans-serif" fontWeight="500" fontSize="12" letterSpacing="3.5" fill="#94a3b8" className="uppercase">
+          Premium Vegetable Supplier
         </text>
       </svg>
     </div>
@@ -37,7 +51,6 @@ export const Header = () => {
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [activeAccordion, setActiveAccordion] = useState(null);
 
-  // Mencegah Hydration Mismatch dengan memastikan komponen dirender di Client
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -47,7 +60,7 @@ export const Header = () => {
 
   const handleWhatsApp = () => {
     const phoneNumber = "6287780937884";
-    const message = `Yth. Tim Sales Greenfresh.co.id\n\nHalo, kami tertarik untuk bekerja sama...`;
+    const message = `Yth. Tim Sales Greenfresh\n\nHalo, kami tertarik untuk bekerja sama...`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -89,17 +102,13 @@ export const Header = () => {
         }`}>
           
           <div className="flex lg:grid lg:grid-cols-3 items-center w-full justify-between">
-            
-            {/* Logo Section */}
             <div className="flex justify-start">
               <MainLogo />
             </div>
 
-            {/* Desktop Menu */}
             <div className="hidden lg:flex justify-center items-center gap-8 text-left">
               <a href="/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Home</a>
               
-              {/* Dropdown Wilayah */}
               <div 
                 className="relative group"
                 onMouseEnter={() => setIsLocationOpen(true)}
@@ -144,12 +153,10 @@ export const Header = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Gallery & About */}
               <a href="/gallery" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Gallery</a>
               <a href="/about" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">About Us</a>
             </div>
             
-            {/* CTA Section */}
             <div className="hidden lg:flex justify-end items-center gap-4">
               <button 
                 onClick={handleWhatsApp}
@@ -159,7 +166,6 @@ export const Header = () => {
               </button>
             </div>
 
-            {/* Mobile Menu Button */}
             <button className="lg:hidden p-2 text-[#052c17]" onClick={() => setIsMobileMenuOpen(true)}>
               <Menu size={24} />
             </button>
@@ -167,7 +173,6 @@ export const Header = () => {
         </div>
       </nav>
 
-      {/* 3. MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
