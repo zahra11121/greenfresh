@@ -5,8 +5,9 @@ import { Footer } from '@/components/Footer';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
 import { vegetableData } from '@/components/data';
-import { Star, Shield, ShieldCheck, Truck } from 'lucide-react';
+import { Star, ShieldCheck, Truck, ChevronRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
 // Import data gallery
 import { galleryData } from '@/data/galleryData';
@@ -36,14 +37,14 @@ export async function generateStaticParams() {
 }
 
 /**
- * GENERATE METADATA & CANONICAL (JS Version)
+ * GENERATE METADATA & CANONICAL (Consistent Trailing Slash)
  */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
   
   const baseUrl = 'https://greenfresh.co.id';
-  const fullUrl = `${baseUrl}/supplier-sayur/${slug}`;
+  const fullUrl = `${baseUrl}/supplier-sayur/${slug}/`;
 
   if (!city) return { title: 'Halaman Tidak Ditemukan' };
 
@@ -75,6 +76,9 @@ export default async function CityPage({ params }) {
 
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
+  
+  const baseUrl = 'https://greenfresh.co.id';
+  const currentUrl = `${baseUrl}/supplier-sayur/${city.slug}/`;
 
   // --- SEO SCHEMA MARKUP ---
   const jsonLd = {
@@ -82,8 +86,8 @@ export default async function CityPage({ params }) {
     "@type": "WholesaleStore",
     "name": `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
     "image": "https://greenfresh.co.id/images/og-main.jpg",
-    "@id": `https://greenfresh.co.id/supplier-sayur/${city.slug}/`,
-    "url": `https://greenfresh.co.id/supplier-sayur/${city.slug}/`,
+    "@id": currentUrl,
+    "url": currentUrl,
     "telephone": "+6287780937884",
     "priceRange": "Rp",
     "address": {
@@ -105,16 +109,56 @@ export default async function CityPage({ params }) {
     }
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${baseUrl}/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Supplier Sayur",
+        "item": currentUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": city.name,
+        "item": currentUrl
+      }
+    ]
+  };
+
   return (
     <div className="bg-white text-[#052c17] font-sans selection:bg-[#16a34a] selection:text-white overflow-x-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
 
       <Header />
       
       <main>
+        {/* PERBAIKAN: Kontainer Breadcrumb dengan Padding Top (pt-24 atau pt-32 tergantung tinggi Header) */}
+        <div className="bg-white pt-24 lg:pt-32">
+          <nav className="max-w-[1200px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            <Link href="/" className="hover:text-[#16a34a] transition-colors">Home</Link>
+            <ChevronRight size={10} />
+            <span className="cursor-default">Supplier Sayur</span>
+            <ChevronRight size={10} />
+            <span className="text-[#16a34a] font-bold tracking-widest">{city.name}</span>
+          </nav>
+        </div>
+
         <CityHero city={city} />
 
         <section className="pb-20 lg:pb-32 px-6">

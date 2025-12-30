@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'; // Import Link untuk optimasi SEO & Prefetching
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Leaf, ShieldCheck, Box, ChevronDown, MapPin, Globe, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import { cityMenuGroups } from '@/data/menuCities';
 
+// Logo menggunakan Link agar Google mengenali root path sebagai prioritas utama
 const MainLogo = () => (
-  <a href="/" aria-label="GreenFresh Home" className="flex items-center group cursor-pointer w-fit">
+  <Link href="/" aria-label="GreenFresh Home" className="flex items-center group cursor-pointer w-fit">
     <div className="relative flex items-center">
       <svg 
         className="h-10 lg:h-11 w-auto transition-all duration-300"
@@ -14,7 +16,6 @@ const MainLogo = () => (
         role="img"
       >
         <title>GreenFresh Logo</title>
-        {/* Simbol Daun Simple Minimalis */}
         <g transform="translate(10, 15)">
           <path 
             d="M35 50C35 50 70 20 35 0C0 20 35 50 35 50Z" 
@@ -29,19 +30,15 @@ const MainLogo = () => (
             opacity="0.6"
           />
         </g>
-        
-        {/* Teks Logo */}
         <text x="75" y="45" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="46" fill="#052c17" letterSpacing="-1">
           Green<tspan fill="#16a34a">Fresh</tspan>
         </text>
-        
-        {/* Slogan */}
         <text x="77" y="68" fontFamily="Inter, Arial, sans-serif" fontWeight="500" fontSize="12" letterSpacing="3.5" fill="#94a3b8" className="uppercase">
           Premium Vegetable Supplier
         </text>
       </svg>
     </div>
-  </a>
+  </Link>
 );
 
 export const Header = () => {
@@ -63,6 +60,9 @@ export const Header = () => {
     const message = `Yth. Tim Sales Greenfresh\n\nHalo, kami tertarik untuk bekerja sama...`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
+
+  // Close mobile menu on route change
+  const closeMenu = () => setIsMobileMenuOpen(false);
 
   if (!mounted) return null;
 
@@ -107,7 +107,7 @@ export const Header = () => {
             </div>
 
             <div className="hidden lg:flex justify-center items-center gap-8 text-left">
-              <a href="/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Home</a>
+              <Link href="/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Home</Link>
               
               <div 
                 className="relative group"
@@ -124,7 +124,7 @@ export const Header = () => {
                       initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }}
                       className="absolute top-full left-1/2 -translate-x-1/2 pt-5 w-[850px]"
                     >
-                      <div className="bg-white rounded-[32px] shadow-2xl border-2 border-[#16a34a] p-10 grid grid-cols-3 gap-10 overflow-hidden relative">
+                      <div className="bg-white rounded-[32px] shadow-2xl border-2 border-[#16a34a] p-10 grid grid-cols-3 gap-10 overflow-hidden relative text-left">
                         <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none text-[#16a34a]">
                           <Leaf size={200} />
                         </div>
@@ -136,13 +136,17 @@ export const Header = () => {
                             </div>
                             <div className="flex flex-col gap-1">
                               {group.items.map((city) => (
-                                <a key={city.slug} href={`/supplier-sayur/${city.slug}`} className="flex items-center justify-between p-2.5 hover:bg-green-50 rounded-xl transition-all group/item">
+                                <Link 
+                                  key={city.slug} 
+                                  href={`/supplier-sayur/${city.slug}/`} 
+                                  className="flex items-center justify-between p-2.5 hover:bg-green-50 rounded-xl transition-all group/item"
+                                >
                                   <div className="flex items-center gap-3">
                                     <MapPin size={13} className="text-[#16a34a]/30 group-hover/item:text-[#16a34a]" />
                                     <span className="text-[11px] font-semibold text-slate-500 group-hover/item:text-[#052c17]">{city.name}</span>
                                   </div>
                                   <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-100 text-[#16a34a] transition-all" />
-                                </a>
+                                </Link>
                               ))}
                             </div>
                           </div>
@@ -153,8 +157,8 @@ export const Header = () => {
                 </AnimatePresence>
               </div>
 
-              <a href="/gallery" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Gallery</a>
-              <a href="/about" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">About Us</a>
+              <Link href="/gallery/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Gallery</Link>
+              <Link href="/about/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">About Us</Link>
             </div>
             
             <div className="hidden lg:flex justify-end items-center gap-4">
@@ -173,24 +177,25 @@ export const Header = () => {
         </div>
       </nav>
 
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsMobileMenuOpen(false)} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200]" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeMenu} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200]" />
             <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} className="fixed top-0 right-0 h-full w-[85%] bg-white z-[210] shadow-2xl flex flex-col border-l-4 border-[#16a34a]">
               <div className="p-6 flex justify-between items-center border-b">
-                <div className="scale-75 origin-left"><MainLogo /></div>
-                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-400 border-2 rounded-xl">
+                <div className="scale-75 origin-left" onClick={closeMenu}><MainLogo /></div>
+                <button onClick={closeMenu} className="p-2 text-slate-400 border-2 rounded-xl">
                   <X size={24} />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 font-sans">
-                <a href="/" className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 text-left">Home</a>
-                <a href="/gallery" className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 flex items-center gap-3">
+              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 font-sans text-left">
+                <Link href="/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 block">Home</Link>
+                <Link href="/gallery/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 flex items-center gap-3">
                   <ImageIcon size={18} className="text-[#16a34a]" /> Gallery
-                </a>
-                <a href="/about" className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 text-left">About Us</a>
+                </Link>
+                <Link href="/about/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 block">About Us</Link>
                 
                 <div className="mt-4 px-4 py-2 bg-green-50 rounded-lg text-left">
                    <span className="text-[10px] font-bold text-[#16a34a] uppercase tracking-widest">Cakupan Wilayah</span>
@@ -205,7 +210,14 @@ export const Header = () => {
                       {activeAccordion === idx && (
                         <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden bg-green-50/20 text-left">
                           {group.items.map((city) => (
-                            <a key={city.slug} href={`/supplier-sayur/${city.slug}`} className="block px-8 py-3 text-xs font-semibold text-slate-500 hover:text-[#16a34a]">{city.name}</a>
+                            <Link 
+                              key={city.slug} 
+                              href={`/supplier-sayur/${city.slug}/`} 
+                              onClick={closeMenu}
+                              className="block px-8 py-3 text-xs font-semibold text-slate-500 hover:text-[#16a34a]"
+                            >
+                              {city.name}
+                            </Link>
                           ))}
                         </motion.div>
                       )}
