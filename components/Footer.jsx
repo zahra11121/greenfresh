@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowUpRight, Globe } from 'lucide-react';
+import { jabodetabekCities } from '@/data/cities';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -28,8 +29,6 @@ export const Footer = () => {
                 <span className="text-2xl font-black text-[#052c17] leading-none tracking-tighter uppercase">
                   Green<span className="text-[#16a34a]">Fresh</span>
                 </span>
-                <span className="text-[10px] font-bold text-slate-400 tracking-[0.4em] uppercase mt-1">
-                </span>
               </div>
             </div>
             
@@ -51,7 +50,6 @@ export const Footer = () => {
           {/* Right Section: Navigation Links */}
           <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-4 lg:gap-12 pt-4">
             
-            {/* Navigasi Utama - DISESUAIKAN */}
             <div className="space-y-5">
               <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#16a34a]">Menu Utama</h5>
               <ul className="space-y-3">
@@ -70,34 +68,50 @@ export const Footer = () => {
               </ul>
             </div>
 
-            {/* Hubungi Kami */}
             <div className="space-y-5">
               <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#16a34a]">Hubungi Sales</h5>
               <div className="space-y-4">
-                <a href="mailto:sales@greenfresh.co.id" className="group block">
+                <a href="mailto:sales@greenfresh.co.id" className="group block text-left lg:text-left">
                   <span className="text-[9px] font-bold text-slate-400 uppercase block mb-1">Email Inquiry</span>
                   <span className="text-[12px] font-bold text-slate-700 group-hover:text-[#16a34a] break-all">sales@greenfresh.co.id</span>
                 </a>
-                <a href="https://wa.me/6287780937884" target="_blank" rel="noopener noreferrer" className="group block">
+                <a href="https://wa.me/6287780937884" target="_blank" rel="noopener noreferrer" className="group block text-left lg:text-left">
                   <span className="text-[9px] font-bold text-slate-400 uppercase block mb-1">WhatsApp B2B</span>
                   <span className="text-[12px] font-bold text-slate-700 group-hover:text-[#16a34a]">0877 8093 7884</span>
                 </a>
               </div>
             </div>
 
-            {/* Alamat Operasional */}
             <div className="col-span-2 md:col-span-1 space-y-5 pt-4 md:pt-0 border-t border-slate-100 md:border-none">
               <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#16a34a]">Operational Hub</h5>
-              <div className="flex gap-2 items-start">
+              <div className="flex gap-2 items-start justify-center lg:justify-start">
                 <MapPin className="w-4 h-4 text-[#16a34a] shrink-0 mt-0.5" />
-                <p className="text-[12px] font-bold text-slate-600 leading-relaxed uppercase tracking-tight">
+                <p className="text-[12px] font-bold text-slate-600 leading-relaxed uppercase tracking-tight text-left">
                   Jl. Kayumanis, Sukatani, <br className="hidden md:block" />
                   Cipanas, Cianjur, <br className="hidden md:block" /> 
                   Jawa Barat 43253
                 </p>
               </div>
             </div>
+          </div>
+        </div>
 
+        {/* SEO INTERNAL LINKS SECTION (FAT FOOTER) */}
+        <div className="py-12 border-t border-slate-200">
+          <div className="flex items-center gap-2 mb-8">
+            <Globe className="w-4 h-4 text-[#16a34a]" />
+            <h5 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#052c17]">Cakupan Area Layanan Jabodetabek</h5>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-3">
+            {jabodetabekCities.map((city) => (
+              <a 
+                key={city.slug} 
+                href={`/supplier-sayur/${city.slug}/`} 
+                className="text-[11px] font-bold text-slate-400 hover:text-[#16a34a] transition-colors duration-300"
+              >
+                Supplier Sayur {city.name}
+              </a>
+            ))}
           </div>
         </div>
 
