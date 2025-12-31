@@ -34,25 +34,24 @@ export const QualityGuarantee = () => {
     <section className="py-20 bg-[#f8fafc] overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 mb-12 text-center lg:text-left">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="space-y-3">
+          <div className="space-y-3 text-left">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="flex items-center gap-2 justify-center lg:justify-start"
+              className="flex items-center gap-2 justify-start"
             >
-              {/* PERBAIKAN: Background bar dipertegas kontrasnya */}
               <span className="w-8 h-[2px] bg-[#15803d]" />
-              {/* PERBAIKAN: text-16a34a -> text-[#15803d] (Darker green) */}
+              {/* PERBAIKAN: Green-700 (#15803d) untuk kontras di atas #f8fafc */}
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Our Commitment</span>
             </motion.div>
             <h2 className="text-4xl lg:text-6xl font-[1000] text-[#052c17] tracking-tighter leading-none">
-              {/* PERBAIKAN: text-slate-300 -> text-slate-400 (Contrast safe against f8fafc) */}
-              JAMINAN <span className="text-slate-400">KUALITAS.</span>
+              {/* PERBAIKAN: Slate-400 diganti ke Slate-500 (#64748b) agar rasio kontras > 4.5:1 */}
+              JAMINAN <span className="text-[#64748b]">KUALITAS.</span>
             </h2>
           </div>
-          {/* PERBAIKAN: text-slate-500 -> text-slate-700 (Readability ditingkatkan) */}
-          <p className="text-slate-700 text-sm max-w-sm font-bold leading-relaxed italic">
+          {/* PERBAIKAN: Slate-700 (#334155) sangat aman untuk WCAG AA */}
+          <p className="text-[#334155] text-sm max-w-sm font-bold leading-relaxed italic text-left">
             "Nol risiko operasional bagi mitra B2B kami melalui standarisasi ketat setiap hari."
           </p>
         </div>
@@ -84,22 +83,19 @@ export const QualityGuarantee = () => {
                 </div>
 
                 <div className="flex-1 space-y-3">
-                  <h4 className="text-[#052c17] font-black text-[13px] lg:text-sm tracking-widest uppercase text-left">
+                  <p className="text-[#052c17] font-black text-[13px] lg:text-sm tracking-widest uppercase text-left">
                     {item.title}
-                  </h4>
+                  </p>
                   
                   <div className="h-1 bg-green-100 transition-all duration-500
                     max-lg:w-full max-lg:bg-[#15803d]/20
                     lg:w-8 lg:group-hover:w-full" 
                   />
                   
-                  {/* PERBAIKAN: 
-                      - max-lg: text-slate-700 (untuk kontras di mobile)
-                      - lg: text-slate-600 (default) -> group-hover: text-slate-900 (bold & dark saat aktif)
-                  */}
+                  {/* PERBAIKAN: Slate-600/700 memberikan kontras tinggi di atas putih */}
                   <p className="text-[12px] leading-relaxed font-bold transition-colors text-left
-                    max-lg:text-slate-700 
-                    lg:text-slate-600 lg:group-hover:text-slate-900"
+                    max-lg:text-[#334155] 
+                    lg:text-[#475569] lg:group-hover:text-[#1e293b]"
                   >
                     {item.desc}
                   </p>
@@ -109,7 +105,6 @@ export const QualityGuarantee = () => {
           ))}
         </motion.div>
 
-        {/* Shadow Fading Gradients */}
         <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
       </div>
@@ -126,8 +121,8 @@ export const QualityGuarantee = () => {
           </p>
         </motion.div>
         
-        {/* PERBAIKAN: text-slate-300 -> text-slate-500 (Legible for technical info) */}
-        <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em]">
+        {/* PERBAIKAN: Slate-500 (#64748b) untuk teks teknis agar terbaca jelas */}
+        <div className="text-[9px] font-black text-[#64748b] uppercase tracking-[0.4em]">
           Automated QC System • v.2.5
         </div>
       </div>
