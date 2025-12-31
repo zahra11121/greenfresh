@@ -44,9 +44,10 @@ export default function ProfileClientContent() {
               viewport={{ once: true }}
               variants={staggerContainer}
             >
-              <motion.div variants={fadeInUp} className="flex items-center gap-2 text-[#16a34a]">
-                 <div className="h-[1px] w-8 bg-[#16a34a]"></div>
-                 <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Profil Perusahaan</span>
+              {/* PERBAIKAN: Hijau digelapkan ke #15803d (green-700) untuk kontras di atas putih */}
+              <motion.div variants={fadeInUp} className="flex items-center gap-2 text-[#15803d]">
+                 <div className="h-[1px] w-8 bg-[#15803d]"></div>
+                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Profil Perusahaan</span>
               </motion.div>
               
               <motion.h1 
@@ -54,21 +55,24 @@ export default function ProfileClientContent() {
                 className="text-4xl lg:text-5xl font-serif italic text-[#052c17] leading-[1.2] tracking-tight"
               >
                 Dedikasi untuk Kesegaran <br /> 
-                <span className="font-light text-slate-400 block mt-1 italic text-3xl lg:text-4xl">Dari Bumi Cipanas.</span>
+                {/* PERBAIKAN: Slate-400 diganti ke Slate-600 agar terbaca */}
+                <span className="font-medium text-slate-600 block mt-1 italic text-3xl lg:text-4xl">Dari Bumi Cipanas.</span>
               </motion.h1>
 
+              {/* PERBAIKAN: Slate-500 diganti ke Slate-700 */}
               <motion.p 
                 variants={fadeInUp}
-                className="text-lg text-slate-500 font-light max-w-xl leading-relaxed"
+                className="text-lg text-slate-700 font-normal max-w-xl leading-relaxed"
               >
                 CV. Green Fresh Cipanas hadir sebagai mitra strategis pengadaan hasil bumi yang mengedepankan integritas dan transparansi untuk sektor industri modern.
               </motion.p>
 
               <motion.div variants={fadeInUp} className="flex flex-wrap gap-3 pt-2">
-                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-bold text-slate-600 uppercase tracking-wider">
+                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-100 border border-slate-200 rounded-full text-[10px] font-black text-slate-700 uppercase tracking-wider">
                     <Building2 size={12} /> Entitas PKP Resmi
                  </div>
-                 <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-100 rounded-full text-[10px] font-bold text-[#16a34a] uppercase tracking-wider">
+                 {/* PERBAIKAN: Background hijau dipertegas dan teks digelapkan */}
+                 <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border border-green-200 rounded-full text-[10px] font-black text-[#15803d] uppercase tracking-wider">
                     <CheckCircle2 size={12} /> Compliance Terjamin
                  </div>
               </motion.div>
@@ -85,13 +89,15 @@ export default function ProfileClientContent() {
                 <motion.div 
                   key={i} 
                   variants={fadeInUp}
-                  className="p-6 bg-white border border-slate-100 rounded-3xl shadow-sm group hover:border-[#16a34a]/30 transition-colors"
+                  className="p-6 bg-white border border-slate-200 rounded-3xl shadow-sm group hover:border-[#15803d]/40 transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#16a34a] group-hover:text-white transition-all mb-4">
+                  {/* PERBAIKAN: Slate-400 diganti ke Slate-500 untuk ikon */}
+                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-[#15803d] group-hover:text-white transition-all mb-4">
                     {stat.icon}
                   </div>
                   <div className="text-2xl font-serif italic font-bold text-[#052c17]">{stat.value}</div>
-                  <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-1">{stat.label}</div>
+                  {/* PERBAIKAN: Slate-400 diganti ke Slate-600 */}
+                  <div className="text-[9px] font-black uppercase tracking-widest text-slate-600 mt-1">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -105,7 +111,7 @@ export default function ProfileClientContent() {
           <div className="grid lg:grid-cols-2 gap-16 items-center text-left">
             <div className="space-y-8">
               <h2 className="text-3xl lg:text-4xl font-serif italic text-white leading-tight">
-                Kualitas yang <br /> <span className="text-[#84cc16]">Dapat Diandalkan.</span>
+                Kualitas yang <br /> <span className="text-[#bef264]">Dapat Diandalkan.</span>
               </h2>
               <div className="space-y-6">
                 {[
@@ -113,24 +119,27 @@ export default function ProfileClientContent() {
                   { t: "Standar Industri", d: "Sistem sortasi Grade-A untuk menjaga standar kualitas klien." },
                   { t: "Logistik Terukur", d: "Distribusi efisien untuk menjaga kesegaran hingga ke pintu gudang." }
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 border-l border-white/10 pl-6 py-2">
+                  <div key={i} className="flex gap-4 border-l border-white/20 pl-6 py-2">
                     <div>
-                      <h4 className="text-[#84cc16] font-bold text-xs uppercase tracking-widest mb-1">{item.t}</h4>
-                      <p className="text-white/60 text-sm font-light leading-relaxed">{item.d}</p>
+                      {/* PERBAIKAN: Lime #84cc16 diganti ke #bef264 agar lebih terang di atas hijau gelap */}
+                      <h4 className="text-[#bef264] font-black text-xs uppercase tracking-widest mb-1">{item.t}</h4>
+                      {/* PERBAIKAN: White/60 diganti ke White/80 agar kontras naik */}
+                      <p className="text-white/80 text-sm font-normal leading-relaxed">{item.d}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[3rem]">
-              <div className="text-[#84cc16] mb-6 inline-block">
-                <CheckCircle2 size={32} strokeWidth={1} />
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-10 rounded-[3rem]">
+              <div className="text-[#bef264] mb-6 inline-block">
+                <CheckCircle2 size={32} strokeWidth={2} />
               </div>
-              <p className="text-xl font-serif italic text-white/90 leading-relaxed">
+              <p className="text-xl font-serif italic text-white leading-relaxed">
                 "Visi kami adalah menjadi jembatan terpercaya antara kekayaan alam Cipanas dengan kebutuhan pangan modern yang higienis."
               </p>
-              <div className="mt-8 pt-6 border-t border-white/10 text-[9px] text-white/30 font-bold uppercase tracking-[0.3em]">
+              {/* PERBAIKAN: White/30 diganti ke White/50 */}
+              <div className="mt-8 pt-6 border-t border-white/20 text-[9px] text-white/50 font-black uppercase tracking-[0.3em]">
                 Green Fresh Cipanas • Est. 2019
               </div>
             </div>

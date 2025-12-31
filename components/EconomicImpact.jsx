@@ -34,29 +34,31 @@ export const EconomicImpact = ({ id }) => {
               viewport={{ once: true }}
               className="relative"
             >
-              {/* IMAGE: rounded-none di mobile agar full bleed mentok layar */}
+              {/* IMAGE */}
               <div className="relative rounded-none md:rounded-[3rem] lg:rounded-[4rem] overflow-hidden md:border-2 md:border-green-100 shadow-none md:shadow-2xl aspect-[4/5] lg:aspect-square bg-slate-100 group">
                 <img 
                   src={optimizeImpactImg(IMPACT_IMAGE_SOURCE, 1200)} 
                   className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
                   alt="Pertanian Berkelanjutan Cipanas" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" aria-hidden="true" />
               </div>
 
-              {/* Floating Badge: Penyesuaian posisi agar tidak terpotong layar mobile */}
+              {/* Floating Badge */}
               <motion.div 
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
                 className="absolute -bottom-6 left-4 right-4 md:left-[-3rem] md:right-auto bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl border-2 border-green-100 md:max-w-[320px] z-20"
               >
-                <div className="flex items-center gap-3 mb-3 text-green-600">
+                {/* PERBAIKAN: text-green-600 -> text-[#15803d] (Hijau lebih gelap) */}
+                <div className="flex items-center gap-3 mb-3 text-[#15803d]">
                   <HeartHandshake size={18} />
                   <span className="text-[9px] font-black uppercase tracking-[0.3em]">Ethical Sourcing</span>
                 </div>
+                {/* PERBAIKAN: Font weight ditingkatkan untuk keterbacaan harian */}
                 <p className="text-lg md:text-2xl font-serif italic text-[#052c17] leading-tight font-black">
-                  "Membangun <span className="text-green-600 not-italic font-sans">ekonomi lokal</span> melalui rantai pasok transparan."
+                  "Membangun <span className="text-[#15803d] not-italic font-sans">ekonomi lokal</span> melalui rantai pasok transparan."
                 </p>
               </motion.div>
             </motion.div>
@@ -64,15 +66,17 @@ export const EconomicImpact = ({ id }) => {
 
           {/* SISI KONTEN TEKS */}
           <div className="lg:col-span-6 space-y-10 order-2 lg:order-1 px-5 md:px-0 pt-16 md:pt-0 pb-12 md:pb-0">
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               <motion.div 
                 {...fadeInUp}
                 className="flex items-center gap-3"
               >
-                <div className="p-2 bg-green-50 rounded-lg text-green-600 border border-green-100 shadow-sm">
-                  <Zap size={16} className="fill-green-600/20" />
+                {/* PERBAIKAN: text-green-600 -> text-[#15803d] */}
+                <div className="p-2 bg-green-50 rounded-lg text-[#15803d] border border-green-200 shadow-sm">
+                  <Zap size={16} className="fill-[#15803d]/20" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-700/60">Direct Farming Model</span>
+                {/* PERBAIKAN: text-green-700/60 -> text-[#15803d] (Dihapus opacity-nya) */}
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Direct Farming Model</span>
               </motion.div>
               
               <motion.h2 
@@ -81,13 +85,14 @@ export const EconomicImpact = ({ id }) => {
                 className="text-3xl md:text-6xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[1.1] tracking-tighter uppercase"
               >
                 Akses Langsung, <br /> 
-                <span className="text-green-600 not-italic font-sans">Efisiensi Maksimal.</span>
+                <span className="text-[#15803d] not-italic font-sans">Efisiensi Maksimal.</span>
               </motion.h2>
               
+              {/* PERBAIKAN: text-slate-400 -> text-slate-600 (Meningkatkan kontras secara drastis) */}
               <motion.p 
                 {...fadeInUp}
                 transition={{ delay: 0.2 }}
-                className="text-base md:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl border-l-4 border-green-500/20 pl-5 md:pl-10"
+                className="text-base md:text-2xl text-slate-600 font-medium leading-relaxed max-w-2xl border-l-4 border-green-500/30 pl-5 md:pl-10"
               >
                 Kami memutus kompleksitas rantai pasok konvensional. Menjamin margin harga kompetitif bagi bisnis Anda tanpa mengabaikan kesejahteraan petani lokal.
               </motion.p>
@@ -111,13 +116,14 @@ export const EconomicImpact = ({ id }) => {
                   key={i}
                   {...fadeInUp}
                   transition={{ delay: 0.3 + (i * 0.1) }}
-                  className="p-6 bg-[#f7faf7] rounded-[1.5rem] md:rounded-[2rem] border-2 border-green-50 md:border-green-100 group hover:bg-white transition-all duration-500 shadow-sm"
+                  className="p-6 bg-[#f7faf7] rounded-[1.5rem] md:rounded-[2rem] border-2 border-green-100 group hover:bg-white transition-all duration-500 shadow-sm text-left"
                 >
-                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-green-600 border border-green-100 mb-4 group-hover:bg-green-600 group-hover:text-white transition-all">
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#15803d] border border-green-200 mb-4 group-hover:bg-[#15803d] group-hover:text-white transition-all shadow-sm">
                     {item.icon}
                   </div>
                   <h4 className="font-black text-[10px] md:text-[11px] text-[#052c17] uppercase tracking-widest mb-2">{item.title}</h4>
-                  <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                  {/* PERBAIKAN: text-slate-500 -> text-slate-700 (Warna lebih solid) */}
+                  <p className="text-sm text-slate-700 leading-relaxed font-semibold">
                     {item.desc}
                   </p>
                 </motion.div>

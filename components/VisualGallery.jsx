@@ -27,21 +27,23 @@ export const VisualGallery = () => {
         <div className="grid lg:grid-cols-12 gap-10 items-end mb-16">
           <div className="lg:col-span-8 space-y-4">
             <div className="flex items-center gap-3">
-              <ShieldCheck size={16} className="text-green-600" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-700/60">Farm to Distribution</span>
+              {/* PERBAIKAN: green-600 -> #15803d (Hijau gelap) */}
+              <ShieldCheck size={16} className="text-[#15803d]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Farm to Distribution</span>
             </div>
             <h2 className="text-4xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[0.9] tracking-tighter uppercase">
-              Kualitas <span className="text-green-600 not-italic font-sans">Tanpa Kompromi.</span>
+              Kualitas <span className="text-[#15803d] not-italic font-sans">Tanpa Kompromi.</span>
             </h2>
           </div>
           <div className="lg:col-span-4 border-l-4 border-green-500/20 pl-8">
-            <p className="text-slate-400 font-medium text-sm lg:text-lg leading-relaxed italic">
+            {/* PERBAIKAN: slate-400 -> slate-600 */}
+            <p className="text-slate-600 font-bold text-sm lg:text-lg leading-relaxed italic">
               "Kami mengelola integritas suplai dari hulu hingga hilir untuk menjaga standar bisnis Anda."
             </p>
           </div>
         </div>
 
-        {/* GALLERY GRID: Clean & Wide */}
+        {/* GALLERY GRID */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* BIG ASSET: FARMING */}
@@ -50,14 +52,16 @@ export const VisualGallery = () => {
               <img 
                 src={getCloudinaryUrl(IMG_LAHAN, 1200, 750)} 
                 className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
-                alt="Kebun Cipanas"
+                alt="Proses budidaya sayur premium di kebun Cipanas"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 via-transparent to-transparent opacity-60" aria-hidden="true" />
             </div>
             <div className="px-6">
-              <p className="text-green-600 text-[10px] font-black uppercase tracking-[0.4em] mb-2">Hulu Produksi</p>
+              {/* PERBAIKAN: green-600 -> #15803d */}
+              <p className="text-[#15803d] text-[10px] font-black uppercase tracking-[0.4em] mb-2">Hulu Produksi</p>
               <h4 className="text-2xl font-serif italic font-black text-[#052c17] mb-2">Highland cultivation.</h4>
-              <p className="text-slate-500 text-sm lg:text-base font-light max-w-xl">
+              {/* PERBAIKAN: slate-500 -> slate-700 */}
+              <p className="text-slate-700 text-sm lg:text-base font-semibold max-w-xl">
                 Lahan subur Cipanas yang dikelola dengan standar GAP (Good Agricultural Practices) untuk hasil panen premium.
               </p>
             </div>
@@ -72,15 +76,16 @@ export const VisualGallery = () => {
                 <img 
                   src={getCloudinaryUrl(IMG_PACKING, 600, 600)} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                  alt="Packing Sayur"
+                  alt="Proses pengemasan higienis sayuran Grade-A"
                 />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl text-green-600 shadow-lg">
+                <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md p-3 rounded-xl text-[#15803d] shadow-lg">
                   <PackageCheck size={20} />
                 </div>
               </div>
               <div className="w-full md:w-1/2 space-y-3">
                 <h5 className="text-xl font-serif italic font-black text-[#052c17]">Standardized Packaging.</h5>
-                <p className="text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
+                {/* PERBAIKAN: slate-400 -> slate-600 */}
+                <p className="text-xs lg:text-sm text-slate-600 leading-relaxed font-bold">
                   Proses pembersihan dan pengemasan higienis yang disesuaikan untuk kebutuhan Modern Retail & Fine Dining.
                 </p>
               </div>
@@ -88,19 +93,21 @@ export const VisualGallery = () => {
 
             {/* LOGISTICS CARD */}
             <motion.div {...fadeInUp} transition={{ delay: 0.3 }} className="bg-[#f7faf7] border-2 border-green-100 rounded-[2.5rem] p-8 lg:p-10 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-100/50 rounded-full blur-3xl -mr-10 -mt-10" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-green-100/50 rounded-full blur-3xl -mr-10 -mt-10" aria-hidden="true" />
               
-              <div className="relative z-10 flex flex-col justify-between h-full space-y-6">
-                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:translate-x-2 transition-transform">
+              <div className="relative z-10 flex flex-col justify-between h-full space-y-6 text-left">
+                {/* PERBAIKAN: bg-green-600 -> bg-[#15803d] */}
+                <div className="w-12 h-12 bg-[#15803d] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:translate-x-2 transition-transform">
                   <Truck size={24} />
                 </div>
                 <div>
                   <h4 className="text-2xl font-serif italic font-black text-[#052c17] mb-4">Armada Logistik Mandiri.</h4>
-                  <ul className="grid grid-cols-2 gap-y-3 gap-x-6 text-[10px] font-black uppercase tracking-widest text-green-800/60">
-                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Jakarta</li>
-                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Tangerang</li>
-                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Bekasi</li>
-                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-green-600" /> Bogor/Depok</li>
+                  {/* PERBAIKAN: green-800/60 -> #14532d (Hijau sangat gelap/solid) */}
+                  <ul className="grid grid-cols-2 gap-y-3 gap-x-6 text-[10px] font-black uppercase tracking-widest text-[#14532d]">
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-[#15803d]" /> Jakarta</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-[#15803d]" /> Tangerang</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-[#15803d]" /> Bekasi</li>
+                    <li className="flex items-center gap-2"><ChevronRight size={12} className="text-[#15803d]" /> Bogor/Depok</li>
                   </ul>
                 </div>
               </div>

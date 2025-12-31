@@ -41,14 +41,17 @@ export const QualityGuarantee = () => {
               viewport={{ once: true }}
               className="flex items-center gap-2 justify-center lg:justify-start"
             >
-              <span className="w-8 h-[2px] bg-[#16a34a]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#16a34a]">Our Commitment</span>
+              <span className="w-8 h-[2px] bg-[#15803d]" />
+              {/* PERBAIKAN: text-16a34a -> text-[#15803d] (Darker green for white bg) */}
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Our Commitment</span>
             </motion.div>
             <h2 className="text-4xl lg:text-6xl font-[1000] text-[#052c17] tracking-tighter leading-none">
-              JAMINAN <span className="text-slate-300">KUALITAS.</span>
+              {/* PERBAIKAN: text-slate-300 -> text-slate-400 (Contrast safe against f8fafc) */}
+              JAMINAN <span className="text-slate-400">KUALITAS.</span>
             </h2>
           </div>
-          <p className="text-slate-500 text-sm max-w-sm font-bold leading-relaxed italic">
+          {/* PERBAIKAN: text-slate-500 -> text-slate-700 (Readability) */}
+          <p className="text-slate-700 text-sm max-w-sm font-bold leading-relaxed italic">
             "Nol risiko operasional bagi mitra B2B kami melalui standarisasi ketat setiap hari."
           </p>
         </div>
@@ -68,17 +71,13 @@ export const QualityGuarantee = () => {
           {duplicatedItems.map((item, i) => (
             <div 
               key={i}
-              className="w-[280px] lg:w-[400px] flex-shrink-0 bg-white border border-slate-100 p-8 rounded-[2rem] shadow-xl shadow-slate-200/40 group transition-all duration-500 
-              /* Mobile Direct Styling */
-              max-lg:border-[#16a34a] lg:hover:border-[#16a34a]"
+              className="w-[280px] lg:w-[400px] flex-shrink-0 bg-white border border-slate-200 p-8 rounded-[2rem] shadow-xl shadow-slate-200/40 group transition-all duration-500 
+              max-lg:border-[#15803d] lg:hover:border-[#15803d]"
             >
               <div className="flex items-start gap-5 lg:gap-6">
-                {/* Icon Box: Green on Mobile, Hover on Desktop */}
                 <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner
-                  /* Mobile: Active State */
-                  max-lg:bg-[#16a34a] max-lg:text-white 
-                  /* Desktop: Hover State */
-                  lg:bg-green-50 lg:text-[#16a34a] lg:group-hover:bg-[#16a34a] lg:group-hover:text-white"
+                  max-lg:bg-[#15803d] max-lg:text-white 
+                  lg:bg-green-50 lg:text-[#15803d] lg:group-hover:bg-[#15803d] lg:group-hover:text-white"
                 >
                   {item.icon}
                 </div>
@@ -88,19 +87,18 @@ export const QualityGuarantee = () => {
                     {item.title}
                   </h4>
                   
-                  {/* Underline: Full on Mobile, Animate on Desktop */}
                   <div className="h-1 bg-green-100 transition-all duration-500
-                    /* Mobile: Full Width */
-                    max-lg:w-full max-lg:bg-[#16a34a]/20
-                    /* Desktop: Hover Expand */
+                    max-lg:w-full max-lg:bg-[#15803d]/20
                     lg:w-8 lg:group-hover:w-full" 
                   />
                   
+                  {/* PERBAIKAN: 
+                      - max-lg: text-slate-700 
+                      - lg: text-slate-600 (default) -> group-hover: text-slate-900 
+                  */}
                   <p className="text-[12px] leading-relaxed font-bold transition-colors
-                    /* Mobile: Darker for Readability */
-                    max-lg:text-slate-600 
-                    /* Desktop: Muted to Active */
-                    lg:text-slate-400 lg:group-hover:text-slate-600"
+                    max-lg:text-slate-700 
+                    lg:text-slate-600 lg:group-hover:text-slate-900"
                   >
                     {item.desc}
                   </p>
@@ -110,7 +108,6 @@ export const QualityGuarantee = () => {
           ))}
         </motion.div>
 
-        {/* Shadow Fading Gradients */}
         <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
       </div>
@@ -119,14 +116,15 @@ export const QualityGuarantee = () => {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-4 bg-white px-6 py-3 rounded-full border border-slate-100 shadow-sm"
+          className="flex items-center gap-4 bg-white px-6 py-3 rounded-full border border-slate-200 shadow-sm"
         >
-          <ShieldCheck size={18} className="text-[#16a34a]" />
+          <ShieldCheck size={18} className="text-[#15803d]" />
           <p className="text-[10px] font-black text-[#052c17] uppercase tracking-widest">
             Certified B2B Supplier Standard
           </p>
         </motion.div>
-        <div className="text-[9px] font-black text-slate-300 uppercase tracking-[0.4em]">
+        {/* PERBAIKAN: text-slate-300 -> text-slate-500 */}
+        <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em]">
           Automated QC System • v.2.5
         </div>
       </div>

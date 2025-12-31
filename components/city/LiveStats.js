@@ -1,4 +1,3 @@
-// components/city/LiveStats.js
 import React from 'react';
 
 export const LiveStats = () => {
@@ -10,7 +9,7 @@ export const LiveStats = () => {
   ];
 
   return (
-    <section className="bg-white border-y border-slate-100">
+    <section className="bg-white border-y border-slate-200">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-4 group">
           {stats.map((stat, i) => (
@@ -18,7 +17,7 @@ export const LiveStats = () => {
               key={i} 
               className={`
                 p-8 lg:p-12 flex flex-col items-center text-center transition-all duration-300
-                hover:bg-slate-50 border-slate-100
+                hover:bg-slate-50 border-slate-200
                 ${i % 2 === 0 ? 'border-r' : 'lg:border-r'} 
                 ${i < 2 ? 'border-b' : 'lg:border-b-0'}
               `}
@@ -29,15 +28,23 @@ export const LiveStats = () => {
                   <span className="text-4xl lg:text-7xl font-[1000] tracking-tight text-[#052c17]">
                     {stat.value}
                   </span>
-                  <span className="text-[10px] lg:text-xs font-black text-[#16a34a] bg-green-50 px-2 py-0.5 rounded-full">
+                  {/* PERBAIKAN: 
+                      - text-[#16a34a] -> text-[#15803d] (Hijau lebih gelap untuk kontras)
+                      - bg-green-50 -> bg-green-100 (Warna background badge lebih solid)
+                  */}
+                  <span className="text-[10px] lg:text-xs font-black text-[#15803d] bg-green-100 px-2 py-0.5 rounded-full border border-green-200">
                     {stat.unit}
                   </span>
                 </div>
                 
-                {/* Decorative Dash */}
-                <div className="w-6 h-1 bg-[#84cc16] mt-2 mb-4 rounded-full" />
+                {/* Decorative Dash - Menggunakan warna hijau yang lebih kontras */}
+                <div className="w-6 h-1 bg-[#65a30d] mt-2 mb-4 rounded-full" aria-hidden="true" />
                 
-                <p className="text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 max-w-[100px] leading-relaxed">
+                {/* PERBAIKAN: 
+                    - text-slate-400 -> text-slate-600 (Warna label jauh lebih terbaca)
+                    - font-bold -> font-black (Meningkatkan legibilitas teks kecil)
+                */}
+                <p className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.2em] text-slate-600 max-w-[120px] leading-relaxed">
                   {stat.label}
                 </p>
               </div>

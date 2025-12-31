@@ -1,4 +1,5 @@
 "use client";
+
 import React from 'react';
 import * as motion from "framer-motion/client";
 import { Users, Factory, ShieldCheck, ArrowRight } from 'lucide-react';
@@ -40,13 +41,13 @@ export const WhoWeAre = ({ id }) => {
             >
               <img 
                 src={optimizeAboutImg(ABOUT_IMAGE_SOURCE, 1000)} 
-                alt="Operasional Green Fresh Cipanas" 
+                alt="Operasional agribisnis Green Fresh Cipanas" 
                 className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 via-transparent to-transparent opacity-60" />
               
-              {/* Floating Badge: Executive Style */}
+              {/* Floating Badge */}
               <motion.div 
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
@@ -54,11 +55,12 @@ export const WhoWeAre = ({ id }) => {
                 className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md border-2 border-green-100 p-6 rounded-[2rem] shadow-xl"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600">
+                  <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-[#15803d]">
                     <Factory size={22} />
                   </div>
                   <div>
-                    <p className="text-green-700/60 text-[9px] font-black uppercase tracking-[0.3em] leading-none mb-1">Main Hub</p>
+                    {/* PERBAIKAN: text-green-700/60 -> text-[#15803d] (Hijau Gelap) */}
+                    <p className="text-[#15803d] text-[9px] font-black uppercase tracking-[0.3em] leading-none mb-1">Main Hub</p>
                     <p className="text-[#052c17] text-lg font-serif italic font-black uppercase">Cipanas Agribusiness</p>
                   </div>
                 </div>
@@ -73,8 +75,9 @@ export const WhoWeAre = ({ id }) => {
                 {...fadeInUp}
                 className="inline-flex items-center gap-3 px-4 py-2 bg-[#f7faf7] rounded-full border-2 border-green-100"
               >
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-green-700/60">Verified Supplier Profile</span>
+                <span className="w-2 h-2 rounded-full bg-[#16a34a] animate-pulse" />
+                {/* PERBAIKAN: text-green-700/60 -> text-[#15803d] */}
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#15803d]">Verified Supplier Profile</span>
               </motion.div>
               
               <motion.h2 
@@ -82,49 +85,53 @@ export const WhoWeAre = ({ id }) => {
                 transition={{ delay: 0.1 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-serif italic font-black text-[#052c17] leading-[1] tracking-tighter uppercase"
               >
-                Distributor <span className="text-green-600 not-italic font-sans">Sayuran Profesional</span>
+                Distributor <span className="text-[#15803d] not-italic font-sans">Sayuran Profesional</span>
               </motion.h2>
               
+              {/* PERBAIKAN: text-slate-400 -> text-slate-600 */}
               <motion.p 
                 {...fadeInUp}
                 transition={{ delay: 0.2 }}
-                className="text-lg lg:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl border-l-4 border-green-500/20 pl-6 lg:pl-10"
+                className="text-lg lg:text-2xl text-slate-600 font-medium leading-relaxed max-w-2xl border-l-4 border-green-500/30 pl-6 lg:pl-10"
               >
-                <span className="text-[#052c17] font-semibold italic">Green Fresh Cipanas</span> adalah supplier tangan pertama yang hadir sebagai mitra strategis pengadaan sayur hotel, restoran, dan supermarket melalui integrasi petani lokal berkualitas super.
+                <span className="text-[#052c17] font-bold italic">Green Fresh Cipanas</span> adalah supplier tangan pertama yang hadir sebagai mitra strategis pengadaan sayur hotel, restoran, dan supermarket melalui integrasi petani lokal berkualitas super.
               </motion.p>
             </div>
 
-            {/* GRID SPECS: Rapat & Bersih */}
+            {/* GRID SPECS */}
             <div className="grid sm:grid-cols-2 gap-8 border-t-2 border-green-50 pt-8">
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-green-600">
+                <div className="flex items-center gap-3 text-[#15803d]">
                   <Users size={18} />
                   <span className="text-[10px] font-black uppercase tracking-widest">Highland Sourcing</span>
                 </div>
-                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                {/* PERBAIKAN: text-slate-500 -> text-slate-700 */}
+                <p className="text-slate-700 text-sm leading-relaxed font-semibold">
                   Bermitra dengan 200+ petani dataran tinggi untuk menjamin kontinuitas panen setiap hari tanpa jeda.
                 </p>
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-green-600">
+                <div className="flex items-center gap-3 text-[#15803d]">
                   <ShieldCheck size={18} />
                   <span className="text-[10px] font-black uppercase tracking-widest">Quality Assurance</span>
                 </div>
-                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                {/* PERBAIKAN: text-slate-500 -> text-slate-700 */}
+                <p className="text-slate-700 text-sm leading-relaxed font-semibold">
                   Protokol QC ketat untuk menjaga standar kualitas retail modern dan spesifikasi industri Horeka.
                 </p>
               </div>
             </div>
 
-            {/* CTA: Corporate Button */}
+            {/* CTA */}
             <motion.div 
               {...fadeInUp}
               transition={{ delay: 0.4 }}
               className="flex flex-col sm:flex-row items-center gap-8 pt-4"
             >
               <Link href="/about" className="w-full sm:w-auto">
-                <button className="group w-full flex items-center justify-center gap-4 bg-[#052c17] text-[#84cc16] px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-green-600 hover:text-white transition-all shadow-2xl active:scale-95">
+                {/* PERBAIKAN: text-[#84cc16] -> text-[#bef264] (Lime lebih terang di atas gelap) */}
+                <button className="group w-full flex items-center justify-center gap-4 bg-[#052c17] text-[#bef264] px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-[#15803d] hover:text-white transition-all shadow-2xl active:scale-95">
                   Corporate Profile
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -132,7 +139,8 @@ export const WhoWeAre = ({ id }) => {
               
               <div className="flex flex-col border-l-4 border-green-100 pl-6 py-1">
                 <span className="text-[9px] font-black text-[#052c17] uppercase tracking-[0.3em] mb-1">B2B Standard</span>
-                <span className="text-slate-400 text-[11px] font-bold">Resmi Beroperasi Sejak 2019</span>
+                {/* PERBAIKAN: text-slate-400 -> text-slate-600 */}
+                <span className="text-slate-600 text-[11px] font-black">Resmi Beroperasi Sejak 2019</span>
               </div>
             </motion.div>
           </div>

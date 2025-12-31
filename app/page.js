@@ -18,7 +18,6 @@ export const metadata = {
 };
 
 export default function AuthorityPage() {
-  // --- KEMBALIKAN SCHEMA MARKUP JSON-LD ---
   const homeSchemas = [
     {
       "@context": "https://schema.org",
@@ -79,7 +78,6 @@ export default function AuthorityPage() {
 
   return (
     <div className="bg-white text-[#052c17] font-sans selection:bg-green-100 selection:text-[#052c17] overflow-x-hidden">
-      {/* Script Injection */}
       {homeSchemas.map((schema, index) => (
         <script
           key={index}
@@ -94,7 +92,7 @@ export default function AuthorityPage() {
         {/* 1. HERO SECTION */}
         <Hero id="home" />
 
-        {/* 2. WHO WE ARE - Padat & Tegas */}
+        {/* 2. WHO WE ARE */}
         <div className="-mt-8 lg:-mt-12 relative z-10 bg-white border-b-2 border-green-100">
           <WhoWeAre id="tentang-kami" />
         </div>
@@ -108,17 +106,19 @@ export default function AuthorityPage() {
         <section id="katalog" className="bg-[#f7faf7] py-10 lg:py-16 border-b-2 border-green-200 relative overflow-hidden">
           <div className="max-w-[1500px] mx-auto px-6 relative z-10">
             <motion.div {...fadeInUp} className="grid lg:grid-cols-2 gap-6 items-end mb-8">
-              <div>
+              <div className="text-left">
                 <div className="flex items-center gap-2 mb-2">
-                  <Star size={14} className="text-green-600 fill-green-600" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-700">Premium Selection</span>
+                  {/* PERBAIKAN: Green-600 -> #15803d (Green 700) */}
+                  <Star size={14} className="text-[#15803d] fill-[#15803d]" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Premium Selection</span>
                 </div>
                 <h2 className="text-4xl lg:text-6xl font-serif italic text-[#052c17] leading-[0.9] tracking-tighter">
-                  Komoditas <br/> <span className="text-green-600 not-italic font-sans font-bold">Unggulan.</span>
+                  Komoditas <br/> <span className="text-[#15803d] not-italic font-sans font-bold">Unggulan.</span>
                 </h2>
               </div>
-              <div>
-                <p className="text-slate-500 text-sm lg:text-lg font-light leading-relaxed max-w-xl border-l-4 border-green-500 pl-4">
+              <div className="text-left">
+                {/* PERBAIKAN: Slate-500 -> Slate-700 */}
+                <p className="text-slate-700 text-sm lg:text-lg font-medium leading-relaxed max-w-xl border-l-4 border-[#15803d] pl-4">
                   Rantai pasok terintegrasi dari 9 klaster petani untuk menjamin 
                   <span className="text-[#052c17] font-bold"> stabilitas stok harian</span> grade-A.
                 </p>
@@ -148,13 +148,15 @@ export default function AuthorityPage() {
         <section id="kemitraan" className="py-10 lg:py-16 bg-white border-t-2 border-green-200 relative">
           <div className="max-w-[1800px] mx-auto px-6 relative z-10">
             <motion.div {...fadeInUp} className="text-center mb-10">
-              <span className="text-green-700 text-[10px] font-black uppercase tracking-[0.5em] mb-2 block">
+              {/* PERBAIKAN: Green-700 solid untuk keterbacaan */}
+              <span className="text-[#15803d] text-[10px] font-black uppercase tracking-[0.5em] mb-2 block">
                 B2B Enterprise Portal
               </span>
               <h2 className="text-4xl lg:text-7xl font-serif italic text-[#052c17] leading-[0.9] tracking-tighter mb-4">
-                Ajukan <span className="text-green-600 not-italic font-sans font-bold">Kontrak</span> Suplai
+                Ajukan <span className="text-[#15803d] not-italic font-sans font-bold">Kontrak</span> Suplai
               </h2>
-              <p className="text-slate-500 max-w-2xl mx-auto text-sm lg:text-lg font-light">
+              {/* PERBAIKAN: Slate-500 -> Slate-700 */}
+              <p className="text-slate-700 max-w-2xl mx-auto text-sm lg:text-lg font-medium">
                 Akses katalog harga grosir dan termin pembayaran (TOP) khusus entitas bisnis resmi.
               </p>
             </motion.div>
@@ -164,9 +166,10 @@ export default function AuthorityPage() {
             </motion.div>
 
             <div className="mt-12 flex justify-center items-center gap-4">
-               <div className="h-[2px] w-16 bg-green-200" />
+               <div className="h-[2px] w-16 bg-green-200" aria-hidden="true" />
+               {/* PERBAIKAN: Green-900 agar kontras di atas putih */}
                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-900">Official Partner 2025</span>
-               <div className="h-[2px] w-16 bg-green-200" />
+               <div className="h-[2px] w-16 bg-green-200" aria-hidden="true" />
             </div>
           </div>
         </section>
