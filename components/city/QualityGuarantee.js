@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, RotateCcw, CheckSquare, BadgeCheck, Zap } from 'lucide-react';
+import { RotateCcw, CheckSquare, BadgeCheck, Zap, ShieldCheck } from 'lucide-react';
 
 export const QualityGuarantee = () => {
   const items = [
@@ -41,8 +41,9 @@ export const QualityGuarantee = () => {
               viewport={{ once: true }}
               className="flex items-center gap-2 justify-center lg:justify-start"
             >
+              {/* PERBAIKAN: Background bar dipertegas kontrasnya */}
               <span className="w-8 h-[2px] bg-[#15803d]" />
-              {/* PERBAIKAN: text-16a34a -> text-[#15803d] (Darker green for white bg) */}
+              {/* PERBAIKAN: text-16a34a -> text-[#15803d] (Darker green) */}
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Our Commitment</span>
             </motion.div>
             <h2 className="text-4xl lg:text-6xl font-[1000] text-[#052c17] tracking-tighter leading-none">
@@ -50,7 +51,7 @@ export const QualityGuarantee = () => {
               JAMINAN <span className="text-slate-400">KUALITAS.</span>
             </h2>
           </div>
-          {/* PERBAIKAN: text-slate-500 -> text-slate-700 (Readability) */}
+          {/* PERBAIKAN: text-slate-500 -> text-slate-700 (Readability ditingkatkan) */}
           <p className="text-slate-700 text-sm max-w-sm font-bold leading-relaxed italic">
             "Nol risiko operasional bagi mitra B2B kami melalui standarisasi ketat setiap hari."
           </p>
@@ -83,7 +84,7 @@ export const QualityGuarantee = () => {
                 </div>
 
                 <div className="flex-1 space-y-3">
-                  <h4 className="text-[#052c17] font-black text-[13px] lg:text-sm tracking-widest uppercase">
+                  <h4 className="text-[#052c17] font-black text-[13px] lg:text-sm tracking-widest uppercase text-left">
                     {item.title}
                   </h4>
                   
@@ -93,10 +94,10 @@ export const QualityGuarantee = () => {
                   />
                   
                   {/* PERBAIKAN: 
-                      - max-lg: text-slate-700 
-                      - lg: text-slate-600 (default) -> group-hover: text-slate-900 
+                      - max-lg: text-slate-700 (untuk kontras di mobile)
+                      - lg: text-slate-600 (default) -> group-hover: text-slate-900 (bold & dark saat aktif)
                   */}
-                  <p className="text-[12px] leading-relaxed font-bold transition-colors
+                  <p className="text-[12px] leading-relaxed font-bold transition-colors text-left
                     max-lg:text-slate-700 
                     lg:text-slate-600 lg:group-hover:text-slate-900"
                   >
@@ -108,6 +109,7 @@ export const QualityGuarantee = () => {
           ))}
         </motion.div>
 
+        {/* Shadow Fading Gradients */}
         <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
       </div>
@@ -123,7 +125,8 @@ export const QualityGuarantee = () => {
             Certified B2B Supplier Standard
           </p>
         </motion.div>
-        {/* PERBAIKAN: text-slate-300 -> text-slate-500 */}
+        
+        {/* PERBAIKAN: text-slate-300 -> text-slate-500 (Legible for technical info) */}
         <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em]">
           Automated QC System • v.2.5
         </div>
