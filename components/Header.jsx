@@ -1,232 +1,242 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; // Import Link untuk optimasi SEO & Prefetching
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Leaf, ShieldCheck, Box, ChevronDown, MapPin, Globe, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Phone, ChevronRight, ArrowLeft, Leaf } from 'lucide-react';
 import { cityMenuGroups } from '@/data/menuCities';
 
-// Logo menggunakan Link agar Google mengenali root path sebagai prioritas utama
-const MainLogo = () => (
-  <Link href="/" aria-label="GreenFresh Home" className="flex items-center group cursor-pointer w-fit">
-    <div className="relative flex items-center">
-      <svg 
-        className="h-10 lg:h-11 w-auto transition-all duration-300"
-        viewBox="0 0 450 80" 
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-      >
-        <title>GreenFresh Logo</title>
-        <g transform="translate(10, 15)">
-          <path 
-            d="M35 50C35 50 70 20 35 0C0 20 35 50 35 50Z" 
-            fill="#16a34a" 
-            className="group-hover:fill-[#15803d] transition-colors"
-          />
-          <path 
-            d="M35 50V15" 
-            stroke="white" 
-            strokeWidth="3" 
-            strokeLinecap="round" 
-            opacity="0.6"
-          />
-        </g>
-        <text x="75" y="45" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="46" fill="#052c17" letterSpacing="-1">
-          Green<tspan fill="#16a34a">Fresh</tspan>
-        </text>
-        <text x="77" y="68" fontFamily="Inter, Arial, sans-serif" fontWeight="500" fontSize="12" letterSpacing="3.5" fill="#94a3b8" className="uppercase">
-          Premium Vegetable Supplier
-        </text>
-      </svg>
-    </div>
-  </Link>
-);
-
 export const Header = () => {
-  const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
-  const [activeAccordion, setActiveAccordion] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null); // 'wilayah' | 'mobile'
+  const [mobileView, setMobileView] = useState('main'); // 'main' | 'cities'
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   useEffect(() => {
-    setMounted(true);
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleWhatsApp = () => {
-    const phoneNumber = "6287780937884";
-    const message = `Yth. Tim Sales Greenfresh\n\nHalo, kami tertarik untuk bekerja sama...`;
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
-  // Close mobile menu on route change
-  const closeMenu = () => setIsMobileMenuOpen(false);
-
-  if (!mounted) return null;
+  // Reset mobile view saat menu ditutup
+  useEffect(() => {
+    if (activeMenu !== 'mobile') {
+      const timer = setTimeout(() => {
+        setMobileView('main');
+        setSelectedGroup(null);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [activeMenu]);
 
   return (
     <>
-      {/* 1. TOP TICKER */}
-      <div className="fixed top-0 w-full z-[140] bg-[#052c17] py-1.5 overflow-hidden border-b border-[#84cc16]/20">
-        <motion.div 
-          animate={{ x: [0, -1000] }} 
-          transition={{ duration: 45, repeat: Infinity, ease: "linear" }} 
-          className="flex gap-16 items-center whitespace-nowrap px-4"
-        >
-          {[1, 2].map((set) => (
-            <React.Fragment key={set}>
-              {[
-                { icon: <ShieldCheck size={10} />, text: "SLA FULFILLMENT 100%" },
-                { icon: <Globe size={10} />, text: "JABODETABEK NETWORK" },
-                { icon: <Box size={10} />, text: "10 TON/DAY CAPACITY" }
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <div className="text-[#84cc16]">{item.icon}</div>
-                  <span className="text-[8px] font-bold text-white uppercase tracking-widest">{item.text}</span>
-                  <div className="w-1 h-1 rounded-full bg-white/10" />
-                </div>
-              ))}
-            </React.Fragment>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* 2. MAIN NAVIGATION */}
-      <nav className={`fixed left-0 right-0 z-[130] transition-all duration-300 ${isScrolled ? "top-7 px-4" : "top-8 px-6"}`}>
-        <div className={`max-w-[1400px] mx-auto rounded-2xl transition-all duration-300 ${
-          isScrolled 
-            ? "bg-white shadow-xl border border-green-100 px-5 py-2" 
-            : "bg-white/95 backdrop-blur-md border border-transparent shadow-sm px-6 py-3.5"
-        }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
+      }`}>
+        <div className="max-w-7xl mx-auto px-5 flex items-center justify-between">
           
-          <div className="flex lg:grid lg:grid-cols-3 items-center w-full justify-between">
-            <div className="flex justify-start">
-              <MainLogo />
+          {/* LOGO: Fresh Industrial Style */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-9 h-9 bg-[#052c17] rounded-xl flex items-center justify-center transition-transform group-hover:rotate-6">
+              <Leaf className="text-[#84cc16] w-5 h-5" fill="currentColor" />
             </div>
+            <span className="text-xl font-[1000] tracking-tighter text-[#052c17]">
+              GREEN<span className="text-[#16a34a]">FRESH</span>
+            </span>
+          </Link>
 
-            <div className="hidden lg:flex justify-center items-center gap-8 text-left">
-              <Link href="/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Home</Link>
-              
-              <div 
-                className="relative group"
-                onMouseEnter={() => setIsLocationOpen(true)}
-                onMouseLeave={() => setIsLocationOpen(false)}
+          {/* DESKTOP NAV */}
+          <div className="hidden lg:flex items-center gap-10">
+            {['Home', 'Gallery', 'About'].map((item) => (
+              <Link 
+                key={item} 
+                href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                className="text-[11px] font-black uppercase tracking-[0.2em] text-[#052c17]/60 hover:text-[#16a34a] transition-all"
               >
-                <button className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 group-hover:text-[#16a34a] transition-colors">
-                  Wilayah <ChevronDown size={14} className={`transition-transform duration-300 ${isLocationOpen ? 'rotate-180' : ''}`} />
-                </button>
+                {item}
+              </Link>
+            ))}
+            
+            <button 
+              onMouseEnter={() => setActiveMenu('wilayah')}
+              className={`flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.2em] transition-all ${
+                activeMenu === 'wilayah' ? 'text-[#16a34a]' : 'text-[#052c17]/60'
+              }`}
+            >
+              Wilayah <ChevronDown size={14} className={`transition-transform duration-300 ${activeMenu === 'wilayah' ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
 
-                <AnimatePresence>
-                  {isLocationOpen && (
+          {/* CTA BUTTON */}
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => window.open('https://wa.me/6287780937884')}
+              className="hidden sm:flex items-center gap-2 bg-[#16a34a] text-white px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#052c17] transition-all shadow-lg shadow-green-100 active:scale-95"
+            >
+              <Phone size={14} fill="currentColor" /> Hubungi Sales
+            </button>
+            <button 
+              onClick={() => setActiveMenu('mobile')} 
+              className="lg:hidden p-2 text-[#052c17] bg-green-50 rounded-lg"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+
+        {/* MEGA MENU DESKTOP */}
+        <AnimatePresence>
+          {activeMenu === 'wilayah' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              exit={{ opacity: 0, y: 10 }}
+              onMouseLeave={() => setActiveMenu(null)}
+              className="absolute top-full left-0 w-full bg-white border-y border-slate-100 shadow-2xl hidden lg:block"
+            >
+              <div className="max-w-7xl mx-auto grid grid-cols-4 gap-12 p-12">
+                {cityMenuGroups.map((group, idx) => (
+                  <div key={idx} className="space-y-6">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-4 bg-[#16a34a] rounded-full" />
+                      <h4 className="text-[10px] font-black text-[#16a34a] uppercase tracking-[0.3em]">{group.category}</h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {group.items.map((city) => (
+                        <Link 
+                          key={city.slug} 
+                          href={`/supplier-sayur/${city.slug}/`} 
+                          className="text-[13px] font-bold text-slate-500 hover:text-[#052c17] hover:translate-x-1 transition-all flex items-center gap-2 group/link"
+                        >
+                          <MapPin size={12} className="opacity-0 group-hover/link:opacity-100 text-[#16a34a] transition-all" />
+                          {city.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* MOBILE DRAWER */}
+      <AnimatePresence>
+        {activeMenu === 'mobile' && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setActiveMenu(null)} 
+              className="fixed inset-0 z-[110] bg-[#052c17]/40 backdrop-blur-sm lg:hidden" 
+            />
+            <motion.div 
+              initial={{ x: '100%' }} 
+              animate={{ x: 0 }} 
+              exit={{ x: '100%' }} 
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-[120] w-[85%] max-w-[360px] bg-white shadow-2xl flex flex-col lg:hidden"
+            >
+              {/* Header Mobile Menu */}
+              <div className="p-6 flex items-center justify-between border-b border-slate-50">
+                {mobileView === 'cities' ? (
+                  <button onClick={() => setMobileView('main')} className="flex items-center gap-2 text-[#16a34a] font-black text-xs uppercase tracking-widest">
+                    <ArrowLeft size={16} /> Kembali
+                  </button>
+                ) : (
+                  <span className="text-[10px] font-black text-[#052c17] uppercase tracking-[0.3em]">Menu Utama</span>
+                )}
+                <button onClick={() => setActiveMenu(null)} className="p-2 bg-slate-50 rounded-lg text-slate-400">
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Content Mobile Menu */}
+              <div className="flex-1 overflow-y-auto">
+                <AnimatePresence mode="wait">
+                  {mobileView === 'main' ? (
                     <motion.div 
-                      initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-5 w-[850px]"
+                      key="main" 
+                      initial={{ opacity: 0, x: -10 }} 
+                      animate={{ opacity: 1, x: 0 }} 
+                      exit={{ opacity: 0, x: -10 }} 
+                      className="p-8 space-y-4"
                     >
-                      <div className="bg-white rounded-[32px] shadow-2xl border-2 border-[#16a34a] p-10 grid grid-cols-3 gap-10 overflow-hidden relative text-left">
-                        <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none text-[#16a34a]">
-                          <Leaf size={200} />
+                      {['Home', 'Gallery', 'About'].map((item) => (
+                        <Link 
+                          key={item} 
+                          href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-center justify-between py-4 text-xl font-black text-[#052c17] border-b border-slate-50"
+                        >
+                          {item} <ChevronRight size={20} className="text-slate-200" />
+                        </Link>
+                      ))}
+                      <button 
+                        onClick={() => setMobileView('cities')} 
+                        className="w-full flex items-center justify-between py-6 text-xl font-black text-[#16a34a]"
+                      >
+                        Wilayah <ChevronRight size={20} />
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="cities" 
+                      initial={{ opacity: 0, x: 10 }} 
+                      animate={{ opacity: 1, x: 0 }} 
+                      exit={{ opacity: 0, x: 10 }} 
+                      className="divide-y divide-slate-50"
+                    >
+                      {cityMenuGroups.map((group, idx) => (
+                        <div key={idx} className="bg-white">
+                          <button 
+                            onClick={() => setSelectedGroup(selectedGroup === idx ? null : idx)} 
+                            className={`w-full p-6 flex items-center justify-between transition-colors ${selectedGroup === idx ? 'bg-green-50' : ''}`}
+                          >
+                            <span className="text-xs font-black text-[#052c17] uppercase tracking-widest">{group.category}</span>
+                            <ChevronDown size={16} className={`transition-transform duration-300 ${selectedGroup === idx ? 'rotate-180 text-[#16a34a]' : 'text-slate-300'}`} />
+                          </button>
+                          <AnimatePresence>
+                            {selectedGroup === idx && (
+                              <motion.div 
+                                initial={{ height: 0 }} 
+                                animate={{ height: 'auto' }} 
+                                exit={{ height: 0 }} 
+                                className="overflow-hidden bg-slate-50/30"
+                              >
+                                <div className="p-4 grid grid-cols-1 gap-1">
+                                  {group.items.map((city) => (
+                                    <Link 
+                                      key={city.slug} 
+                                      href={`/supplier-sayur/${city.slug}/`} 
+                                      onClick={() => setActiveMenu(null)}
+                                      className="flex items-center gap-3 p-4 text-sm font-bold text-slate-500 active:text-[#16a34a] active:bg-white rounded-xl transition-all"
+                                    >
+                                      <MapPin size={14} className="text-[#16a34a]/40" /> {city.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
-                        {cityMenuGroups.map((group, idx) => (
-                          <div key={idx} className="flex flex-col gap-4">
-                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#16a34a]/10">
-                              <div className="w-1.5 h-4 bg-[#16a34a] rounded-full" />
-                              <span className="text-[10px] font-bold text-[#052c17] uppercase tracking-widest">{group.category}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              {group.items.map((city) => (
-                                <Link 
-                                  key={city.slug} 
-                                  href={`/supplier-sayur/${city.slug}/`} 
-                                  className="flex items-center justify-between p-2.5 hover:bg-green-50 rounded-xl transition-all group/item"
-                                >
-                                  <div className="flex items-center gap-3">
-                                    <MapPin size={13} className="text-[#16a34a]/30 group-hover/item:text-[#16a34a]" />
-                                    <span className="text-[11px] font-semibold text-slate-500 group-hover/item:text-[#052c17]">{city.name}</span>
-                                  </div>
-                                  <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-100 text-[#16a34a] transition-all" />
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              <Link href="/gallery/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">Gallery</Link>
-              <Link href="/about/" className="text-[11px] font-bold uppercase tracking-widest text-[#052c17]/70 hover:text-[#16a34a] transition-colors">About Us</Link>
-            </div>
-            
-            <div className="hidden lg:flex justify-end items-center gap-4">
-              <button 
-                onClick={handleWhatsApp}
-                className="px-6 py-2.5 bg-[#052c17] text-[#84cc16] rounded-xl text-[10px] font-bold tracking-widest hover:bg-[#0a3d21] transition-all uppercase border border-[#16a34a]"
-              >
-                Order B2B
-              </button>
-            </div>
-
-            <button className="lg:hidden p-2 text-[#052c17]" onClick={() => setIsMobileMenuOpen(true)}>
-              <Menu size={24} />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* MOBILE MENU */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeMenu} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200]" />
-            <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} className="fixed top-0 right-0 h-full w-[85%] bg-white z-[210] shadow-2xl flex flex-col border-l-4 border-[#16a34a]">
-              <div className="p-6 flex justify-between items-center border-b">
-                <div className="scale-75 origin-left" onClick={closeMenu}><MainLogo /></div>
-                <button onClick={closeMenu} className="p-2 text-slate-400 border-2 rounded-xl">
-                  <X size={24} />
+              {/* Footer Mobile Menu */}
+              <div className="p-8 bg-slate-50 border-t border-slate-100">
+                <button 
+                  onClick={() => window.open('https://wa.me/6287780937884')}
+                  className="w-full py-5 bg-[#052c17] text-[#84cc16] rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-green-900/10 flex items-center justify-center gap-3"
+                >
+                  <Phone size={16} fill="currentColor" /> Chat Sales B2B
                 </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 font-sans text-left">
-                <Link href="/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 block">Home</Link>
-                <Link href="/gallery/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 flex items-center gap-3">
-                  <ImageIcon size={18} className="text-[#16a34a]" /> Gallery
-                </Link>
-                <Link href="/about/" onClick={closeMenu} className="px-4 py-4 text-sm font-black uppercase text-[#052c17] border-b border-green-50 block">About Us</Link>
-                
-                <div className="mt-4 px-4 py-2 bg-green-50 rounded-lg text-left">
-                   <span className="text-[10px] font-bold text-[#16a34a] uppercase tracking-widest">Cakupan Wilayah</span>
-                </div>
-                {cityMenuGroups.map((group, idx) => (
-                  <div key={idx} className="border-b border-green-50">
-                    <button onClick={() => setActiveAccordion(activeAccordion === idx ? null : idx)} className="w-full flex items-center justify-between px-4 py-4">
-                      <span className="text-xs font-bold uppercase text-slate-600">{group.category}</span>
-                      <ChevronRight size={16} className={`transition-transform ${activeAccordion === idx ? 'rotate-90 text-[#16a34a]' : 'text-slate-300'}`} />
-                    </button>
-                    <AnimatePresence>
-                      {activeAccordion === idx && (
-                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden bg-green-50/20 text-left">
-                          {group.items.map((city) => (
-                            <Link 
-                              key={city.slug} 
-                              href={`/supplier-sayur/${city.slug}/`} 
-                              onClick={closeMenu}
-                              className="block px-8 py-3 text-xs font-semibold text-slate-500 hover:text-[#16a34a]"
-                            >
-                              {city.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
-              </div>
-              <div className="p-6 bg-white border-t">
-                <button onClick={handleWhatsApp} className="w-full py-4 bg-[#052c17] text-[#84cc16] rounded-xl font-black uppercase text-xs tracking-widest shadow-lg">Chat Sales B2B</button>
               </div>
             </motion.div>
           </>

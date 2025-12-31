@@ -1,4 +1,8 @@
-import { Clock, ArrowRight, Truck } from 'lucide-react';
+"use client";
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Clock, Truck, CheckCircle2, Navigation, MapPin } from 'lucide-react';
 import { jabodetabekCities, getDefaultLogistics } from '@/data/cities';
 
 export const LogisticsTimeline = ({ slug, cityName }) => {
@@ -8,57 +12,103 @@ export const LogisticsTimeline = ({ slug, cityName }) => {
     : getDefaultLogistics(cityName);
 
   return (
-    <div className="relative p-6 bg-white border border-green-200 rounded-3xl font-sans shadow-sm">
-      
-      {/* Header: Dibuat sangat sopan dan profesional */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 pb-6 border-b border-green-50">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Clock size={14} className="text-green-600" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-green-600/60">Sistem Logistik</span>
-          </div>
-          <h3 className="text-xl font-bold text-[#052c17]">
-            Alur pengiriman <span className="text-green-600 italic">{cityName}</span>
-          </h3>
-        </div>
+    <div className="relative bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
+      {/* Decorative Gradient Top */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#16a34a] via-[#84cc16] to-[#16a34a]" />
+
+      <div className="p-8 lg:p-12">
         
-        <div className="px-3 py-1.5 bg-green-50 rounded-lg border border-green-100 hidden lg:flex items-center gap-2">
-          <Truck size={14} className="text-green-600" />
-          <span className="text-[10px] font-bold text-green-800 uppercase tracking-tighter">Fleet Cipanas Aktif</span>
-        </div>
-      </div>
-
-      {/* Content: Timeline Ramping */}
-      <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1.5px] before:bg-green-50">
-        {steps.map((step, index) => (
-          <div key={index} className="relative pl-9 group">
-            
-            {/* Indikator Titik: Minimalis */}
-            <div className={`absolute left-0 top-1 w-[22px] h-[22px] rounded-full flex items-center justify-center border-2 border-white shadow-sm transition-all ${
-              index === steps.length - 1 ? 'bg-green-600' : 'bg-green-100 group-hover:bg-green-200'
-            }`}>
-              <div className={`w-1.5 h-1.5 rounded-full ${index === steps.length - 1 ? 'bg-white' : 'bg-green-500'}`} />
+        {/* HEADER: Clean & Bright */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+          <div className="space-y-4 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-100">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#16a34a]">Logistics Tracking</span>
             </div>
-            
-            {/* Teks: Padat dan Sentence Case */}
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-black text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase">{step.time}</span>
-                <h4 className="font-bold text-[13px] text-[#052c17] tracking-tight">{step.title}</h4>
-              </div>
-              <p className="text-[11px] text-slate-400 font-medium leading-relaxed max-w-[260px]">
-                {step.desc}
-              </p>
+            <h3 className="text-3xl lg:text-5xl font-[1000] text-[#052c17] tracking-tighter leading-none">
+              JADWAL <span className="text-[#16a34a]">SUPPLY.</span>
+            </h3>
+            <div className="flex items-center gap-3 text-slate-400">
+              <MapPin size={14} className="text-[#16a34a]" />
+              <span className="text-xs font-bold uppercase tracking-widest">Rute: Cipanas — {cityName}</span>
             </div>
           </div>
-        ))}
-      </div>
+          
+          <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-[#16a34a]">
+              <Truck size={20} />
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status Fleet</p>
+              <p className="text-xs font-black text-[#052c17] uppercase">Daily Express Active</p>
+            </div>
+          </div>
+        </div>
 
-      {/* Mini Footer: Info tambahan yang ringkas */}
-      <div className="mt-10 pt-6 border-t border-green-50">
-        <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em] text-center">
-          Monitoring Rantai Pasok Dingin • 2025
-        </p>
+        {/* CONTENT: Modern Light Timeline */}
+        <div className="relative space-y-12 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-50">
+          {steps.map((step, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="relative pl-14 group text-left"
+            >
+              {/* Checkpoint Circle */}
+              <div className={`absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-lg transition-all duration-500 z-10 ${
+                index === steps.length - 1 
+                ? 'bg-[#16a34a] scale-110 shadow-green-200' 
+                : 'bg-white group-hover:border-green-50'
+              }`}>
+                {index === steps.length - 1 ? (
+                  <CheckCircle2 size={18} className="text-white" />
+                ) : (
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-100 group-hover:bg-[#16a34a] transition-colors" />
+                )}
+              </div>
+
+              {/* Content Card: Light Style */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-4">
+                  <span className="text-[11px] font-black font-mono text-[#16a34a] bg-green-50 px-3 py-1 rounded-lg border border-green-100 shadow-sm">
+                    {step.time}
+                  </span>
+                  <h4 className="font-black text-sm lg:text-lg text-[#052c17] tracking-tight transition-colors uppercase">
+                    {step.title}
+                  </h4>
+                </div>
+                
+                <p className="text-[11px] lg:text-sm text-slate-400 font-bold leading-relaxed max-w-2xl">
+                  {step.desc}
+                </p>
+
+                {/* Animated Line Marker */}
+                <div className="flex items-center gap-1 opacity-20">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="w-1 h-1 rounded-full bg-[#16a34a]" />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FOOTER: Minimalist Branding */}
+        <div className="mt-20 pt-8 border-t border-slate-50 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-50 rounded-lg">
+              <Navigation size={14} className="text-[#16a34a]" />
+            </div>
+            <span className="text-[10px] font-black text-[#052c17] uppercase tracking-[0.3em]">Fresh Logistics Protocol</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock size={12} className="text-slate-300" />
+            <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Last Sync: Today 04:00 AM</span>
+          </div>
+        </div>
+
       </div>
     </div>
   );
