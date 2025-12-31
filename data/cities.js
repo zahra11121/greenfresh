@@ -5,7 +5,7 @@ export const jabodetabekCities = [
   { 
     slug: 'pik-2-pantai-indah-kapuk', 
     name: 'PIK 2 & Pantai Indah Kapuk',
-    title: 'Supplier Sayur PIK 2 | Distributor Sayuran Premium Jakarta Utara',
+    title: 'Supplier Sayuran PIK 2 | Distributor Sayuran Premium Jakarta Utara',
     angle: 'Pemasok sayuran eksklusif untuk fine dining dan gourmet market di Pantai Indah Kapuk. Kami mengelola rantai pasok dari lahan Sukatani untuk menjamin Grade-A quality.',
     clientFocus: 'Supermarket Premium, Seafood Fine Dining, & Luxury Clusters',
     deliveryRoute: 'Distribusi prioritas via Tol JORR menjamin sayuran tiba dalam kondisi fajar (panen dini hari).',
@@ -19,7 +19,7 @@ export const jabodetabekCities = [
   { 
     slug: 'bsd-city-serpong', 
     name: 'BSD City',
-    title: 'Pemasok Sayur BSD City | Grosir Sayuran Tangerang Selatan',
+    title: 'Supplier Sayur BSD City | Grosir Sayuran Tangerang Selatan',
     angle: 'Distributor sayur mayur untuk ekosistem katering dan cloud kitchen di BSD City. Memberikan stabilitas harga kontrak untuk efisiensi biaya bahan baku.',
     clientFocus: 'Cloud Kitchen, Institusi Pendidikan, & Central Kitchen',
     deliveryRoute: 'Integrasi logistik via Tol Serpong untuk distribusi tepat waktu ke seluruh zona komersial.',
@@ -33,7 +33,7 @@ export const jabodetabekCities = [
   { 
     slug: 'alam-sutera-tangerang', 
     name: 'Alam Sutera',
-    title: 'Distribusi Sayur Alam Sutera | Agen Sayuran Segar Tangerang',
+    title: 'Supplier Sayur Alam Sutera | Agen Sayuran Segar Tangerang',
     angle: 'Agen pengadaan sayur segar harian untuk artisan bakery dan resto gourmet. Menjamin kualitas tanpa perantara dari petani Cipanas.',
     clientFocus: 'Gourmet Market, Artisan Bakery, & Restoran Tematik',
     deliveryRoute: 'Pengiriman harian via Tol Kunciran untuk menjaga kelembapan sayuran hijau.',
@@ -47,7 +47,7 @@ export const jabodetabekCities = [
   { 
     slug: 'gading-serpong-summarecon', 
     name: 'Gading Serpong',
-    title: 'Mitra Jual Sayur Gading Serpong | Supplier B2B Serpong',
+    title: 'Supplier Sayur Gading Serpong | Supplier B2B Serpong',
     angle: 'Partner strategis Chef dalam pengadaan bahan pangan berkualitas tinggi. Fokus pada konsistensi spek dan ukuran sayuran.',
     clientFocus: 'Cafe Modern, Restoran Fusion, & Boutique Supermarket',
     deliveryRoute: 'Layanan antar subuh menjamin produk tiba sebelum persiapan dapur (Mise en Place).',
@@ -119,7 +119,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-barat-puri', 
     name: 'Jakarta Barat Puri',
-    title: 'Distributor Sayur Jakarta Barat | Agen Sayur Puri Indah',
+    title: 'Distributor Sayuran Jakarta Barat | Agen Sayur Puri Indah',
     angle: 'Supplier sayuran untuk katering dan resto masakan China di Jakarta Barat. Menjamin stabilitas stok komoditas utama.',
     clientFocus: 'Restoran Oriental, Modern Market, & Food Court',
     deliveryRoute: 'Distribusi rutin via Tol Dalam Kota untuk ketepatan waktu drop-off.',
@@ -133,7 +133,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-utara-kelapa-gading', 
     name: 'Jakarta Utara Kelapa Gading',
-    title: 'Supplier Sayur Jakarta Utara | Kelapa Gading & Sunter',
+    title: 'Supplier Sayuran Jakarta Utara | Kelapa Gading & Sunter',
     angle: 'Distribusi sayur mayur untuk industri seafood dan grill house. Efisiensi logistik untuk menjaga nutrisi sayuran.',
     clientFocus: 'Seafood Fine Dining, Grill House, & Tenant Mall',
     deliveryRoute: 'Akses Bypass dan Tol Pulomas untuk menghindari titik macet Jakarta Utara.',
@@ -147,7 +147,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-timur-cakung', 
     name: 'cakung jakarta timur',
-    title: 'Grosir Sayur Jakarta Timur | Suplai Industri Cakung',
+    title: 'Supplier Sayuran Jakarta Timur | Suplai Industri Cakung',
     angle: 'Layanan grosir sayuran kapasitas besar untuk katering pabrik dan RS. Harga bersaing dengan volume pengiriman masif.',
     clientFocus: 'Catering Industri, Hospital Canteen, & Retailers',
     deliveryRoute: 'Jalur Tol Becakayu & JORR menjangkau area industri Jakarta Timur.',
@@ -233,7 +233,7 @@ export const jabodetabekCities = [
   { 
     slug: 'bekasi-kota-summarecon', 
     name: 'Bekasi Kota',
-    title: 'Supplier Sayur Bekasi Kota | Pemasok Bahan Baku Food Hub',
+    title: 'Supplier Sayuran Bekasi Kota | Pemasok Bahan Baku Food Hub',
     angle: 'Menyuplai kebutuhan sayur untuk mall dan resto keluarga di Bekasi Kota. Administrasi lengkap dan PKP.',
     clientFocus: 'Tenant Mall, Restoran Keluarga, & Food Hubs',
     deliveryRoute: 'Distribusi fajar untuk menjangkau area Summarecon dan sekitarnya.',
@@ -289,8 +289,8 @@ export const jabodetabekCities = [
   { 
     slug: 'tangerang-selatan', 
     name: 'Tangerang Selatan',
-    title: 'Distributor Sayuran Tangsel | Agen Sayur Segar Harian',
-    angle: 'Menyediakan sayuran segar Cipanas untuk komunitas modern Tangsel. Dari lahan langsung ke dapur.',
+    title: 'Distributor Sayuran Tangerang selatan | Agen Sayur Segar Harian',
+    angle: 'Menyediakan sayuran segar Cipanas untuk komunitas modern Tangerang selatan. Dari lahan langsung ke dapur.',
     clientFocus: 'Healthy Food Resto, Organic Market, & Residensial',
     deliveryRoute: 'Distribusi harian mencakup wilayah Ciputat, Pamulang, dan BSD.',
     usp: 'Akses langsung ke lahan tani tanpa perantara (Direct Sourcing).',
@@ -305,7 +305,7 @@ export const jabodetabekCities = [
   { 
     slug: 'cikarang', 
     name: 'Cikarang',
-    title: 'Mitra Sayur Industri Cikarang | Pemasok Sayuran Pabrik',
+    title: 'Supplier Sayur Industri Cikarang | Pemasok Sayuran Pabrik',
     angle: 'Supplier profesional untuk katering pabrik di kawasan industri Cikarang. Administrasi PKP dan termin pembayaran.',
     clientFocus: 'Catering Pabrik, Mess Karyawan, & Procurement',
     deliveryRoute: 'Akses harian menjangkau kawasan EJIP, Delta Silicon, dan sekitarnya.',
@@ -361,7 +361,7 @@ export const jabodetabekCities = [
   { 
     slug: 'bogor-kota-kuliner', 
     name: 'Bogor Kota Kuliner',
-    title: 'Agen Sayur Bogor Kota | Pemasok Sayuran Fresh Subuh',
+    title: 'Supplier Sayur Bogor Kota | Pemasok Sayuran Fresh Subuh',
     angle: 'Jembatan terpercaya pangan segar dari Cipanas untuk dapur Anda. Higienis dan terpantau kualitasnya.',
     clientFocus: 'Restoran Keluarga, Hotel Resort, & Cafe Heritage',
     deliveryRoute: 'Distribusi setiap subuh melalui rute fajar Puncak-Bogor.',
