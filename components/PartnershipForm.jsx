@@ -78,7 +78,7 @@ Mohon dapat dikirimkan harga katalog terbaru. Terima kasih.`;
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 md:gap-4 p-4 bg-white rounded-2xl border-2 border-green-100 shadow-sm">
                   <div className="text-[#15803d]">{item.icon}</div>
-                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-widest text-[#052c17]">{item.title}</h4>
+                  <h3 className="text-[10px] md:text-[11px] font-black uppercase tracking-widest text-[#052c17]">{item.title}</h3>
                 </div>
               ))}
             </div>

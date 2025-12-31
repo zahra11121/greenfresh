@@ -25,6 +25,7 @@ export const Footer = () => {
               </span>
             </div>
             
+            {/* Judul Utama Footer tetap h2 karena hirarkinya benar setelah h1 di atas */}
             <h2 className="text-4xl lg:text-6xl font-black leading-[0.95] tracking-[-0.05em] uppercase">
               Rantai Pasok <br />
               <span className="text-[#22c55e]">Terintegrasi.</span>
@@ -36,7 +37,7 @@ export const Footer = () => {
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">PKP Official</span>
               </div>
               <div className="px-5 py-2.5 bg-[#22c55e] rounded-xl flex items-center gap-3 shadow-lg shadow-green-900/20">
-                < Zap size={14} className="text-[#052c17]" fill="currentColor" />
+                <Zap size={14} className="text-[#052c17]" fill="currentColor" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#052c17]">High Capacity</span>
               </div>
             </div>
@@ -47,10 +48,10 @@ export const Footer = () => {
             
             <div className="space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Sitemap</h5>
+                {/* PERBAIKAN: Tag p pembuka dan p penutup harus sama */}
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Sitemap</p>
               </div>
               <ul className="space-y-4">
-                {/* Contact sudah dihapus dari sitemap */}
                 {['Home', 'Gallery', 'About'].map((item) => (
                   <li key={item}>
                     <a href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm font-bold text-slate-200 hover:text-[#bef264] transition-all flex items-center gap-2 group">
@@ -64,7 +65,8 @@ export const Footer = () => {
 
             <div className="space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Inquiry</h5>
+                {/* PERBAIKAN: Tag p pembuka dan p penutup harus sama */}
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Inquiry</p>
               </div>
               <div className="space-y-6">
                 <a href="mailto:sales@greenfresh.co.id" className="group block space-y-1">
@@ -84,7 +86,8 @@ export const Footer = () => {
 
             <div className="col-span-2 md:col-span-1 space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Base</h5>
+                {/* PERBAIKAN: Menggunakan p agar tidak melompat hirarkinya */}
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Base</p>
               </div>
               <div className="flex gap-4">
                 <MapPin size={20} className="text-[#22c55e] shrink-0" />
@@ -99,17 +102,18 @@ export const Footer = () => {
         </div>
 
         {/* SECTION 3: AREA CLOUD */}
-        <div className="bg-white/5 rounded-[2.5rem] p-8 lg:p-12 border border-white/10 mb-20 relative overflow-hidden group">
+        <div className="bg-white/5 rounded-[2.5rem] p-8 lg:p-12 border border-white/10 mb-20 relative overflow-hidden group text-left">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-10 translate-y-[-10px]">
             <Globe size={200} />
           </div>
           
-          <div className="flex items-center gap-4 mb-10 text-left">
-            <Globe className="w-5 h-5 text-[#bef264]" />
-            <h5 className="text-[11px] font-black uppercase tracking-[0.5em] text-white">Distribution Area</h5>
+          <div className="flex items-center gap-4 mb-10">
+            < Globe className="w-5 h-5 text-[#bef264]" />
+            {/* Menggunakan p untuk label section kecil */}
+            <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white">Distribution Area</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 text-left">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6">
             {jabodetabekCities.map((city) => (
               <a 
                 key={city.slug} 
@@ -129,7 +133,6 @@ export const Footer = () => {
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#bef264]">
               CV Green Fresh Cipanas © {currentYear}
             </p>
-            {/* Menu Privacy dan Terms sudah dihapus */}
           </div>
           
           <div className="flex items-center gap-4">
@@ -145,7 +148,7 @@ export const Footer = () => {
 
       </div>
 
-      {/* Industrial Signature Line - Hapus bagian ini jika ingin menghilangkan garis 3 warna di paling bawah */}
+      {/* Industrial Signature Line */}
       <div className="flex h-3 w-full" aria-hidden="true">
         <div className="bg-[#22c55e] flex-1" />
         <div className="bg-[#bef264] flex-1" />
