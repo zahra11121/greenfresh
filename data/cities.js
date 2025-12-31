@@ -119,7 +119,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-barat-puri', 
     name: 'Jakarta Barat Puri',
-    title: 'Distributor Sayuran Jakarta Barat | Agen Sayur Puri Indah',
+    title: 'Distributor Sayuran Puri Indah Jakarta Barat | Agen Sayur Puri Indah',
     angle: 'Supplier sayuran untuk katering dan resto masakan China di Jakarta Barat. Menjamin stabilitas stok komoditas utama.',
     clientFocus: 'Restoran Oriental, Modern Market, & Food Court',
     deliveryRoute: 'Distribusi rutin via Tol Dalam Kota untuk ketepatan waktu drop-off.',
@@ -133,7 +133,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-utara-kelapa-gading', 
     name: 'Jakarta Utara Kelapa Gading',
-    title: 'Supplier Sayuran Jakarta Utara | Kelapa Gading & Sunter',
+    title: 'Supplier Sayuran Kelapa Gading & Sunter | Jakarta Utara',
     angle: 'Distribusi sayur mayur untuk industri seafood dan grill house. Efisiensi logistik untuk menjaga nutrisi sayuran.',
     clientFocus: 'Seafood Fine Dining, Grill House, & Tenant Mall',
     deliveryRoute: 'Akses Bypass dan Tol Pulomas untuk menghindari titik macet Jakarta Utara.',
@@ -147,7 +147,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-timur-cakung', 
     name: 'cakung jakarta timur',
-    title: 'Supplier Sayuran Jakarta Timur | Suplai Industri Cakung',
+    title: 'Supplier Sayuran Cakung Jakarta Timur | Suplai Industri Cakung',
     angle: 'Layanan grosir sayuran kapasitas besar untuk katering pabrik dan RS. Harga bersaing dengan volume pengiriman masif.',
     clientFocus: 'Catering Industri, Hospital Canteen, & Retailers',
     deliveryRoute: 'Jalur Tol Becakayu & JORR menjangkau area industri Jakarta Timur.',
@@ -177,7 +177,7 @@ export const jabodetabekCities = [
   { 
     slug: 'jakarta-pusat', 
     name: 'Jakarta Pusat',
-    title: 'Agen Sayur Jakarta Pusat | Jual Sayur Grosir & Ecer',
+    title: 'Supplier Sayur Jakarta Pusat | Jual Sayur Grosir & Ecer',
     angle: 'Penyedia kebutuhan sayur mayur terlengkap untuk kantin gedung dan bisnis retail di pusat kota Jakarta.',
     clientFocus: 'Rumah Makan, Kantin Gedung, & Bisnis Retail',
     deliveryRoute: 'Pengiriman fajar terjadwal menjangkau area perkantoran strategis.',
@@ -247,7 +247,7 @@ export const jabodetabekCities = [
   { 
     slug: 'depok', 
     name: 'Depok',
-    title: 'Pemasok Sayuran Depok | Agen Sayur Segar Cipanas',
+    title: 'Distributor Sayuran Depok | Agen Sayur Segar Cipanas',
     angle: 'Partner terpercaya katering rumahan dan cafe di Depok. Memberikan harga grosir dengan kualitas retail.',
     clientFocus: 'Cafe, Cloud Kitchen, & UMKM Kuliner',
     deliveryRoute: 'Pengiriman subuh via jalur Jalan Raya Bogor untuk efisiensi.',
@@ -305,7 +305,7 @@ export const jabodetabekCities = [
   { 
     slug: 'cikarang', 
     name: 'Cikarang',
-    title: 'Supplier Sayur Industri Cikarang | Pemasok Sayuran Pabrik',
+    title: 'Supplier Sayur Cikarang | Pemasok Sayuran Pabrik',
     angle: 'Supplier profesional untuk katering pabrik di kawasan industri Cikarang. Administrasi PKP dan termin pembayaran.',
     clientFocus: 'Catering Pabrik, Mess Karyawan, & Procurement',
     deliveryRoute: 'Akses harian menjangkau kawasan EJIP, Delta Silicon, dan sekitarnya.',
