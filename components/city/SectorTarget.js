@@ -1,10 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Leaf } from 'lucide-react';
 
 export const SectorTarget = () => {
+  // State untuk melacak kartu mana yang sedang aktif (nyala)
+  const [activeIndex, setActiveIndex] = useState(null);
+
   const sectors = [
     { title: 'Hotels & Resorts', desc: 'Sistem suplai harian dengan standar audit pangan internasional.' },
     { title: 'Fine Dining', desc: 'Presisi sortasi tinggi untuk plating dan varietas eksotik.' },
@@ -14,23 +17,22 @@ export const SectorTarget = () => {
 
   return (
     <section className="bg-[#fcfdfc] py-20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-5">
+      {/* Container: px-2 di mobile agar kartu lebih lebar ke pinggir layar */}
+      <div className="max-w-7xl mx-auto px-2 md:px-5">
         
-        {/* Header dengan Aksen Gradasi */}
-        <div className="relative mb-16">
-          <motion.div 
+        {/* Header */}
+        <div className="relative mb-16 px-4">
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="flex items-center gap-3 mb-4"
           >
-            {/* PERBAIKAN: Gradasi dipergelap sedikit untuk visibilitas garis */}
             <div className="w-12 h-1 bg-gradient-to-r from-[#15803d] to-[#65a30d]" />
-            {/* PERBAIKAN: text-[#16a34a] -> text-[#15803d] (Contrast 4.5:1) */}
             <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#15803d]">Market Sector</span>
           </motion.div>
           
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -40,66 +42,82 @@ export const SectorTarget = () => {
           </motion.h2>
         </div>
 
-        {/* Grid: 2 Columns Mobile, 4 Columns Desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-0 border-slate-200 lg:border lg:rounded-3xl lg:overflow-hidden lg:bg-white lg:shadow-2xl lg:shadow-green-900/5">
-          {sectors.map((sector, index) => (
-            <motion.div 
-              key={index}
-              whileHover={{ y: -5 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative p-6 lg:p-10 bg-white lg:bg-transparent border lg:border-none border-green-100 rounded-2xl lg:rounded-none flex flex-col justify-between h-full transition-all duration-500 overflow-hidden shadow-sm lg:shadow-none"
-            >
-              {/* Background Effect on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#052c17] to-[#15803d] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-              
-              <div className="relative">
-                <div className="flex justify-between items-start mb-8 lg:mb-12">
-                  {/* PERBAIKAN: text-green-100 -> text-green-200 (Agar angka terlihat saat idle) */}
-                  <span className="text-2xl font-black text-green-200 group-hover:text-white/20 transition-colors">
-                    0{index + 1}
-                  </span>
-                  {/* PERBAIKAN: bg-green-50 -> bg-green-100 & text-green-600 -> text-green-700 */}
-                  <div className="p-2 rounded-lg bg-green-100 group-hover:bg-white/10 text-green-700 group-hover:text-[#bef264] transition-all">
-                    <Leaf size={16} fill="currentColor" className="opacity-70 group-hover:opacity-100" />
+        {/* Grid: gap-2 (kecil) agar kartu di mobile terlihat lebih lebar */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-0 border-slate-200 lg:border lg:rounded-3xl lg:overflow-hidden lg:bg-white lg:shadow-2xl lg:shadow-green-900/5">
+          {sectors.map((sector, index) => {
+            const isActive = activeIndex === index;
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                // Logic: Klik/Sentuh untuk nyala, klik lagi atau pindah untuk mati
+                onClick={() => setActiveIndex(isActive ? null : index)}
+                onMouseEnter={() => setActiveIndex(index)}
+                onMouseLeave={() => setActiveIndex(null)}
+                className={`group relative p-4 lg:p-10 transition-all duration-500 overflow-hidden flex flex-col justify-between h-full cursor-pointer
+                  ${isActive ? 'shadow-xl translate-y-[-4px]' : 'bg-white shadow-sm'} 
+                  lg:bg-transparent lg:shadow-none lg:translate-y-0 border border-green-100 lg:border-none rounded-2xl lg:rounded-none`}
+              >
+                {/* Background Overlay (Nyala) */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-[#052c17] to-[#15803d] transition-opacity duration-500 -z-10
+                  ${isActive ? 'opacity-100' : 'opacity-0'}`} 
+                />
+                
+                <div className="relative">
+                  <div className="flex justify-between items-start mb-6 lg:mb-12">
+                    <span className={`text-xl lg:text-2xl font-black transition-colors duration-500
+                      ${isActive ? 'text-white/20' : 'text-green-200'}`}>
+                      0{index + 1}
+                    </span>
+                    <div className={`p-2 rounded-lg transition-all duration-500
+                      ${isActive ? 'bg-white/10 text-[#bef264]' : 'bg-green-100 text-green-700'}`}>
+                      <Leaf size={14} fill="currentColor" className={isActive ? 'opacity-100' : 'opacity-70'} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 lg:space-y-6">
+                    <h3 className={`text-[12px] lg:text-xl font-black leading-tight transition-colors duration-500
+                      ${isActive ? 'text-white' : 'text-[#052c17]'}`}>
+                      {sector.title.toUpperCase()}
+                    </h3>
+                    <p className={`text-[10px] lg:text-sm font-bold leading-snug lg:leading-relaxed transition-colors duration-500
+                      ${isActive ? 'text-green-50' : 'text-slate-600'}`}>
+                      {sector.desc}
+                    </p>
                   </div>
                 </div>
 
-                <div className="space-y-3 lg:space-y-6">
-                  <h3 className="text-sm lg:text-xl font-black text-[#052c17] group-hover:text-white leading-tight transition-colors">
-                    {sector.title.toUpperCase()}
-                  </h3>
-                  {/* PERBAIKAN: text-slate-500 -> text-slate-600 (Lolos audit aksesibilitas) */}
-                  <p className="text-[10px] lg:text-sm text-slate-600 group-hover:text-green-50 font-bold leading-relaxed transition-colors">
-                    {sector.desc}
-                  </p>
+                <div className={`mt-6 pt-4 border-t flex items-center justify-between transition-colors duration-500
+                  ${isActive ? 'border-white/10' : 'border-slate-100 lg:border-green-900/10'}`}>
+                  <span className={`text-[8px] lg:text-[9px] font-black uppercase tracking-widest transition-colors duration-500
+                    ${isActive ? 'text-[#bef264]' : 'text-[#15803d]'}`}>
+                    Details
+                  </span>
+                  <ArrowUpRight size={14} className={`transition-all duration-500
+                    ${isActive ? 'text-white translate-x-1 -translate-y-1' : 'text-slate-500'}`} 
+                  />
                 </div>
-              </div>
 
-              <div className="mt-8 pt-6 border-t border-slate-100 lg:border-green-900/10 flex items-center justify-between">
-                {/* PERBAIKAN: text-[#16a34a] -> text-[#15803d] */}
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#15803d] group-hover:text-[#bef264]">
-                  Details
-                </span>
-                {/* PERBAIKAN: text-slate-300 -> text-slate-500 (Agar panah terlihat jelas) */}
-                <ArrowUpRight size={16} className="text-slate-500 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-              </div>
-
-              <div className="hidden lg:block absolute top-0 right-0 w-px h-full bg-slate-100 group-hover:bg-transparent transition-colors" />
-            </motion.div>
-          ))}
+                {/* Vertical Divider (Desktop Only) */}
+                <div className={`hidden lg:block absolute top-0 right-0 w-px h-full transition-colors
+                  ${isActive ? 'bg-transparent' : 'bg-slate-100'}`} 
+                />
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Floating Decorative Bar */}
-        <div className="mt-12 flex items-center justify-center gap-4">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" aria-hidden="true" />
-          {/* PERBAIKAN: text-slate-400 -> text-slate-600 */}
-          <div className="flex-shrink-0 px-6 py-2 border border-slate-200 rounded-full bg-white shadow-sm text-[9px] font-black text-slate-600 uppercase tracking-[0.3em]">
+        {/* Decorative Footer */}
+        <div className="mt-12 flex items-center justify-center gap-2 px-4">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+          <div className="flex-shrink-0 px-4 py-2 border border-slate-200 rounded-full bg-white text-[8px] md:text-[9px] font-black text-slate-600 uppercase tracking-[0.2em] text-center">
             B2B Supply Chain Authority
           </div>
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" aria-hidden="true" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
         </div>
       </div>
     </section>

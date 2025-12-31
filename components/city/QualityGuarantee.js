@@ -1,33 +1,41 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RotateCcw, CheckSquare, BadgeCheck, Zap, ShieldCheck } from 'lucide-react';
 
 export const QualityGuarantee = () => {
+  // State untuk melacak item yang sedang "nyala"
+  const [activeItem, setActiveItem] = useState(null);
+
   const items = [
     { 
+      id: 'return',
       icon: <RotateCcw size={22} />, 
       title: "INSTANT RETURN", 
       desc: "Kebijakan tolak & tukar barang langsung di lokasi jika kualitas tidak sesuai standar." 
     },
     { 
+      id: 'qc',
       icon: <CheckSquare size={22} />, 
       title: "DAILY QC", 
       desc: "Sortasi manual setiap subuh menjamin grade-A sebelum proses loading." 
     },
     { 
+      id: 'price',
       icon: <BadgeCheck size={22} />, 
       title: "PRICE GUARD", 
       desc: "Stabilitas harga kontrak hingga 30 hari untuk efisiensi budget operasional." 
     },
     { 
+      id: 'logistics',
       icon: <Zap size={22} />, 
       title: "EXPRESS LOGISTICS", 
       desc: "Armada berpendingin yang menjamin rantai dingin tidak terputus hingga dapur Anda." 
     }
   ];
 
+  // Menggunakan id unik agar saat slider berputar, state tetap konsisten
   const duplicatedItems = [...items, ...items];
 
   return (
@@ -42,15 +50,12 @@ export const QualityGuarantee = () => {
               className="flex items-center gap-2 justify-start"
             >
               <span className="w-8 h-[2px] bg-[#15803d]" />
-              {/* PERBAIKAN: Green-700 (#15803d) untuk kontras di atas #f8fafc */}
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Our Commitment</span>
             </motion.div>
             <h2 className="text-4xl lg:text-6xl font-[1000] text-[#052c17] tracking-tighter leading-none">
-              {/* PERBAIKAN: Slate-400 diganti ke Slate-500 (#64748b) agar rasio kontras > 4.5:1 */}
               JAMINAN <span className="text-[#64748b]">KUALITAS.</span>
             </h2>
           </div>
-          {/* PERBAIKAN: Slate-700 (#334155) sangat aman untuk WCAG AA */}
           <p className="text-[#334155] text-sm max-w-sm font-bold leading-relaxed italic text-left">
             "Nol risiko operasional bagi mitra B2B kami melalui standarisasi ketat setiap hari."
           </p>
@@ -67,44 +72,58 @@ export const QualityGuarantee = () => {
             duration: 30, 
             repeat: Infinity 
           }}
+          // Slider berhenti sebentar saat ada yang ditekan/hover (opsional agar mudah diklik)
+          whileHover={{ animationPlayState: "paused" }}
         >
-          {duplicatedItems.map((item, i) => (
-            <div 
-              key={i}
-              className="w-[280px] lg:w-[400px] flex-shrink-0 bg-white border border-slate-200 p-8 rounded-[2rem] shadow-xl shadow-slate-200/40 group transition-all duration-500 
-              max-lg:border-[#15803d] lg:hover:border-[#15803d]"
-            >
-              <div className="flex items-start gap-5 lg:gap-6">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner
-                  max-lg:bg-[#15803d] max-lg:text-white 
-                  lg:bg-green-50 lg:text-[#15803d] lg:group-hover:bg-[#15803d] lg:group-hover:text-white"
-                >
-                  {item.icon}
-                </div>
+          {duplicatedItems.map((item, i) => {
+            // Kita gunakan kombinasi ID dan Index agar setiap card unik secara state
+            const isNyala = activeItem === i;
 
-                <div className="flex-1 space-y-3">
-                  <p className="text-[#052c17] font-black text-[13px] lg:text-sm tracking-widest uppercase text-left">
-                    {item.title}
-                  </p>
-                  
-                  <div className="h-1 bg-green-100 transition-all duration-500
-                    max-lg:w-full max-lg:bg-[#15803d]/20
-                    lg:w-8 lg:group-hover:w-full" 
-                  />
-                  
-                  {/* PERBAIKAN: Slate-600/700 memberikan kontras tinggi di atas putih */}
-                  <p className="text-[12px] leading-relaxed font-bold transition-colors text-left
-                    max-lg:text-[#334155] 
-                    lg:text-[#475569] lg:group-hover:text-[#1e293b]"
+            return (
+              <div 
+                key={i}
+                onClick={() => setActiveItem(isNyala ? null : i)}
+                onMouseEnter={() => setActiveItem(i)}
+                onMouseLeave={() => setActiveItem(null)}
+                className={`w-[280px] lg:w-[400px] flex-shrink-0 p-8 rounded-[2rem] transition-all duration-500 cursor-pointer
+                  ${isNyala 
+                    ? 'bg-white border-[#15803d] shadow-2xl shadow-green-900/10 scale-[1.02]' 
+                    : 'bg-white border-slate-200 shadow-xl shadow-slate-200/40 scale-100'
+                  } border`}
+              >
+                <div className="flex items-start gap-5 lg:gap-6">
+                  <div className={`w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner
+                    ${isNyala 
+                      ? 'bg-[#15803d] text-white rotate-6' 
+                      : 'bg-green-50 text-[#15803d] rotate-0'
+                    }`}
                   >
-                    {item.desc}
-                  </p>
+                    {item.icon}
+                  </div>
+
+                  <div className="flex-1 space-y-3">
+                    <p className={`font-black text-[13px] lg:text-sm tracking-widest uppercase text-left transition-colors duration-500
+                      ${isNyala ? 'text-[#15803d]' : 'text-[#052c17]'}`}>
+                      {item.title}
+                    </p>
+                    
+                    <div className={`h-1 transition-all duration-500
+                      ${isNyala ? 'w-full bg-[#15803d]' : 'w-8 bg-green-100'}`} 
+                    />
+                    
+                    <p className={`text-[12px] leading-relaxed font-bold transition-colors text-left duration-500
+                      ${isNyala ? 'text-[#1e293b]' : 'text-[#475569]'}`}
+                    >
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
 
+        {/* Gradient Overlay */}
         <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
       </div>
@@ -121,7 +140,6 @@ export const QualityGuarantee = () => {
           </p>
         </motion.div>
         
-        {/* PERBAIKAN: Slate-500 (#64748b) untuk teks teknis agar terbaca jelas */}
         <div className="text-[9px] font-black text-[#64748b] uppercase tracking-[0.4em]">
           Automated QC System • v.2.5
         </div>
