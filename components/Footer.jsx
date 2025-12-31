@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Mail, Phone, MapPin, ArrowUpRight, Globe, Leaf, Zap, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Leaf, Zap, ChevronRight } from 'lucide-react';
 import { jabodetabekCities } from '@/data/cities';
 
 export const Footer = () => {
@@ -31,28 +31,28 @@ export const Footer = () => {
             </h2>
             
             <div className="flex flex-wrap gap-4">
-              <div className="px-5 py-2.5 bg-white/10 border border-white/20 rounded-xl flex items-center gap-3 backdrop-blur-sm">
+              <div className="px-5 py-2.5 bg-white/10 border border-white/10 rounded-xl flex items-center gap-3 backdrop-blur-sm">
                 <div className="w-2 h-2 bg-[#bef264] rounded-full animate-pulse shadow-[0_0_10px_#bef264]" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">PKP Official</span>
               </div>
               <div className="px-5 py-2.5 bg-[#22c55e] rounded-xl flex items-center gap-3 shadow-lg shadow-green-900/20">
-                <Zap size={14} className="text-[#052c17]" fill="currentColor" />
+                < Zap size={14} className="text-[#052c17]" fill="currentColor" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#052c17]">High Capacity</span>
               </div>
             </div>
           </div>
 
           {/* SECTION 2: NAVIGATION BOX */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12 text-left">
             
             <div className="space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Sitemap</h5>
               </div>
               <ul className="space-y-4">
-                {['Home', 'Gallery', 'About', 'Contact'].map((item) => (
+                {/* Contact sudah dihapus dari sitemap */}
+                {['Home', 'Gallery', 'About'].map((item) => (
                   <li key={item}>
-                    {/* PERBAIKAN: text-white/60 -> text-slate-200 */}
                     <a href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm font-bold text-slate-200 hover:text-[#bef264] transition-all flex items-center gap-2 group">
                       <ChevronRight size={14} className="text-[#22c55e] opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
                       {item}
@@ -68,14 +68,12 @@ export const Footer = () => {
               </div>
               <div className="space-y-6">
                 <a href="mailto:sales@greenfresh.co.id" className="group block space-y-1">
-                  {/* PERBAIKAN: text-white/30 -> text-slate-400 */}
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Email</span>
                   <span className="text-sm font-black text-white group-hover:text-[#bef264] transition-colors break-all">
                     sales@greenfresh.co.id
                   </span>
                 </a>
                 <a href="https://wa.me/6287780937884" className="group block space-y-1">
-                  {/* PERBAIKAN: text-white/30 -> text-slate-400 */}
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">WhatsApp</span>
                   <span className="text-sm font-black text-white group-hover:text-[#bef264] transition-colors">
                     0877 8093 7884
@@ -88,9 +86,8 @@ export const Footer = () => {
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Base</h5>
               </div>
-              <div className="flex gap-4 text-left">
+              <div className="flex gap-4">
                 <MapPin size={20} className="text-[#22c55e] shrink-0" />
-                {/* PERBAIKAN: text-white/60 -> text-slate-200 */}
                 <p className="text-xs font-bold text-slate-200 leading-relaxed uppercase tracking-wider">
                   Sukatani, Cipanas, <br /> 
                   Cianjur, Jawa Barat
@@ -107,17 +104,16 @@ export const Footer = () => {
             <Globe size={200} />
           </div>
           
-          <div className="flex items-center gap-4 mb-10">
+          <div className="flex items-center gap-4 mb-10 text-left">
             <Globe className="w-5 h-5 text-[#bef264]" />
             <h5 className="text-[11px] font-black uppercase tracking-[0.5em] text-white">Distribution Area</h5>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 text-left">
             {jabodetabekCities.map((city) => (
               <a 
                 key={city.slug} 
                 href={`/supplier-sayur/${city.slug}/`} 
-                /* PERBAIKAN: text-white/40 -> text-slate-300 */
                 className="text-[11px] font-bold text-slate-300 hover:text-[#bef264] hover:translate-x-1 transition-all flex items-center gap-2"
               >
                 <div className="w-1 h-1 bg-[#22c55e] rounded-full" />
@@ -133,16 +129,11 @@ export const Footer = () => {
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#bef264]">
               CV Green Fresh Cipanas © {currentYear}
             </p>
-            <div className="flex gap-8">
-              {/* PERBAIKAN: text-white/30 -> text-slate-400 */}
-              <a href="/privacy" className="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors">Privacy</a>
-              <a href="/terms" className="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors">Terms</a>
-            </div>
+            {/* Menu Privacy dan Terms sudah dihapus */}
           </div>
           
           <div className="flex items-center gap-4">
             <div className="hidden sm:block text-right">
-                {/* PERBAIKAN: text-white/40 -> text-slate-400 */}
                 <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400 leading-none mb-1">Standardized</p>
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white">Logistics B2B</p>
             </div>
@@ -154,7 +145,7 @@ export const Footer = () => {
 
       </div>
 
-      {/* Industrial Signature Line */}
+      {/* Industrial Signature Line - Hapus bagian ini jika ingin menghilangkan garis 3 warna di paling bawah */}
       <div className="flex h-3 w-full" aria-hidden="true">
         <div className="bg-[#22c55e] flex-1" />
         <div className="bg-[#bef264] flex-1" />
