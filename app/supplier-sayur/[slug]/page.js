@@ -21,6 +21,7 @@ import { LiveStats } from '@/components/city/LiveStats';
  * OPTIMASI INDEXING: 
  * Menggunakan Dynamic Rendering agar bot selalu mendapat HTML Fresh.
  */
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic'; 
 export const revalidate = 0;
 
