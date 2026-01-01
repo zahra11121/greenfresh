@@ -15,26 +15,32 @@ export const CityHero = ({ city }) => {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 px-2.5 py-1 bg-green-50 border border-green-200 rounded-lg">
-                  {/* Darkened icon and text for better contrast */}
                   <MapPin size={12} className="text-[#15803d]" />
                   <span className="text-[11px] font-bold text-[#14532d] tracking-tight">{city.name} Hub</span>
                 </div>
                 <div className="h-px w-8 bg-green-200 hidden md:block" aria-hidden="true" />
-                {/* FIX: text-slate-300 -> text-slate-600 (Contrast safe) */}
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Official B2B Supply</span>
               </div>
 
-              {/* FIX: text-green-600 -> text-[#15803d] (WCAG AA compliant green) */}
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif italic text-[#052c17] leading-[1.1] tracking-tighter">
                 Supplier Sayur <br />
                 <span className="text-[#15803d] not-italic font-sans font-bold">{city.name}.</span>
               </h1>
             </div>
 
-            {/* FIX: text-slate-400 -> text-slate-600 + Increased thickness */}
+            {/* DESKRIPSI UTAMA */}
             <p className="text-lg lg:text-2xl text-slate-600 font-normal leading-relaxed max-w-2xl border-l-4 border-green-500/30 pl-6">
               Distribusi hasil panen Cipanas untuk standar operasional dapur komersial di wilayah <span className="text-[#052c17] font-bold">{city.name}</span>.
             </p>
+
+            {/* PENAMBAHAN SEO CONTENT: Komponen Unik untuk Indexing */}
+            {city.seoContent && (
+              <div className="max-w-2xl bg-slate-50/50 p-5 rounded-2xl border border-slate-100">
+                <p className="text-sm md:text-base text-slate-700 leading-relaxed italic font-medium">
+                  &quot;{city.seoContent}&quot;
+                </p>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <a href="#katalog" className="group inline-flex items-center justify-center gap-3 bg-[#052c17] text-[#bef264] px-10 py-5 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl shadow-green-900/10 hover:bg-[#15803d] transition-all duration-300">
@@ -55,7 +61,6 @@ export const CityHero = ({ city }) => {
                   <ShieldCheck size={20} className="text-[#15803d]" />
                 </div>
                 <div>
-                  {/* FIX: text-slate-300 -> text-slate-600 */}
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest leading-none mb-1">Standard</p>
                   <p className="text-sm font-bold text-[#052c17]">Sortir Grade A (Horeka)</p>
                 </div>
@@ -65,7 +70,6 @@ export const CityHero = ({ city }) => {
                 {['Stok Stabil 10 Ton/Hari', 'Pengiriman Sebelum 07:00', 'Sistem Pembayaran TOP'].map((feat, i) => (
                   <li key={i} className="flex items-center gap-4">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#15803d]" />
-                    {/* FIX: text-slate-500 -> text-slate-700 */}
                     <span className="text-sm font-bold text-slate-700 tracking-tight">{feat}</span>
                   </li>
                 ))}

@@ -2,10 +2,14 @@
 
 import React from 'react';
 import { Mail, Phone, MapPin, Globe, Leaf, Zap, ChevronRight } from 'lucide-react';
-import { jabodetabekCities } from '@/data/cities';
+// Import data menuCities
+import { cityMenuGroups } from '@/data/menuCities';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  // Langkah 1: Meratakan data (mengambil semua items dari kategori menjadi satu array besar)
+  const allCities = cityMenuGroups.flatMap(group => group.items);
 
   return (
     <footer className="bg-[#052c17] text-white pt-20 overflow-hidden font-sans">
@@ -25,7 +29,6 @@ export const Footer = () => {
               </span>
             </div>
             
-            {/* Judul Utama Footer tetap h2 karena hirarkinya benar setelah h1 di atas */}
             <h2 className="text-4xl lg:text-6xl font-black leading-[0.95] tracking-[-0.05em] uppercase">
               Rantai Pasok <br />
               <span className="text-[#22c55e]">Terintegrasi.</span>
@@ -45,10 +48,8 @@ export const Footer = () => {
 
           {/* SECTION 2: NAVIGATION BOX */}
           <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12 text-left">
-            
             <div className="space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                {/* PERBAIKAN: Tag p pembuka dan p penutup harus sama */}
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Sitemap</p>
               </div>
               <ul className="space-y-4">
@@ -65,7 +66,6 @@ export const Footer = () => {
 
             <div className="space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                {/* PERBAIKAN: Tag p pembuka dan p penutup harus sama */}
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Inquiry</p>
               </div>
               <div className="space-y-6">
@@ -86,7 +86,6 @@ export const Footer = () => {
 
             <div className="col-span-2 md:col-span-1 space-y-8">
               <div className="inline-block border-b-2 border-[#22c55e] pb-2">
-                {/* PERBAIKAN: Menggunakan p agar tidak melompat hirarkinya */}
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Base</p>
               </div>
               <div className="flex gap-4">
@@ -97,30 +96,29 @@ export const Footer = () => {
                 </p>
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* SECTION 3: AREA CLOUD */}
+        {/* SECTION 3: AREA CLOUD - KEMBALI KE DESAIN SEMULA */}
         <div className="bg-white/5 rounded-[2.5rem] p-8 lg:p-12 border border-white/10 mb-20 relative overflow-hidden group text-left">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-10 translate-y-[-10px]">
             <Globe size={200} />
           </div>
           
           <div className="flex items-center gap-4 mb-10">
-            < Globe className="w-5 h-5 text-[#bef264]" />
-            {/* Menggunakan p untuk label section kecil */}
+            <Globe className="w-5 h-5 text-[#bef264]" />
             <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white">Distribution Area</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6">
-            {jabodetabekCities.map((city) => (
+          {/* Menampilkan semua kota dalam grid tanpa judul kategori */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-6 relative z-10">
+            {allCities.map((city) => (
               <a 
                 key={city.slug} 
                 href={`/supplier-sayur/${city.slug}/`} 
                 className="text-[11px] font-bold text-slate-300 hover:text-[#bef264] hover:translate-x-1 transition-all flex items-center gap-2"
               >
-                <div className="w-1 h-1 bg-[#22c55e] rounded-full" />
+                <div className="w-1 h-1 bg-[#22c55e] rounded-full shrink-0" />
                 {city.name}
               </a>
             ))}
@@ -148,7 +146,6 @@ export const Footer = () => {
 
       </div>
 
-      {/* Industrial Signature Line */}
       <div className="flex h-3 w-full" aria-hidden="true">
         <div className="bg-[#22c55e] flex-1" />
         <div className="bg-[#bef264] flex-1" />
