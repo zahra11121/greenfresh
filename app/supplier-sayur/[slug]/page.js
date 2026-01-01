@@ -14,7 +14,6 @@ import { CityHero } from '@/components/city/CityHero';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
-export const runtime = 'edge'; 
 export const dynamic = 'force-static'; 
 
 export async function generateStaticParams() {
