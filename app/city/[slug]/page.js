@@ -66,7 +66,7 @@ export default async function CityPage({ params }) {
             </Link>
             <ChevronRight size={10} className="text-slate-300" />
             <Link href="/city" className="text-slate-500 hover:text-[#166534]">
-              Supplier Sayur
+              City
             </Link>
             <ChevronRight size={10} className="text-slate-300" />
             <span className="text-[#166534] font-bold tracking-widest">{city.name}</span>
