@@ -1,18 +1,15 @@
-import React from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
 import { vegetableData } from '@/components/data';
 import { 
-  Star, ShieldCheck, Truck, ChevronRight, Users, 
-  TrendingUp, Target, Clock, Award, CheckCircle, 
-  BarChart3, Building2, ShoppingBag, Utensils, 
+  Star, ShieldCheck, ChevronRight, Users, 
+  CheckCircle, Building2, ShoppingBag, Utensils, 
   Heart, GraduationCap, Factory
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { galleryData } from '@/data/galleryData';
 
 // District Components
 import { DistrictHero } from '@/components/district/DistrictHero';
@@ -89,14 +86,14 @@ const ClientPortfolio = ({ district }) => {
     <section className="py-16 md:py-24 bg-[#f8fafc]">
       <div className="max-w-[1800px] mx-auto px-4 md:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] mb-4 tracking-tighter text-center">
+          <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] mb-4 tracking-tighter">
             Jaringan <span className="text-[#15803d]">Enterprise.</span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto font-medium text-center">
+          <p className="text-slate-600 max-w-2xl mx-auto font-medium">
             Mitra terpercaya untuk berbagai sektor bisnis di wilayah {district.name}
           </p>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 text-center md:text-left">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {segments.map((seg, i) => (
             <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center md:items-start">
               <div className="text-[#15803d] mb-4">{seg.icon}</div>
@@ -125,9 +122,21 @@ export async function generateMetadata({ params }) {
   const district = districtsData.districts.find((d) => d.slug === slug);
   if (!district) return { title: 'Halaman Tidak Ditemukan' };
 
+  const baseUrl = 'https://greenfresh.co.id';
+  const fullUrl = `${baseUrl}/area/${slug}/`;
+
   return {
     title: `Supplier Sayur ${district.name} - CV Green Fresh Cipanas`,
-    description: `Layanan distribusi sayuran profesional untuk wilayah ${district.name}. Kami menjamin pasokan stabil harian dan kualitas Grade A langsung dari petani Cipanas untuk kebutuhan Hotel, Restoran, supermarket dan Cafe Anda.`,
+    description: `Layanan distribusi sayuran profesional untuk wilayah ${district.name}. Kami menjamin pasokan stabil harian dan kualitas Grade A langsung dari petani Cipanas untuk kebutuhan Hotel, Restoran, dan Cafe Anda.`,
+    alternates: {
+      canonical: fullUrl,
+    },
+    openGraph: {
+      title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
+      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
+      url: fullUrl,
+      type: 'website',
+    }
   };
 }
 
@@ -137,8 +146,52 @@ export default async function DistrictPage({ params }) {
 
   if (!district) notFound();
 
+  const baseUrl = 'https://greenfresh.co.id';
+  const currentUrl = `${baseUrl}/supplier-sayur/${district.slug}/`;
+
+  // --- SCHEMA DATA ---
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WholesaleStore",
+    "name": `Green Fresh Cipanas - Supplier Sayur ${district.name}`,
+    "description": `Layanan distribusi sayuran harian wilayah ${district.name} kualitas Grade A.`,
+    "url": currentUrl,
+    "telephone": "+6287780937884",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Kp Jl. Kayumanis, RT.04/RW.04, Sukatani",
+      "addressLocality": "Cipanas",
+      "addressRegion": "Jawa Barat",
+      "postalCode": "43253",
+      "addressCountry": "ID"
+    },
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": district.name
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "150"
+    }
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Beranda", "item": `${baseUrl}/` },
+      { "@type": "ListItem", "position": 2, "name": "Supplier Sayur", "item": `${baseUrl}/supplier-sayur/` },
+      { "@type": "ListItem", "position": 3, "name": district.name, "item": currentUrl }
+    ]
+  };
+
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased overflow-x-hidden">
+      {/* Schema Injection */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+
       <Header />
       
       <main>
@@ -147,7 +200,7 @@ export default async function DistrictPage({ params }) {
           <nav className="max-w-[1800px] mx-auto px-4 md:px-8 py-6 flex items-center gap-3 text-sm font-bold text-slate-400">
             <Link href="/" className="hover:text-green-700">Beranda</Link>
             <ChevronRight size={14} />
-            <Link href="/area" className="hover:text-green-700">Area</Link>
+            <Link href="/supplier-sayur" className="hover:text-green-700">Area</Link>
             <ChevronRight size={14} />
             <span className="text-[#166534]">{district.name}</span>
           </nav>
@@ -169,7 +222,7 @@ export default async function DistrictPage({ params }) {
 
         {/* Pricing Section */}
         <section id="pricing" className="py-16 md:py-24 bg-white">
-          <div className="max-w-[1800px] mx-auto px-4 md:px-8 text-center md:text-left">
+          <div className="max-w-[1800px] mx-auto px-4 md:px-8">
             <h2 className="text-3xl md:text-4xl font-black text-[#052c17] mb-8 text-center md:text-left">
               Update <span className="text-[#15803d]">Harga Pasar.</span>
             </h2>
@@ -182,10 +235,9 @@ export default async function DistrictPage({ params }) {
         
         <DistrictRoute district={district} />
 
-        {/* Inquiry Form Section - Ukuran disamakan dengan komponen di atas (1800px) */}
+        {/* Inquiry Form Section */}
         <section id="partnership" className="py-20 md:py-32 bg-slate-50 border-t border-slate-100">
           <div className="max-w-[1800px] mx-auto px-4 md:px-8">
-            {/* Header Form Tetap Center */}
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-black text-[#052c17] tracking-tighter mb-4 leading-none">
                 Inquiry <span className="text-[#15803d]">Form.</span>
@@ -195,7 +247,6 @@ export default async function DistrictPage({ params }) {
               </p>
             </div>
             
-            {/* Form mengisi container 1800px secara wajar */}
             <div className="w-full">
                <PartnershipForm />
             </div>
