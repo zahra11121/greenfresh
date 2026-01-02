@@ -53,7 +53,7 @@ export const Footer = () => {
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bef264]">Sitemap</p>
               </div>
               <ul className="space-y-4">
-                {['Home', 'Gallery', 'About'].map((item) => (
+                {['Home', 'Gallery', 'Produk','About'].map((item) => (
                   <li key={item}>
                     <a href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm font-bold text-slate-200 hover:text-[#bef264] transition-all flex items-center gap-2 group">
                       <ChevronRight size={14} className="text-[#22c55e] opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />

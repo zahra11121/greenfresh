@@ -6,7 +6,7 @@ import { Footer } from '@/components/Footer';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
 import { vegetableData } from '@/components/data';
-import { Star, ShieldCheck, Truck, ChevronRight, Users } from 'lucide-react';
+import { Star, ShieldCheck, Truck, ChevronRight, Users, Home } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { galleryData } from '@/data/galleryData';
@@ -19,8 +19,9 @@ import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
 export const dynamic = 'force-static';
+
 /**
- * OPTIMASI CLOUDINARY (LCP FIX)
+ * OPTIMASI CLOUDINARY
  */
 const optimizeImg = (url, width = 850) => {
   if (!url) return '';
@@ -28,7 +29,7 @@ const optimizeImg = (url, width = 850) => {
 };
 
 /**
- * KOMPONEN RATING BADGE (JavaScript Version)
+ * KOMPONEN RATING BADGE
  */
 const RatingSection = ({ cityName }) => (
   <div className="w-full bg-white border-y border-green-50 py-4">
@@ -63,6 +64,9 @@ export async function generateStaticParams() {
   return jabodetabekCities.map((city) => ({ slug: city.slug }));
 }
 
+/**
+ * GENERATE METADATA - OPTIMASI SEO LOKAL
+ */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
@@ -71,16 +75,27 @@ export async function generateMetadata({ params }) {
 
   if (!city) return { title: 'Halaman Tidak Ditemukan' };
 
+  // Deskripsi otomatis unik untuk SEO wilayah (Bintaro, Senopati, dll)
+  const autoDescription = `Supplier sayur segar tangan pertama untuk wilayah ${city.name}. Cv Green Fresh Cipanas melayani pengadaan komoditas grade A harian dengan stok stabil khusus Hotel, Restoran, dan supermarket di ${city.name} dan sekitarnya.`;
+
   return {
-    title: city.title || `Supplier Sayur Segar ${city.name} - Green Fresh`,
-    description: city.angle || `Mitra pengadaan sayuran segar wilayah ${city.name}.`,
+    title: `Supplier Sayur ${city.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
+    description: autoDescription,
     alternates: { canonical: fullUrl },
     openGraph: {
-      title: city.title,
-      description: city.angle,
+      title: `Distributor Sayuran Grade A Wilayah ${city.name}`,
+      description: autoDescription,
       url: fullUrl,
       siteName: 'Green Fresh Cipanas',
       type: 'website',
+      images: [
+        {
+          url: 'https://greenfresh.co.id/images/og-main.jpg',
+          width: 1200,
+          height: 630,
+          alt: `Supplier Sayur ${city.name}`,
+        },
+      ],
     },
   };
 }
@@ -97,14 +112,15 @@ export default async function CityPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/supplier-sayur/${city.slug}/`;
 
-  // --- SCHEMA DATA DENGAN AGGREGATE RATING ---
+  const customDescription = `Supplier sayur segar tangan pertama untuk wilayah ${city.name}. Green Fresh melayani pengadaan komoditas grade A harian dengan stok stabil khusus Hotel, Restoran, dan Cafe di ${city.name}.`;
+
+  // --- SCHEMA DATA ---
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
-    "description": `Distributor sayur tangan pertama melayani wilayah ${city.name}. Stok stabil harian untuk Hotel, Restoran, dan Retail.`,
+    "description": customDescription,
     "image": "https://greenfresh.co.id/images/og-main.jpg",
-    "@id": currentUrl,
     "url": currentUrl,
     "telephone": "+6287780937884",
     "priceRange": "Rp",
@@ -116,10 +132,7 @@ export default async function CityPage({ params }) {
       "postalCode": "43253",
       "addressCountry": "ID"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": city.name
-    },
+    "areaServed": { "@type": "City", "name": city.name },
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
@@ -140,7 +153,7 @@ export default async function CityPage({ params }) {
   };
 
   return (
-    <div className="bg-white text-[#052c17] font-sans selection:bg-green-100 selection:text-[#052c17] overflow-x-hidden">
+    <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
@@ -149,18 +162,27 @@ export default async function CityPage({ params }) {
       <main>
         {/* BREADCRUMB */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
-          <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
-            <Link href="/" className="hover:text-[#166534] transition-colors">Home</Link>
-            <ChevronRight size={10} />
-            <span className="cursor-default text-slate-400">Supplier Sayur</span>
-            <ChevronRight size={10} />
+          <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
+            <Link 
+              href="/" 
+              className="flex items-center gap-1 text-slate-500 hover:text-[#166534] transition-colors"
+            >
+              <Home size={10} />
+              Home
+            </Link>
+            <ChevronRight size={10} className="text-slate-300" />
+            <Link 
+              href="/supplier-sayur" 
+              className="text-slate-500 hover:text-[#166534] transition-colors"
+            >
+              Supplier Sayur
+            </Link>
+            <ChevronRight size={10} className="text-slate-300" />
             <span className="text-[#166534] font-bold tracking-widest">{city.name}</span>
           </nav>
         </div>
 
         <CityHero city={city} />
-
-        {/* RATING SECTION DI BAWAH HERO */}
         <RatingSection cityName={city.name} />
 
         {/* LOGISTICS ADVANTAGE */}
@@ -173,7 +195,6 @@ export default async function CityPage({ params }) {
                     <Star size={14} className="text-[#166534] fill-[#166534]" />
                     <span className="text-[10px] font-black uppercase tracking-widest text-[#166534]">Logistics Advantage</span>
                   </div>
-                  
                   <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif italic font-black leading-tight uppercase text-[#052c17]">
                     Kekuatan <span className="not-italic font-sans text-slate-900">Suplai</span> <br/>
                     <span className="inline-block text-[#166534]">{city.name}</span>
@@ -202,9 +223,8 @@ export default async function CityPage({ params }) {
                     className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
                     width="850"
                     height="478"
-                    fetchPriority="high"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/40 to-transparent" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/40 to-transparent" />
                 </div>
               </div>
             </div>
@@ -255,7 +275,7 @@ export default async function CityPage({ params }) {
             </div>
             <PartnershipForm />
             
-            <div className="mt-20 flex justify-center items-center gap-6" aria-hidden="true">
+            <div className="mt-20 flex justify-center items-center gap-6">
                <div className="h-[1px] w-24 bg-green-200" />
                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">Official Partner {city.name} 2026</span>
                <div className="h-[1px] w-24 bg-green-200" />
