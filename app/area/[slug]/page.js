@@ -147,7 +147,7 @@ export default async function DistrictPage({ params }) {
   if (!district) notFound();
 
   const baseUrl = 'https://greenfresh.co.id';
-  const currentUrl = `${baseUrl}/supplier-sayur/${district.slug}/`;
+  const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
   // --- SCHEMA DATA ---
   const jsonLd = {
@@ -181,7 +181,7 @@ export default async function DistrictPage({ params }) {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Beranda", "item": `${baseUrl}/` },
-      { "@type": "ListItem", "position": 2, "name": "Supplier Sayur", "item": `${baseUrl}/supplier-sayur/` },
+      { "@type": "ListItem", "position": 2, "name": "Supplier Sayur", "item": `${baseUrl}/area/` },
       { "@type": "ListItem", "position": 3, "name": district.name, "item": currentUrl }
     ]
   };
@@ -200,7 +200,7 @@ export default async function DistrictPage({ params }) {
           <nav className="max-w-[1800px] mx-auto px-4 md:px-8 py-6 flex items-center gap-3 text-sm font-bold text-slate-400">
             <Link href="/" className="hover:text-green-700">Beranda</Link>
             <ChevronRight size={14} />
-            <Link href="/supplier-sayur" className="hover:text-green-700">Area</Link>
+            <Link href="/area" className="hover:text-green-700">Area</Link>
             <ChevronRight size={14} />
             <span className="text-[#166534]">{district.name}</span>
           </nav>
