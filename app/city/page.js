@@ -30,7 +30,7 @@ function CityCard({ city, index }) {
 
   return (
     <Link 
-      href={`/supplier-sayur/${city.slug}`}
+      href={`/city/${city.slug}`}
       className="group bg-white rounded-3xl border border-slate-200 p-5 md:p-7 hover:border-green-500 hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 flex flex-col justify-between min-h-[220px] relative overflow-hidden"
     >
       {/* Dekorasi Background Halus */}

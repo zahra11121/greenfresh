@@ -2,13 +2,11 @@
 const nextConfig = {
   // 1. Optimasi Gambar
   images: {
-    // Gunakan 'default' jika ingin tetap bisa memakai fungsi replace URL kita secara fleksibel
-    // Atau gunakan 'cloudinary' jika ingin menggunakan komponen <Image /> bawaan Next.js
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '/dukopmsad/**', // Spesifik ke cloud name Anda agar lebih aman
+        pathname: '/dukopmsad/**',
       },
       {
         protocol: 'https',
@@ -19,18 +17,36 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60, // Mempercepat loading untuk gambar yang sering diakses
+    minimumCacheTTL: 60,
   },
 
   // 2. SEO & Routing
-  // Memastikan semua URL berakhir dengan / agar konsisten di mata Google Search Console
   trailingSlash: true, 
-  
+
+  // --- TAMBAHAN REDIRECT 301 ---
+  async redirects() {
+    return [
+      {
+        // Mengalihkan semua sub-halaman supplier-sayur ke city
+        source: '/supplier-sayur/:slug/',
+        destination: '/city/:slug/',
+        permanent: true, // Status 301 (Pindah Permanen)
+      },
+      {
+        // Jika ada yang akses folder utamanya saja tanpa slug
+        source: '/supplier-sayur/',
+        destination: '/city/',
+        permanent: true,
+      }
+    ];
+  },
+  // -----------------------------
+
   // 3. Performa
   compress: true,
-  poweredByHeader: false, // Menghilangkan header 'X-Powered-By: Next.js' demi keamanan
+  poweredByHeader: false,
 
-  // 4. Pengaturan Header Keamanan (Standard B2B Enterprise)
+  // 4. Pengaturan Header Keamanan
   async headers() {
     return [
       {
@@ -42,7 +58,7 @@ const nextConfig = {
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN', // Mengizinkan frame dari domain sendiri (lebih fleksibel dari DENY)
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-XSS-Protection',
@@ -59,7 +75,6 @@ const nextConfig = {
 
   // 5. Compiler
   compiler: {
-    // Bersihkan console hanya di production agar saat development Anda tetap bisa debug
     removeConsole: process.env.NODE_ENV === 'production',
   },
 };

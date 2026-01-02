@@ -74,7 +74,7 @@ export const Footer = () => {
               </div>
               <ul className="space-y-4">
                 <li>
-                  <Link href="/supplier-sayur" className="text-sm font-bold text-slate-100 hover:text-[#bef264] flex items-center gap-2">
+                  <Link href="/city" className="text-sm font-bold text-slate-100 hover:text-[#bef264] flex items-center gap-2">
                     <Map size={14} className="text-[#22c55e]" aria-hidden="true" />
                     Index Kota Besar
                   </Link>

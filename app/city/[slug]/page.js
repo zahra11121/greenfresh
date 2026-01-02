@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `Supplier Sayur ${city.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
     description: `Supplier sayur segar tangan pertama wilayah ${city.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
-    alternates: { canonical: `${baseUrl}/supplier-sayur/${slug}/` },
+    alternates: { canonical: `${baseUrl}/city/${slug}/` },
   };
 }
 
@@ -35,7 +35,7 @@ export default async function CityPage({ params }) {
 
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
-  const currentUrl = `https://greenfresh.co.id/supplier-sayur/${city.slug}/`;
+  const currentUrl = `https://greenfresh.co.id/city/${city.slug}/`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -65,7 +65,7 @@ export default async function CityPage({ params }) {
               <Home size={10} /> Home
             </Link>
             <ChevronRight size={10} className="text-slate-300" />
-            <Link href="/supplier-sayur" className="text-slate-500 hover:text-[#166534]">
+            <Link href="/city" className="text-slate-500 hover:text-[#166534]">
               Supplier Sayur
             </Link>
             <ChevronRight size={10} className="text-slate-300" />

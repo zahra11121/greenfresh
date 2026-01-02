@@ -33,7 +33,7 @@ export default function sitemap() {
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/supplier-sayur/`, // Index Kota Besar
+      url: `${baseUrl}/city/`, // Index Kota Besar
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -46,9 +46,9 @@ export default function sitemap() {
     },
   ];
 
-  // 2. HALAMAN DINAMIS KOTA (app/supplier-sayur/[slug]/)
+  // 2. HALAMAN DINAMIS KOTA (app/city/[slug]/)
   const cityPages = jabodetabekCities.map((city) => ({
-    url: `${baseUrl}/supplier-sayur/${city.slug}/`,
+    url: `${baseUrl}/city/${city.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.7,

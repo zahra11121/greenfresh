@@ -3,9 +3,9 @@ import { Footer } from '@/components/Footer';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
 import { vegetableData } from '@/components/data';
-import { 
-  Star, ShieldCheck, ChevronRight, Users, 
-  CheckCircle, Building2, ShoppingBag, Utensils, 
+import {
+  Star, ShieldCheck, ChevronRight, Users,
+  CheckCircle, Building2, ShoppingBag, Utensils,
   Heart, GraduationCap, Factory
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
@@ -48,7 +48,7 @@ const RatingSection = ({ districtName }) => (
           <p className="text-sm font-bold text-[#052c17]">Supplier Terpercaya di {districtName}</p>
         </div>
       </div>
-      
+
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
           <Users size={18} className="text-blue-600" />
@@ -193,7 +193,7 @@ export default async function DistrictPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <Header />
-      
+
       <main>
         {/* Breadcrumb Navigation */}
         <div className="pt-24 lg:pt-32 bg-slate-50 border-b border-slate-100">
@@ -232,7 +232,7 @@ export default async function DistrictPage({ params }) {
 
         <QualityGuarantee />
         <LiveStats />
-        
+
         <DistrictRoute district={district} />
 
         {/* Inquiry Form Section */}
@@ -246,9 +246,9 @@ export default async function DistrictPage({ params }) {
                 Konsultasi Pengadaan {district.name}
               </p>
             </div>
-            
+
             <div className="w-full">
-               <PartnershipForm />
+              <PartnershipForm />
             </div>
           </div>
         </section>
