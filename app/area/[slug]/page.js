@@ -6,7 +6,7 @@ import { vegetableData } from '@/components/data';
 import {
   Star, ShieldCheck, ChevronRight, Users,
   CheckCircle, Building2, ShoppingBag, Utensils,
-  Heart, GraduationCap, Factory
+  Heart, GraduationCap, Factory, MapPin
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -25,8 +25,38 @@ export const dynamic = 'force-static';
 import districtsData from '@/data/districts.json';
 
 /**
- * Enhanced Rating Section
+ * OPTIMASI: Nearby Areas Section
+ * Membantu Googlebot merayap dari satu area ke area lain (Internal Linking)
  */
+const NearbyAreas = ({ currentSlug }) => {
+  // Ambil 6 area secara acak selain area saat ini
+  const otherAreas = districtsData.districts
+    .filter(d => d.slug !== currentSlug)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 6);
+
+  return (
+    <section className="py-16 bg-white border-t border-slate-100">
+      <div className="max-w-[1800px] mx-auto px-4 md:px-8">
+        <h3 className="text-xl font-black text-[#052c17] mb-8 uppercase tracking-widest flex items-center gap-2">
+          <MapPin size={20} className="text-[#15803d]" /> Area Layanan Lainnya
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {otherAreas.map((area) => (
+            <Link 
+              key={area.slug} 
+              href={`/area/${area.slug}/`}
+              className="p-4 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all text-sm font-bold text-slate-600 text-center"
+            >
+              {area.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const RatingSection = ({ districtName }) => (
   <div className="w-full bg-gradient-to-r from-white to-[#f7faf7] py-6 border-y border-green-50/50 text-center md:text-left">
     <div className="max-w-[1800px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -69,9 +99,6 @@ const RatingSection = ({ districtName }) => (
   </div>
 );
 
-/**
- * Client Segments Section
- */
 const ClientPortfolio = ({ district }) => {
   const segments = [
     { icon: <Building2 />, title: "Hospitalitas", list: ["Hotel Bintang 5", "Restoran Premium"] },
@@ -127,10 +154,8 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `Supplier Sayur ${district.name} - CV Green Fresh Cipanas`,
-    description: `Layanan distribusi sayuran profesional untuk wilayah ${district.name}. Kami menjamin pasokan stabil harian dan kualitas Grade A langsung dari petani Cipanas untuk kebutuhan Hotel, Restoran, dan Cafe Anda.`,
-    alternates: {
-      canonical: fullUrl,
-    },
+    description: `Layanan distribusi sayuran profesional untuk wilayah ${district.name}. Pasokan stabil harian kualitas Grade A untuk Hotel, Restoran, dan Cafe.`,
+    alternates: { canonical: fullUrl },
     openGraph: {
       title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
       description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
@@ -142,9 +167,21 @@ export async function generateMetadata({ params }) {
 
 export default async function DistrictPage({ params }) {
   const { slug } = await params;
-  const district = districtsData.districts.find((d) => d.slug === slug);
+  const rawDistrict = districtsData.districts.find((d) => d.slug === slug);
 
-  if (!district) notFound();
+  if (!rawDistrict) notFound();
+
+  // OPTIMASI: Hanya ambil data minimal untuk dikirim ke props (Mencegah Payload Bloat)
+  const district = {
+    slug: rawDistrict.slug,
+    name: rawDistrict.name,
+    title: rawDistrict.title,
+    angle: rawDistrict.angle,
+    seoContent: rawDistrict.seoContent,
+    clientFocus: rawDistrict.clientFocus,
+    deliveryRoute: rawDistrict.deliveryRoute,
+    logistics: rawDistrict.logistics
+  };
 
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
@@ -165,10 +202,7 @@ export default async function DistrictPage({ params }) {
       "postalCode": "43253",
       "addressCountry": "ID"
     },
-    "areaServed": {
-      "@type": "AdministrativeArea",
-      "name": district.name
-    },
+    "areaServed": { "@type": "AdministrativeArea", "name": district.name },
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
@@ -188,21 +222,19 @@ export default async function DistrictPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased overflow-x-hidden">
-      {/* Schema Injection */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <Header />
 
       <main>
-        {/* Breadcrumb Navigation */}
         <div className="pt-24 lg:pt-32 bg-slate-50 border-b border-slate-100">
           <nav className="max-w-[1800px] mx-auto px-4 md:px-8 py-6 flex items-center gap-3 text-sm font-bold text-slate-400">
-            <Link href="/" className="hover:text-green-700">Beranda</Link>
-            <ChevronRight size={14} />
-            <Link href="/area" className="hover:text-green-700">Area</Link>
-            <ChevronRight size={14} />
-            <span className="text-[#166534]">{district.name}</span>
+            <Link href="/" className="hover:text-green-700 text-[10px] uppercase tracking-widest">Beranda</Link>
+            <ChevronRight size={12} />
+            <Link href="/area" className="hover:text-green-700 text-[10px] uppercase tracking-widest">Area</Link>
+            <ChevronRight size={12} />
+            <span className="text-[#166534] text-[10px] uppercase tracking-widest font-black">{district.name}</span>
           </nav>
         </div>
 
@@ -212,6 +244,7 @@ export default async function DistrictPage({ params }) {
         <section className="py-16 md:py-24 bg-white">
           <div className="max-w-[1800px] mx-auto px-4 md:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
+              {/* Pastikan komponen-komponen ini tidak memiliki 'initial opacity 0' di Framer Motion */}
               <DistrictLogistics district={district} />
               <DistrictOverview district={district} />
             </div>
@@ -220,33 +253,33 @@ export default async function DistrictPage({ params }) {
 
         <ClientPortfolio district={district} />
 
-        {/* Pricing Section */}
         <section id="pricing" className="py-16 md:py-24 bg-white">
           <div className="max-w-[1800px] mx-auto px-4 md:px-8">
-            <h2 className="text-3xl md:text-4xl font-black text-[#052c17] mb-8 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-[1000] text-[#052c17] mb-8 text-center md:text-left tracking-tighter uppercase">
               Update <span className="text-[#15803d]">Harga Pasar.</span>
             </h2>
-            <PriceTable data={vegetableData} showHeader={false} />
+            {/* Hanya tampilkan 10 item pertama untuk SEO agar payload kecil, sisa di-load via client jika perlu */}
+            <PriceTable data={vegetableData.slice(0, 20)} showHeader={false} />
           </div>
         </section>
 
         <QualityGuarantee />
         <LiveStats />
-
         <DistrictRoute district={district} />
+        
+        {/* INTERNAL LINKING HUB */}
+        <NearbyAreas currentSlug={district.slug} />
 
-        {/* Inquiry Form Section */}
         <section id="partnership" className="py-20 md:py-32 bg-slate-50 border-t border-slate-100">
           <div className="max-w-[1800px] mx-auto px-4 md:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-black text-[#052c17] tracking-tighter mb-4 leading-none">
+              <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] tracking-tighter mb-4 leading-none uppercase">
                 Inquiry <span className="text-[#15803d]">Form.</span>
               </h2>
               <p className="text-slate-500 font-bold uppercase text-[10px] md:text-xs tracking-[0.3em]">
                 Konsultasi Pengadaan {district.name}
               </p>
             </div>
-
             <div className="w-full">
               <PartnershipForm />
             </div>

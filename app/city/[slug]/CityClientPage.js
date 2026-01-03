@@ -13,9 +13,6 @@ import { SectorTarget } from '@/components/city/SectorTarget';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
-/**
- * OPTIMASI CLOUDINARY (Ditaruh di sini agar tidak menyebabkan props error)
- */
 const optimizeImg = (url, width = 850) => {
   if (!url) return '';
   return url.replace('/upload/', `/upload/f_auto,q_auto:eco,c_scale,w_${width}/`);
@@ -53,12 +50,11 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </div>
 
-      {/* LOGISTICS ADVANTAGE DENGAN ANIMASI */}
+      {/* LOGISTICS ADVANTAGE - SEO OPTIMIZED (No initial opacity 0) */}
       <motion.section 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        whileInView={{ y: [20, 0], opacity: [0.9, 1] }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.5 }}
         className="py-12 lg:py-24 px-6 border-b-2 border-green-100 bg-white"
       >
         <div className="max-w-[1800px] mx-auto grid lg:grid-cols-12 gap-12 items-center">
@@ -98,7 +94,7 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </motion.section>
 
-      {/* SEKSI LAINNYA */}
+      {/* SEKSI LAYANAN */}
       <section className="py-12 lg:py-24 bg-white border-b-2 border-green-100 text-center px-6">
         <div className="max-w-[1800px] mx-auto">
           <p className="text-xl lg:text-3xl font-serif italic text-[#052c17] mb-10 font-bold tracking-tight">
@@ -108,6 +104,8 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </section>
 
+      {/* KATALOG PRODUK - PENTING UNTUK INDEXING */}
+      {/* PERBAIKAN: class diganti menjadi className di bawah ini */}
       <section id="katalog" className="bg-[#fcfdfc] py-12 lg:py-24 border-b-2 border-green-200">
         <div className="max-w-[1500px] mx-auto px-6">
           <div className="mb-12 text-center">

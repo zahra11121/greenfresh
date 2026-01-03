@@ -29,9 +29,20 @@ export async function generateMetadata({ params }) {
 export default async function CityPage({ params }) {
   const { slug } = await params;
   const cityIndex = jabodetabekCities.findIndex((c) => c.slug === slug);
-  const city = jabodetabekCities[cityIndex];
+  const fullCityData = jabodetabekCities[cityIndex];
 
-  if (!city) notFound();
+  if (!fullCityData) notFound();
+
+  // OPTIMASI: Hanya ambil data yang diperlukan saja untuk dikirim ke Client
+  // Ini mencegah "Payload Bloat" yang membuat Googlebot berhenti merayap
+  const city = {
+    slug: fullCityData.slug,
+    name: fullCityData.name,
+    deliveryRoute: fullCityData.deliveryRoute,
+    usp: fullCityData.usp,
+    clientFocus: fullCityData.clientFocus,
+    logistics: fullCityData.logistics
+  };
 
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
@@ -53,12 +64,14 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+      />
       
       <Header />
       
       <main>
-        {/* Breadcrumb Server-Side */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -73,7 +86,6 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* Memanggil Komponen Client */}
         <CityClientPage 
           city={city} 
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
