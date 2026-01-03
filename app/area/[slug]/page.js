@@ -49,7 +49,6 @@ const NearbyAreas = ({ currentSlug }) => {
             <a 
               key={area.slug} 
               href={`/area/${area.slug}/`}
-              prefetch={false}
               className="group p-5 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-1"
             >
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">

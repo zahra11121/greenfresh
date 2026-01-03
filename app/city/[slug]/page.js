@@ -37,7 +37,6 @@ const NearbyCities = ({ currentSlug }) => {
             <a
               key={city.slug} 
               href={`/city/${city.slug}/`}
-              prefetch={false}
               className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
             >
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">

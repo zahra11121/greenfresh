@@ -28,7 +28,6 @@ export default function DistrictGrid({ districts }) {
             <a 
               key={index}
               href={`/area/${district.slug}/`}
-              prefetch={false}
               className="group relative bg-white rounded-xl md:rounded-[2.5rem] p-4 md:p-6 lg:p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between"
             >
               <Navigation className="absolute -right-2 -bottom-2 text-slate-50 w-16 h-16 md:w-24 lg:w-32 rotate-12 group-hover:text-green-50 transition-colors" />
