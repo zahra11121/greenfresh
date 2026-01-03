@@ -149,4 +149,4 @@ export const WhoWeAre = ({ id }) => {
       </div>
     </section>
   );
-};
+}; 
