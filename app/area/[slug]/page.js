@@ -21,6 +21,7 @@ import { LiveStats } from '@/components/city/LiveStats';
 
 // AKTIFKAN SSR (Selalu render di server saat request datang)
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // Import districts data
 import districtsData from '@/data/districts.json';

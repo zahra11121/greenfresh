@@ -10,6 +10,7 @@ import CityClientPage from './CityClientPage';
 // AKTIFKAN SSR (Server Side Rendering)
 // Menghapus 'force-static' untuk memastikan bot mendapatkan konten segar setiap saat
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 /**
  * OPTIMASI INTERNAL LINKING (Nearby Cities)
