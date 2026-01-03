@@ -13,17 +13,22 @@ import { SectorTarget } from '@/components/city/SectorTarget';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
+/**
+ * Optimasi Gambar Cloudinary (f_auto: format otomatis, q_auto: kualitas optimal)
+ */
 const optimizeImg = (url, width = 850) => {
   if (!url) return '';
+  // Menambahkan transformasi Cloudinary untuk efisiensi bandwidth
   return url.replace('/upload/', `/upload/f_auto,q_auto:eco,c_scale,w_${width}/`);
 };
 
 export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
   return (
-    <>
+    <div className="bg-white">
+      {/* HERO SECTION */}
       <CityHero city={city} />
 
-      {/* RATING BADGE */}
+      {/* RATING & TRUST BADGE */}
       <div className="w-full bg-white border-y border-green-50 py-4">
         <div className="max-w-[1800px] mx-auto px-6 flex flex-wrap items-center justify-between gap-6">
           <div className="flex items-center gap-4">
@@ -50,9 +55,10 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </div>
 
-      {/* LOGISTICS ADVANTAGE - SEO OPTIMIZED (No initial opacity 0) */}
+      {/* LOGISTICS ADVANTAGE - SEO FRIENDLY ANIMATION */}
       <motion.section 
-        whileInView={{ y: [20, 0], opacity: [0.9, 1] }}
+        initial={{ opacity: 0.9, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
         className="py-12 lg:py-24 px-6 border-b-2 border-green-100 bg-white"
@@ -83,9 +89,9 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] lg:aspect-video rounded-[2.5rem] overflow-hidden border-2 border-green-100 shadow-2xl group">
               <img
-                src={optimizeImg(CITY_OPERATIONAL_IMAGE, 850)}
-                alt={`Operasional armada distribusi di ${city.name}`}
-                className="w-full h-full object-cover transition-all duration-700"
+                src={optimizeImg(CITY_OPERATIONAL_IMAGE, 1000)}
+                alt={`Operasional armada distribusi Green Fresh di ${city.name}`}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/40 to-transparent" />
@@ -94,7 +100,7 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </motion.section>
 
-      {/* SEKSI LAYANAN */}
+      {/* SEKSI TARGET SEKTOR */}
       <section className="py-12 lg:py-24 bg-white border-b-2 border-green-100 text-center px-6">
         <div className="max-w-[1800px] mx-auto">
           <p className="text-xl lg:text-3xl font-serif italic text-[#052c17] mb-10 font-bold tracking-tight">
@@ -104,22 +110,25 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </section>
 
-      {/* KATALOG PRODUK - PENTING UNTUK INDEXING */}
-      {/* PERBAIKAN: class diganti menjadi className di bawah ini */}
+      {/* KATALOG PRODUK - HARGA REALTIME */}
       <section id="katalog" className="bg-[#fcfdfc] py-12 lg:py-24 border-b-2 border-green-200">
         <div className="max-w-[1500px] mx-auto px-6">
           <div className="mb-12 text-center">
              <h2 className="text-2xl lg:text-4xl font-serif italic font-black text-[#052c17] uppercase">
                Katalog <span className="text-[#166534]">Terupdate.</span>
              </h2>
+             <p className="text-slate-500 text-xs font-bold mt-2 tracking-widest uppercase">Harga Khusus Wilayah {city.name}</p>
           </div>
+          {/* PriceTable mendapatkan data sayuran harian */}
           <PriceTable data={vegetableData} showHeader={false} />
         </div>
       </section>
 
+      {/* STATISTIK & JAMINAN KUALITAS */}
       <LiveStats />
       <QualityGuarantee />
 
+      {/* TIMELINE & FAQ */}
       <section className="py-12 lg:py-24 bg-white border-b border-slate-100">
         <div className="max-w-[1600px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
           <LogisticsTimeline slug={city.slug} cityName={city.name} />
@@ -127,9 +136,10 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
         </div>
       </section>
 
+      {/* FORM KEMITRAAN B2B */}
       <section id="kemitraan" className="py-16 lg:py-32 bg-[#f7faf7] border-t-2 border-green-200">
         <PartnershipForm />
       </section>
-    </>
+    </div>
   );
 }

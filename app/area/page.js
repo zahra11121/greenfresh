@@ -7,6 +7,13 @@ import districtsData from '@/data/districts.json';
 // IMPORT CLIENT COMPONENT UNTUK PAGINATION
 import DistrictGrid from './DistrictGrid';
 
+// --- TAMBAHKAN BARIS INI ---
+// Memastikan halaman daftar ini juga bersifat dinamis 
+// agar sinkron dengan halaman detail yang menggunakan SSR.
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+// ---------------------------
+
 export const metadata = {
   title: 'Jaringan Operasional & Wilayah Distribusi - Green Fresh',
   description: 'Jelajahi cakupan distribusi Green Fresh. Kami melayani berbagai wilayah dengan sistem pengiriman terjadwal.',
@@ -61,6 +68,7 @@ export default function AreaPage() {
         </section>
 
         {/* CLIENT COMPONENT GRID DENGAN PAGINATION */}
+        {/* Pastikan di dalam DistrictGrid.js, Link sudah menggunakan prefetch={false} */}
         <DistrictGrid districts={allDistricts} />
 
         {/* Quality Banner */}

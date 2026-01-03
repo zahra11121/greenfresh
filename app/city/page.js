@@ -5,6 +5,11 @@ import { ChevronRight, Navigation, Star, MapPin, Truck, CheckCircle2, Search } f
 import Link from 'next/link';
 import { jabodetabekCities } from '@/data/cities';
 
+// --- KRITIKAL: OPTIMASI SSR & PEMBERSIHAN URL ---
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+// ----------------------------------------------
+
 export const metadata = {
   title: 'Network Distribusi Jabodetabek - Green Fresh Supplier',
   description: 'Jaringan distribusi sayur segar harian Green Fresh di 27 wilayah strategis Jabodetabek dengan sistem pengiriman terintegrasi.',
@@ -21,16 +26,16 @@ const StatItem = ({ label, value }) => (
 );
 
 /**
- * COMPONENT: CITY CARD (Desain Baru Tanpa Gambar)
+ * COMPONENT: CITY CARD
  */
 function CityCard({ city, index }) {
-  // Logika warna zona berdasarkan nama (hanya contoh visual)
   const isJakarta = city.name.toLowerCase().includes('jakarta');
   const zoneColor = isJakarta ? 'bg-green-600' : 'bg-emerald-500';
 
   return (
     <Link 
       href={`/city/${city.slug}/`}
+      prefetch={false} // <--- KRITIKAL: Mencegah URL kotor (?slug=...)
       className="group bg-white rounded-3xl border border-slate-200 p-5 md:p-7 hover:border-green-500 hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 flex flex-col justify-between min-h-[220px] relative overflow-hidden"
     >
       {/* Dekorasi Background Halus */}
@@ -104,7 +109,7 @@ export default function SupplierSayurPage() {
           </div>
         </section>
 
-        {/* SEARCH & FILTER AREA (Placeholder Desain) */}
+        {/* SEARCH & FILTER AREA */}
         <div className="max-w-[1400px] mx-auto px-4 -mt-8 relative z-20">
           <div className="bg-white p-4 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 w-full relative">

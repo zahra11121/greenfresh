@@ -7,15 +7,15 @@ import { ChevronRight, Home, MapPin } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 import CityClientPage from './CityClientPage';
 
-// --- PERUBAHAN SSR ---
+// --- KONFIGURASI SSR (SERVER SIDE RENDERING) ---
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const runtime = 'edge';
-// ---------------------
+// ----------------------------------------------
 
 /**
- * OPTIMASI INTERNAL LINKING (Nearby Cities)
- * Pada mode SSR, sorting random akan terjadi setiap kali halaman direfresh.
+ * COMPONENT: NearbyCities
+ * Melakukan randomisasi area terkait di sisi server setiap request.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
@@ -37,6 +37,7 @@ const NearbyCities = ({ currentSlug }) => {
             <Link
               key={city.slug}
               href={`/city/${city.slug}/`}
+              prefetch={false} // Mencegah Next.js mengotori URL dengan query param saat prefetch
               className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
             >
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
@@ -53,6 +54,7 @@ const NearbyCities = ({ currentSlug }) => {
   );
 };
 
+// GENERATE METADATA DINAMIS (SEO)
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
@@ -80,6 +82,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
+// SERVER COMPONENT UTAMA
 export default async function CityPage({ params }) {
   const { slug } = await params;
   const cityIndex = jabodetabekCities.findIndex((c) => c.slug === slug);
@@ -87,7 +90,7 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // Memastikan data terisolasi untuk dikirim ke Client Component
+  // Isolasi data untuk dikirim ke Client Component
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -97,12 +100,14 @@ export default async function CityPage({ params }) {
     logistics: fullCityData.logistics
   };
 
+  // Rotasi gambar operasional berdasarkan index kota
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
   
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
+  // SCHEMA MARKUP (JSON-LD) UNTUK SEO LOKAL
   const schemaGraph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -177,6 +182,7 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
+      {/* INJECT JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
@@ -185,6 +191,7 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
+        {/* BREADCRUMB SECTION */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -199,11 +206,13 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
+        {/* CLIENT COMPONENT UNTUK UI INTERAKTIF */}
         <CityClientPage
           city={city}
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE}
         />
 
+        {/* INTERNAL LINKING SECTION */}
         <NearbyCities currentSlug={slug} />
       </main>
 
