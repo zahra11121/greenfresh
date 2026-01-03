@@ -3,7 +3,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight, Home, MapPin } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 import CityClientPage from './CityClientPage';
 
@@ -12,6 +12,41 @@ export const dynamic = 'force-static';
 export async function generateStaticParams() {
   return jabodetabekCities.map((city) => ({ slug: city.slug }));
 }
+
+/**
+ * Komponen Internal Linking untuk membantu perayapan Googlebot
+ * Menampilkan 6 kota lain secara acak di bagian bawah halaman
+ */
+const NearbyCities = ({ currentSlug }) => {
+  const otherCities = jabodetabekCities
+    .filter(c => c.slug !== currentSlug)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 6);
+
+  return (
+    <section className="py-16 bg-white border-t border-green-50">
+      <div className="max-w-[1800px] mx-auto px-6">
+        <h3 className="text-xs font-black text-[#052c17] mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
+          <MapPin size={14} className="text-[#166534]" /> 
+          Cakupan Wilayah Lainnya
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {otherCities.map((city) => (
+            <Link 
+              key={city.slug} 
+              href={`/city/${city.slug}/`}
+              className="group p-4 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300"
+            >
+              <span className="text-[11px] font-bold text-slate-600 group-hover:text-[#166534] uppercase tracking-wider block text-center">
+                {city.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -33,8 +68,7 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // OPTIMASI: Hanya ambil data yang diperlukan saja untuk dikirim ke Client
-  // Ini mencegah "Payload Bloat" yang membuat Googlebot berhenti merayap
+  // OPTIMASI: Sanitasi data kota untuk mengurangi ukuran Payload JSON
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -72,6 +106,7 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
+        {/* Breadcrumb Navigation */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -86,10 +121,14 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
+        {/* Konten Utama Kota */}
         <CityClientPage 
           city={city} 
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
         />
+
+        {/* INTERNAL LINKING HUB: Mencegah Googlebot berhenti merayap */}
+        <NearbyCities currentSlug={slug} />
       </main>
 
       <Footer />
