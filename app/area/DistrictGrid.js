@@ -27,7 +27,7 @@ export default function DistrictGrid({ districts }) {
           {currentItems.map((district, index) => (
             <a 
               key={index}
-              href={`/area/${district.slug}`}
+              href={`/area/${district.slug}/`}
               prefetch={false}
               className="group relative bg-white rounded-xl md:rounded-[2.5rem] p-4 md:p-6 lg:p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between"
             >
