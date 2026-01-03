@@ -15,7 +15,6 @@ export async function generateStaticParams() {
 
 /**
  * Komponen Internal Linking untuk membantu perayapan Googlebot
- * Menampilkan 6 kota lain secara acak di bagian bawah halaman
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
@@ -68,7 +67,7 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // OPTIMASI: Sanitasi data kota untuk mengurangi ukuran Payload JSON
+  // OPTIMASI DATA
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -83,13 +82,37 @@ export default async function CityPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
-  // JSON-LD untuk Local Business/Store
+  // SCHEMA 1: WholesaleStore (DENGAN ALAMAT & KOORDINAT MAPS)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
     "url": currentUrl,
+    "logo": `${baseUrl}/logo.png`,
+    "image": CITY_OPERATIONAL_IMAGE.url || "",
     "telephone": "+6287780937884",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Kp Jl. Kayumanis, RT.04/RW.04, Sukatani, Kec. Cipanas",
+      "addressLocality": "Kabupaten Cianjur",
+      "addressRegion": "Jawa Barat",
+      "postalCode": "43253",
+      "addressCountry": "ID"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -6.7444817,
+      "longitude": 107.0236364
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "08:00",
+        "closes": "23:59"
+      }
+    ],
     "areaServed": { "@type": "City", "name": city.name },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -98,7 +121,7 @@ export default async function CityPage({ params }) {
     }
   };
 
-  // NEW: JSON-LD untuk Breadcrumb
+  // SCHEMA 2: Breadcrumb
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -126,7 +149,7 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
-      {/* Schema Markup Injection */}
+      {/* Injeksi JSON-LD Skema */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
@@ -139,7 +162,7 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
-        {/* Breadcrumb Navigation UI */}
+        {/* Navigasi Breadcrumb Visual */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -160,7 +183,7 @@ export default async function CityPage({ params }) {
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
         />
 
-        {/* INTERNAL LINKING HUB: Mencegah Googlebot berhenti merayap */}
+        {/* Internal Linking untuk Crawler Google */}
         <NearbyCities currentSlug={slug} />
       </main>
 
