@@ -25,7 +25,7 @@ export default function DistrictGrid({ districts }) {
         {/* GRID ITEMS */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
           {currentItems.map((district, index) => (
-            <Link 
+            <a 
               key={index}
               href={`/area/${district.slug}`}
               prefetch={false}
@@ -58,7 +58,7 @@ export default function DistrictGrid({ districts }) {
                   <ChevronRight size={10} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
 

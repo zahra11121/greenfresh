@@ -46,7 +46,7 @@ const NearbyAreas = ({ currentSlug }) => {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {otherAreas.map((area, index) => (
-            <Link 
+            <a 
               key={area.slug} 
               href={`/area/${area.slug}/`}
               prefetch={false}
@@ -58,7 +58,7 @@ const NearbyAreas = ({ currentSlug }) => {
               <span className="text-xs font-black text-slate-700 group-hover:text-[#15803d] uppercase tracking-wider block text-center">
                 {area.name}
               </span>
-            </Link>
+            </a>
           ))}
         </div>
       </div>
