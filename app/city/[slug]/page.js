@@ -14,15 +14,17 @@ export async function generateStaticParams() {
 }
 
 /**
- * OPTIMASI INTERNAL LINKING:
- * Menampilkan 12 area (naik dari 6) secara acak.
- * Teknik ini mencegah "Siloing" di mana Googlebot hanya berputar di area itu-itu saja.
+ * OPTIMASI INTERNAL LINKING (Nearby Cities)
+ * Didesain agar Googlebot bisa merayap rute dinamis lainnya tanpa dianggap spam.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
     .filter(c => c.slug !== currentSlug)
     .sort(() => 0.5 - Math.random())
     .slice(0, 6); 
+
+  // Variasi label untuk SEO natural
+  const labelVariations = ["Distribusi", "Supply Sayur", "Pengiriman", "Area Layanan", "Logistik", "Mitra"];
 
   return (
     <section className="py-16 bg-white border-t border-green-50">
@@ -32,13 +34,16 @@ const NearbyCities = ({ currentSlug }) => {
           Cakupan Distribusi Wilayah Lainnya
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {otherCities.map((city) => (
+          {otherCities.map((city, index) => (
             <Link 
               key={city.slug} 
               href={`/city/${city.slug}/`}
-              className="group p-4 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300"
+              className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
             >
-              <span className="text-[11px] font-bold text-slate-600 group-hover:text-[#166534] uppercase tracking-wider block text-center">
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+                {labelVariations[index % labelVariations.length]}
+              </span>
+              <span className="text-[11px] font-black text-slate-700 group-hover:text-[#166534] uppercase tracking-wider block text-center">
                 {city.name}
               </span>
             </Link>
@@ -64,6 +69,14 @@ export async function generateMetadata({ params }) {
       description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${city.name}.`,
       url: `${baseUrl}/city/${slug}/`,
       type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
+        },
+      ],
     }
   };
 }
@@ -75,7 +88,6 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // OPTIMASI DATA UNTUK PROPS
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -85,7 +97,6 @@ export default async function CityPage({ params }) {
     logistics: fullCityData.logistics
   };
 
-  // Rotasi Gambar Otomatis berdasarkan Index Kota untuk Variasi Konten Visual
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
   
@@ -93,9 +104,9 @@ export default async function CityPage({ params }) {
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
   /**
-   * OPTIMASI SCHEMA GRAPH:
-   * Menggabungkan entitas Organisasi (Gudang Pusat) dan entitas Layanan (Area Target).
-   * Ini memecahkan masalah Google yang bingung lokasi Cipanas vs Area Layanan.
+   * SCHEMA GRAPH FIX:
+   * Memperbaiki error "Parent Node" dengan menyarangkan AggregateRating 
+   * di dalam tipe Service atau WholesaleStore secara benar.
    */
   const schemaGraph = {
     "@context": "https://schema.org",
@@ -105,7 +116,10 @@ export default async function CityPage({ params }) {
         "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
-        "logo": `${baseUrl}/logo.png`,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/logo.png`
+        },
         "image": CITY_OPERATIONAL_IMAGE.url || "",
         "telephone": "+6287780937884",
         "priceRange": "$$",
@@ -121,34 +135,42 @@ export default async function CityPage({ params }) {
           "@type": "GeoCoordinates",
           "latitude": -6.7444817,
           "longitude": 107.0236364
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "150",
+          "bestRating": "5",
+          "worstRating": "1"
         }
       },
       {
         "@type": "Service",
         "name": `Layanan Supply Sayur ${city.name}`,
         "provider": { "@id": `${baseUrl}/#organization` },
-        "serviceType": "B2B Vegetable Supplier",
+        "serviceType": "Vegetable Supplier",
         "areaServed": {
           "@type": "City",
-          "name": city.name,
-          "description": `Cakupan wilayah distribusi di daerah ${city.name} dan sekitarnya.`
+          "name": city.name
         },
+        "description": `Layanan pengadaan sayuran segar kualitas Grade A untuk industri Horeka di wilayah ${city.name}.`,
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
-          "name": "Katalog Sayur Grade A",
+          "name": `Katalog Sayur ${city.name}`,
           "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supply Sayur Hotel" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supply Sayur Restoran" } }
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": `Pengiriman Sayur Harian ke ${city.name}`
+              }
+            }
           ]
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "128"
         }
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${currentUrl}#breadcrumb`,
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
           { "@type": "ListItem", "position": 2, "name": "City", "item": `${baseUrl}/city` },
@@ -160,7 +182,6 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
-      {/* Injeksi Skema Terpadu (@graph) */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }} 
@@ -169,7 +190,7 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
-        {/* Navigasi Breadcrumb Visual */}
+        {/* Breadcrumb Visual */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -184,13 +205,13 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* Konten Utama Kota: Pastikan CityClientPage merender teks deskripsi unik dari file JSON */}
+        {/* Konten Kota */}
         <CityClientPage 
           city={city} 
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
         />
 
-        {/* Internal Linking: Kunci utama agar Googlebot menemukan rute dinamis lainnya */}
+        {/* SEO Linking Hub */}
         <NearbyCities currentSlug={slug} />
       </main>
 

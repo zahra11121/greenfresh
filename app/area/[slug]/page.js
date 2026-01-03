@@ -26,13 +26,15 @@ import districtsData from '@/data/districts.json';
 
 /**
  * OPTIMASI INTERNAL LINKING
- * Menampilkan 12 area acak untuk memastikan Googlebot menemukan rute-rute "tersembunyi"
+ * Menampilkan label variasi agar tidak dianggap spam (Natural Linking)
  */
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
     .sort(() => 0.5 - Math.random())
     .slice(0, 6);
+
+  const labels = ["Logistik", "Distribusi", "Supply", "Pengiriman", "Area", "Layanan"];
 
   return (
     <section className="py-16 bg-white border-t border-slate-100">
@@ -41,13 +43,18 @@ const NearbyAreas = ({ currentSlug }) => {
           <MapPin size={20} className="text-[#15803d]" /> Area Layanan Terkait
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {otherAreas.map((area) => (
+          {otherAreas.map((area, index) => (
             <Link 
               key={area.slug} 
               href={`/area/${area.slug}/`}
-              className="p-4 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all text-xs font-bold text-slate-600 text-center uppercase tracking-tighter"
+              className="group p-5 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-1"
             >
-              {area.name}
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+                {labels[index % labels.length]}
+              </span>
+              <span className="text-xs font-black text-slate-700 group-hover:text-[#15803d] uppercase tracking-wider block text-center">
+                {area.name}
+              </span>
             </Link>
           ))}
         </div>
@@ -174,8 +181,8 @@ export default async function DistrictPage({ params }) {
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
   /**
-   * OPTIMASI SCHEMA GRAPH
-   * Memisahkan data Organisasi (Cipanas) dan data Layanan (Lokal Wilayah)
+   * FIX SCHEMA PARENT NODE
+   * Menyarangkan AggregateRating ke dalam Service yang mereview Provider (WholesaleStore)
    */
   const schemaData = {
     "@context": "https://schema.org",
@@ -185,7 +192,10 @@ export default async function DistrictPage({ params }) {
         "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
-        "logo": `${baseUrl}/logo.png`,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/logo.png`
+        },
         "telephone": "+6287780937884",
         "priceRange": "$$",
         "address": {
@@ -199,9 +209,9 @@ export default async function DistrictPage({ params }) {
       },
       {
         "@type": "Service",
-        "name": `Distribusi Sayur Segar ${district.name}`,
+        "name": `Layanan Supply Sayur ${district.name}`,
         "provider": { "@id": `${baseUrl}/#organization` },
-        "serviceType": "Vegetable Supplier",
+        "serviceType": "B2B Vegetable Supplier",
         "areaServed": {
           "@type": "AdministrativeArea",
           "name": district.name
@@ -210,7 +220,9 @@ export default async function DistrictPage({ params }) {
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.9",
-          "reviewCount": "150"
+          "reviewCount": "150",
+          "bestRating": "5",
+          "worstRating": "1"
         }
       },
       {
@@ -234,7 +246,6 @@ export default async function DistrictPage({ params }) {
       <Header />
 
       <main>
-        {/* Breadcrumb Navigation */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">Beranda</Link>
@@ -284,7 +295,6 @@ export default async function DistrictPage({ params }) {
         <LiveStats />
         <DistrictRoute district={district} />
         
-        {/* SEO HUB: Mencegah Orphan Pages */}
         <NearbyAreas currentSlug={district.slug} />
 
         <section id="partnership" className="py-20 md:py-32 bg-[#fcfdfc] border-t border-green-100">
