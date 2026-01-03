@@ -80,8 +80,10 @@ export default async function CityPage({ params }) {
 
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
-  const currentUrl = `https://greenfresh.co.id/city/${city.slug}/`;
+  const baseUrl = 'https://greenfresh.co.id';
+  const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
+  // JSON-LD untuk Local Business/Store
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
@@ -96,17 +98,48 @@ export default async function CityPage({ params }) {
     }
   };
 
+  // NEW: JSON-LD untuk Breadcrumb
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "City",
+        "item": `${baseUrl}/city`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": city.name,
+        "item": currentUrl
+      }
+    ]
+  };
+
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
+      {/* Schema Markup Injection */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+      />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} 
       />
       
       <Header />
       
       <main>
-        {/* Breadcrumb Navigation */}
+        {/* Breadcrumb Navigation UI */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
