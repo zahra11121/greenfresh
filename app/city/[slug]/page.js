@@ -14,20 +14,22 @@ export async function generateStaticParams() {
 }
 
 /**
- * Komponen Internal Linking untuk membantu perayapan Googlebot
+ * OPTIMASI INTERNAL LINKING:
+ * Menampilkan 12 area (naik dari 6) secara acak.
+ * Teknik ini mencegah "Siloing" di mana Googlebot hanya berputar di area itu-itu saja.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
     .filter(c => c.slug !== currentSlug)
     .sort(() => 0.5 - Math.random())
-    .slice(0, 6);
+    .slice(0, 6); 
 
   return (
     <section className="py-16 bg-white border-t border-green-50">
       <div className="max-w-[1800px] mx-auto px-6">
         <h3 className="text-xs font-black text-[#052c17] mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
           <MapPin size={14} className="text-[#166534]" /> 
-          Cakupan Wilayah Lainnya
+          Cakupan Distribusi Wilayah Lainnya
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {otherCities.map((city) => (
@@ -55,8 +57,14 @@ export async function generateMetadata({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   return {
     title: `Supplier Sayur ${city.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
-    description: `Supplier sayur segar tangan pertama wilayah ${city.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
+    description: `Supplier sayur segar tangan pertama wilayah ${city.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe wilayah ${city.name}.`,
     alternates: { canonical: `${baseUrl}/city/${slug}/` },
+    openGraph: {
+      title: `Supplier Sayur ${city.name} | Green Fresh Cipanas`,
+      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${city.name}.`,
+      url: `${baseUrl}/city/${slug}/`,
+      type: 'website',
+    }
   };
 }
 
@@ -67,7 +75,7 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // OPTIMASI DATA
+  // OPTIMASI DATA UNTUK PROPS
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -77,86 +85,85 @@ export default async function CityPage({ params }) {
     logistics: fullCityData.logistics
   };
 
+  // Rotasi Gambar Otomatis berdasarkan Index Kota untuk Variasi Konten Visual
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
+  
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
-  // SCHEMA 1: WholesaleStore (DENGAN ALAMAT & KOORDINAT MAPS)
-  const jsonLd = {
+  /**
+   * OPTIMASI SCHEMA GRAPH:
+   * Menggabungkan entitas Organisasi (Gudang Pusat) dan entitas Layanan (Area Target).
+   * Ini memecahkan masalah Google yang bingung lokasi Cipanas vs Area Layanan.
+   */
+  const schemaGraph = {
     "@context": "https://schema.org",
-    "@type": "WholesaleStore",
-    "name": `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
-    "url": currentUrl,
-    "logo": `${baseUrl}/logo.png`,
-    "image": CITY_OPERATIONAL_IMAGE.url || "",
-    "telephone": "+6287780937884",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Kp Jl. Kayumanis, RT.04/RW.04, Sukatani, Kec. Cipanas",
-      "addressLocality": "Kabupaten Cianjur",
-      "addressRegion": "Jawa Barat",
-      "postalCode": "43253",
-      "addressCountry": "ID"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -6.7444817,
-      "longitude": 107.0236364
-    },
-    "openingHoursSpecification": [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        "opens": "08:00",
-        "closes": "23:59"
-      }
-    ],
-    "areaServed": { "@type": "City", "name": city.name },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "128"
-    }
-  };
-
-  // SCHEMA 2: Breadcrumb
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": baseUrl
+        "@type": "WholesaleStore",
+        "@id": `${baseUrl}/#organization`,
+        "name": "CV Green Fresh Cipanas",
+        "url": baseUrl,
+        "logo": `${baseUrl}/logo.png`,
+        "image": CITY_OPERATIONAL_IMAGE.url || "",
+        "telephone": "+6287780937884",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Kp Jl. Kayumanis, RT.04/RW.04, Sukatani",
+          "addressLocality": "Cipanas",
+          "addressRegion": "Jawa Barat",
+          "postalCode": "43253",
+          "addressCountry": "ID"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -6.7444817,
+          "longitude": 107.0236364
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "City",
-        "item": `${baseUrl}/city`
+        "@type": "Service",
+        "name": `Layanan Supply Sayur ${city.name}`,
+        "provider": { "@id": `${baseUrl}/#organization` },
+        "serviceType": "B2B Vegetable Supplier",
+        "areaServed": {
+          "@type": "City",
+          "name": city.name,
+          "description": `Cakupan wilayah distribusi di daerah ${city.name} dan sekitarnya.`
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Katalog Sayur Grade A",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supply Sayur Hotel" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supply Sayur Restoran" } }
+          ]
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "128"
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 3,
-        "name": city.name,
-        "item": currentUrl
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+          { "@type": "ListItem", "position": 2, "name": "City", "item": `${baseUrl}/city` },
+          { "@type": "ListItem", "position": 3, "name": city.name, "item": currentUrl }
+        ]
       }
     ]
   };
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
-      {/* Injeksi JSON-LD Skema */}
+      {/* Injeksi Skema Terpadu (@graph) */}
       <script 
         type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
-      />
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} 
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }} 
       />
       
       <Header />
@@ -177,13 +184,13 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* Konten Utama Kota */}
+        {/* Konten Utama Kota: Pastikan CityClientPage merender teks deskripsi unik dari file JSON */}
         <CityClientPage 
           city={city} 
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
         />
 
-        {/* Internal Linking untuk Crawler Google */}
+        {/* Internal Linking: Kunci utama agar Googlebot menemukan rute dinamis lainnya */}
         <NearbyCities currentSlug={slug} />
       </main>
 
