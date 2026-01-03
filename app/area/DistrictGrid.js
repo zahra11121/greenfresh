@@ -25,7 +25,7 @@ export default function DistrictGrid({ districts }) {
         {/* GRID ITEMS */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
           {currentItems.map((district, index) => (
-            <a 
+            <Link 
               key={index}
               href={`/area/${district.slug}/`}
               className="group relative bg-white rounded-xl md:rounded-[2.5rem] p-4 md:p-6 lg:p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between"
@@ -57,7 +57,7 @@ export default function DistrictGrid({ districts }) {
                   <ChevronRight size={10} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
