@@ -7,15 +7,13 @@ import { ChevronRight, Home, MapPin } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 import CityClientPage from './CityClientPage';
 
-export const dynamic = 'force-static';
-
-export async function generateStaticParams() {
-  return jabodetabekCities.map((city) => ({ slug: city.slug }));
-}
+// AKTIFKAN SSR (Server Side Rendering)
+// Menghapus 'force-static' untuk memastikan bot mendapatkan konten segar setiap saat
+export const dynamic = 'force-dynamic';
 
 /**
  * OPTIMASI INTERNAL LINKING (Nearby Cities)
- * Didesain agar Googlebot bisa merayap rute dinamis lainnya tanpa dianggap spam.
+ * Didesain agar Googlebot bisa merayap rute dinamis lainnya secara natural.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
@@ -23,7 +21,7 @@ const NearbyCities = ({ currentSlug }) => {
     .sort(() => 0.5 - Math.random())
     .slice(0, 6); 
 
-  // Variasi label untuk SEO natural
+  // Variasi label untuk SEO natural agar tidak dianggap link spam
   const labelVariations = ["Distribusi", "Supply Sayur", "Pengiriman", "Area Layanan", "Logistik", "Mitra"];
 
   return (
@@ -69,14 +67,7 @@ export async function generateMetadata({ params }) {
       description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${city.name}.`,
       url: `${baseUrl}/city/${slug}/`,
       type: 'website',
-      images: [
-        {
-          url: `${baseUrl}/og-image.jpg`,
-          width: 1200,
-          height: 630,
-          alt: `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
-        },
-      ],
+      images: [{ url: `${baseUrl}/og-image.jpg` }],
     }
   };
 }
@@ -104,9 +95,9 @@ export default async function CityPage({ params }) {
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
   /**
-   * SCHEMA GRAPH FIX:
-   * Memperbaiki error "Parent Node" dengan menyarangkan AggregateRating 
-   * di dalam tipe Service atau WholesaleStore secara benar.
+   * SCHEMA GRAPH FIX (Parent Node Valid):
+   * AggregateRating diletakkan di dalam WholesaleStore agar parent-nya valid.
+   * Service diletakkan terpisah namun terhubung melalui provider ID.
    */
   const schemaGraph = {
     "@context": "https://schema.org",
@@ -136,6 +127,7 @@ export default async function CityPage({ params }) {
           "latitude": -6.7444817,
           "longitude": 107.0236364
         },
+        // FIX: AggregateRating berada di dalam node organisasi utama
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.9",
@@ -182,6 +174,7 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
+      {/* Injeksi Skema Graph */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }} 
@@ -205,13 +198,13 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* Konten Kota */}
+        {/* Konten Utama Kota */}
         <CityClientPage 
           city={city} 
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE} 
         />
 
-        {/* SEO Linking Hub */}
+        {/* Internal Linking Hub (SSR Dynamic) */}
         <NearbyCities currentSlug={slug} />
       </main>
 

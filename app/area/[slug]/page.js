@@ -19,14 +19,15 @@ import { DistrictRoute } from '@/components/district/DistrictRoute';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
-export const dynamic = 'force-static';
+// AKTIFKAN SSR (Selalu render di server saat request datang)
+export const dynamic = 'force-dynamic';
 
 // Import districts data
 import districtsData from '@/data/districts.json';
 
 /**
  * OPTIMASI INTERNAL LINKING
- * Menampilkan label variasi agar tidak dianggap spam (Natural Linking)
+ * Menampilkan label variasi agar lebih natural di mata Googlebot
  */
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
@@ -145,10 +146,6 @@ const ClientPortfolio = ({ districtName }) => {
   );
 };
 
-export async function generateStaticParams() {
-  return districtsData.districts.map((district) => ({ slug: district.slug }));
-}
-
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
@@ -181,8 +178,8 @@ export default async function DistrictPage({ params }) {
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
   /**
-   * FIX SCHEMA PARENT NODE
-   * Menyarangkan AggregateRating ke dalam Service yang mereview Provider (WholesaleStore)
+   * REVISI SCHEMA GRAPH (Fix Parent Node Error)
+   * Menyambungkan AggregateRating langsung ke entitas WholesaleStore sebagai induk utama.
    */
   const schemaData = {
     "@context": "https://schema.org",
@@ -205,6 +202,13 @@ export default async function DistrictPage({ params }) {
           "addressRegion": "Jawa Barat",
           "postalCode": "43253",
           "addressCountry": "ID"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "150",
+          "bestRating": "5",
+          "worstRating": "1"
         }
       },
       {
@@ -216,14 +220,7 @@ export default async function DistrictPage({ params }) {
           "@type": "AdministrativeArea",
           "name": district.name
         },
-        "description": `Layanan supply sayuran grade A harian untuk wilayah ${district.name}.`,
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
-        }
+        "description": `Layanan supply sayuran grade A harian untuk wilayah ${district.name} dari Cipanas.`
       },
       {
         "@type": "BreadcrumbList",
@@ -246,6 +243,7 @@ export default async function DistrictPage({ params }) {
       <Header />
 
       <main>
+        {/* Breadcrumb Visual */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">Beranda</Link>
@@ -295,6 +293,7 @@ export default async function DistrictPage({ params }) {
         <LiveStats />
         <DistrictRoute district={district} />
         
+        {/* SEO INTERNAL LINKING HUB */}
         <NearbyAreas currentSlug={district.slug} />
 
         <section id="partnership" className="py-20 md:py-32 bg-[#fcfdfc] border-t border-green-100">
