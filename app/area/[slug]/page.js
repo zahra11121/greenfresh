@@ -20,16 +20,27 @@ import { DistrictRoute } from '@/components/district/DistrictRoute';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
-// --- KONFIGURASI SSR DIPERBAIKI ---
-export const dynamic = 'force-dynamic'; 
-export const revalidate = 0; 
-export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN SEMENTARA
-
 import districtsData from '@/data/districts.json';
 
-// Komponen Internal: Wilayah Terkait
+// --- KONFIGURASI SSG (MENGGANTIKAN SSR) ---
+export const dynamicParams = false; // Mengunci hanya pada slug yang ada di JSON
+export const runtime = 'edge';
+/**
+ * generateStaticParams
+ * Membuat semua halaman area secara statis saat proses build.
+ */
+export async function generateStaticParams() {
+  return districtsData.districts.map((district) => ({
+    slug: district.slug,
+  }));
+}
+// ----------------------------------------------
+
+/**
+ * Komponen Internal: Wilayah Terkait
+ * Catatan: Karena SSG, randomisasi terjadi saat BUILD TIME.
+ */
 const NearbyAreas = ({ currentSlug }) => {
-  // SSR memungkinkan randomisasi berbeda setiap refresh halaman
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
     .sort(() => 0.5 - Math.random())
@@ -45,7 +56,7 @@ const NearbyAreas = ({ currentSlug }) => {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {otherAreas.map((area, index) => (
-            <a
+            <Link
               key={area.slug}
               href={`/area/${area.slug}/`}
               className="group p-5 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-1"
@@ -56,7 +67,7 @@ const NearbyAreas = ({ currentSlug }) => {
               <span className="text-xs font-black text-slate-700 group-hover:text-[#15803d] uppercase tracking-wider block text-center">
                 {area.name}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -64,7 +75,6 @@ const NearbyAreas = ({ currentSlug }) => {
   );
 };
 
-// Komponen Internal: Rating & Kepercayaan
 const RatingSection = ({ districtName }) => (
   <div className="w-full bg-gradient-to-r from-white to-[#f7faf7] py-6 border-y border-green-50/50 text-center md:text-left">
     <div className="max-w-[1800px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -106,7 +116,6 @@ const RatingSection = ({ districtName }) => (
   </div>
 );
 
-// Komponen Internal: Portofolio Klien
 const ClientPortfolio = ({ districtName }) => {
   const segments = [
     { icon: <Building2 />, title: "Hospitalitas", list: ["Hotel Bintang 5", "Resort & Villa"] },
@@ -148,9 +157,8 @@ const ClientPortfolio = ({ districtName }) => {
   );
 };
 
-// GENERATE METADATA DINAMIS - DIPERBAIKI
+// GENERATE METADATA DINAMIS
 export async function generateMetadata({ params }) {
-  // ✅ PERBAIKAN: Langsung akses params tanpa await
   const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
   
@@ -191,14 +199,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// HALAMAN UTAMA (SERVER COMPONENT) - DIPERBAIKI
+// HALAMAN UTAMA (SERVER COMPONENT)
 export default async function DistrictPage({ params }) {
-  // ✅ PERBAIKAN: Gunakan Promise.resolve untuk kompatibilitas
-  const resolvedParams = await Promise.resolve(params);
-  const { slug } = resolvedParams;
-  
-  // Atau bisa langsung (tanpa await):
-  // const { slug } = params;
+  const { slug } = await params;
   
   const rawDistrict = districtsData.districts.find((d) => d.slug === slug);
 
@@ -208,7 +211,6 @@ export default async function DistrictPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
-  // DATA SCHEMA MARKUP (JSON-LD)
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -271,7 +273,6 @@ export default async function DistrictPage({ params }) {
       <Header />
 
       <main>
-        {/* BREADCRUMB */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">Beranda</Link>
@@ -285,7 +286,6 @@ export default async function DistrictPage({ params }) {
         <DistrictHero district={district} />
         <RatingSection districtName={district.name} />
 
-        {/* OVERVIEW & LOGISTICS */}
         <section className="py-16 md:py-24 bg-white border-b border-green-50">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="grid lg:grid-cols-12 gap-12 items-start">
@@ -301,7 +301,6 @@ export default async function DistrictPage({ params }) {
 
         <ClientPortfolio districtName={district.name} />
 
-        {/* KATALOG HARGA */}
         <section id="katalog" className="py-16 md:py-24 bg-white">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="mb-12 text-center md:text-left">
@@ -313,7 +312,7 @@ export default async function DistrictPage({ params }) {
             <PriceTable data={vegetableData.slice(0, 20)} />
             <div className="mt-8 flex justify-center">
                <Link href="/produk" className="px-8 py-4 border-2 border-green-100 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-green-50 transition-all">
-                  Lihat Semua Produk
+                 Lihat Semua Produk
                </Link>
             </div>
           </div>
@@ -323,10 +322,8 @@ export default async function DistrictPage({ params }) {
         <LiveStats />
         <DistrictRoute district={district} />
         
-        {/* RANDOM NEARBY AREAS */}
         <NearbyAreas currentSlug={district.slug} />
 
-        {/* KONTAK SALES */}
         <section id="partnership" className="py-20 md:py-32 bg-[#fcfdfc] border-t border-green-100">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="text-center mb-16">

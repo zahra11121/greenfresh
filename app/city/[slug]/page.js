@@ -7,15 +7,26 @@ import { ChevronRight, Home, MapPin } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 import CityClientPage from './CityClientPage';
 
-// --- KONFIGURASI SSR DIPERBAIKI ---
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
+// --- KONFIGURASI SSG (MENGGANTIKAN SSR) ---
+// dynamicParams = false memastikan hanya slug yang ada di data yang di-render (404 jika tidak ada)
+export const dynamicParams = false; 
+export const runtime = 'edge';
+
+/**
+ * generateStaticParams
+ * Fungsi krusial untuk SSG agar Next.js tahu daftar URL apa saja yang harus dibuat saat build time.
+ */
+export async function generateStaticParams() {
+  return jabodetabekCities.map((city) => ({
+    slug: city.slug,
+  }));
+}
 // ----------------------------------------------
 
 /**
  * COMPONENT: NearbyCities
- * Melakukan randomisasi area terkait di sisi server setiap request.
+ * Catatan: Karena ini SSG, randomisasi akan terjadi saat BUILD TIME.
+ * Jika ingin tetap random setiap refresh, bagian ini harus dipindah ke Client Component.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
@@ -34,7 +45,7 @@ const NearbyCities = ({ currentSlug }) => {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {otherCities.map((city, index) => (
-            <a
+            <Link
               key={city.slug}
               href={`/city/${city.slug}/`}
               className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
@@ -45,7 +56,7 @@ const NearbyCities = ({ currentSlug }) => {
               <span className="text-[11px] font-black text-slate-700 group-hover:text-[#166534] uppercase tracking-wider block text-center">
                 {city.name}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -53,9 +64,8 @@ const NearbyCities = ({ currentSlug }) => {
   );
 };
 
-// GENERATE METADATA DINAMIS (SEO) - DIPERBAIKI
+// GENERATE METADATA DINAMIS (SEO)
 export async function generateMetadata({ params }) {
-  // ✅ PERBAIKAN: Langsung akses params tanpa await
   const { slug } = await params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
   
@@ -96,21 +106,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// SERVER COMPONENT UTAMA - DIPERBAIKI
+// SERVER COMPONENT UTAMA
 export default async function CityPage({ params }) {
-  // ✅ PERBAIKAN: Gunakan Promise.resolve untuk kompatibilitas
-  const resolvedParams = await Promise.resolve(params);
-  const { slug } = resolvedParams;
-  
-  // Atau langsung (tanpa await):
-  // const { slug } = params;
+  const { slug } = await params;
   
   const cityIndex = jabodetabekCities.findIndex((c) => c.slug === slug);
   const fullCityData = jabodetabekCities[cityIndex];
 
   if (!fullCityData) notFound();
 
-  // Isolasi data untuk dikirim ke Client Component
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -120,14 +124,12 @@ export default async function CityPage({ params }) {
     logistics: fullCityData.logistics
   };
 
-  // Rotasi gambar operasional berdasarkan index kota
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
   
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
-  // SCHEMA MARKUP (JSON-LD) UNTUK SEO LOKAL
   const schemaGraph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -202,7 +204,6 @@ export default async function CityPage({ params }) {
 
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
-      {/* INJECT JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
@@ -211,7 +212,6 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
-        {/* BREADCRUMB SECTION */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
@@ -226,13 +226,11 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* CLIENT COMPONENT UNTUK UI INTERAKTIF */}
         <CityClientPage
           city={city}
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE}
         />
 
-        {/* INTERNAL LINKING SECTION */}
         <NearbyCities currentSlug={slug} />
       </main>
 

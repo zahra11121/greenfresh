@@ -5,10 +5,10 @@ import { ChevronRight, Navigation, Star, MapPin, Truck, CheckCircle2, Search } f
 import Link from 'next/link';
 import { jabodetabekCities } from '@/data/cities';
 
-// --- KRITIKAL: OPTIMASI SSR & PEMBERSIHAN URL ---
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const runtime = 'edge';
+// --- PERBAIKAN: MENGAKTIFKAN SSG ---
+// Menghapus force-dynamic dan revalidate 0 agar halaman di-generate saat build time
+export const dynamic = 'auto'; 
+export const runtime = 'nodejs'; // Kembali ke runtime standar untuk stabilitas SSG
 // ----------------------------------------------
 
 export const metadata = {
@@ -28,13 +28,14 @@ const StatItem = ({ label, value }) => (
 
 /**
  * COMPONENT: CITY CARD
+ * Perbaikan: Menggunakan Link dari next/link untuk navigasi client-side yang cepat
  */
 function CityCard({ city, index }) {
   const isJakarta = city.name.toLowerCase().includes('jakarta');
   const zoneColor = isJakarta ? 'bg-green-600' : 'bg-emerald-500';
 
   return (
-    <a 
+    <Link 
       href={`/city/${city.slug}/`}
       className="group bg-white rounded-3xl border border-slate-200 p-5 md:p-7 hover:border-green-500 hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 flex flex-col justify-between min-h-[220px] relative overflow-hidden"
     >
@@ -75,7 +76,7 @@ function CityCard({ city, index }) {
           ))}
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -142,7 +143,7 @@ export default function SupplierSayurPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {jabodetabekCities.map((city, index) => (
-                <CityCard key={index} city={city} index={index} />
+                <CityCard key={city.slug} city={city} index={index} />
               ))}
             </div>
           </div>
