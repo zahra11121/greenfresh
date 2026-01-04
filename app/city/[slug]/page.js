@@ -130,7 +130,7 @@ export default async function CityPage({ params }) {
       {
         "@type": "WholesaleStore",
         "@id": `${baseUrl}/#organization`,
-        // Menyatakan bahwa halaman ini secara khusus membahas bisnis ini
+        // Menyatakan halaman ini adalah entitas utama yang membahas bisnis tersebut
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": currentUrl
@@ -168,7 +168,11 @@ export default async function CityPage({ params }) {
                 "areaServed": { 
                   "@type": "City", 
                   "name": city.name,
-                  "addressCountry": "ID" 
+                  // PERBAIKAN: Membungkus addressCountry di dalam objek address yang valid
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "ID"
+                  }
                 },
                 "provider": { "@id": `${baseUrl}/#organization` }
               }

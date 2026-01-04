@@ -98,13 +98,12 @@ export default async function DistrictPage({ params }) {
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
   // Combined Structured Data (Unified Graph for LocalBusiness, Organization, Service)
-  const schemaData = {
+const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WholesaleStore",
         "@id": `${baseUrl}/#organization`,
-        // Menyatakan halaman ini adalah entitas utama yang membahas bisnis tersebut
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": currentUrl
@@ -142,7 +141,11 @@ export default async function DistrictPage({ params }) {
                 "areaServed": {
                   "@type": "AdministrativeArea",
                   "name": district.name,
-                  "addressCountry": "ID"
+                  // PERBAIKAN: Menggunakan objek address untuk mendefinisikan negara
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "ID"
+                  }
                 },
                 "provider": { "@id": `${baseUrl}/#organization` }
               }
