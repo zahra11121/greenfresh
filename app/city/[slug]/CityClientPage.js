@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import * as motion from "framer-motion/client";
+import React, { Suspense } from 'react';
+import { motion } from "framer-motion"; // ✅ PERBAIKAN: Import yang benar
 import { Star, ShieldCheck, Truck, Users } from 'lucide-react';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
@@ -22,11 +22,20 @@ const optimizeImg = (url, width = 850) => {
   return url.replace('/upload/', `/upload/f_auto,q_auto:eco,c_scale,w_${width}/`);
 };
 
+// Loading Skeleton untuk gambar
+const ImageSkeleton = () => (
+  <div className="relative aspect-[4/3] lg:aspect-video rounded-[2.5rem] overflow-hidden border-2 border-green-100 shadow-2xl bg-slate-100 animate-pulse">
+    <div className="absolute inset-0 bg-gradient-to-t from-slate-200/40 to-transparent" />
+  </div>
+);
+
 export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
   return (
     <div className="bg-white">
       {/* HERO SECTION */}
-      <CityHero city={city} />
+      <Suspense fallback={<div className="h-96 bg-slate-100 animate-pulse" />}>
+        <CityHero city={city} />
+      </Suspense>
 
       {/* RATING & TRUST BADGE */}
       <div className="w-full bg-white border-y border-green-50 py-4">
@@ -87,15 +96,19 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="relative aspect-[4/3] lg:aspect-video rounded-[2.5rem] overflow-hidden border-2 border-green-100 shadow-2xl group">
-              <img
-                src={optimizeImg(CITY_OPERATIONAL_IMAGE, 1000)}
-                alt={`Operasional armada distribusi Green Fresh di ${city.name}`}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/40 to-transparent" />
-            </div>
+            <Suspense fallback={<ImageSkeleton />}>
+              <div className="relative aspect-[4/3] lg:aspect-video rounded-[2.5rem] overflow-hidden border-2 border-green-100 shadow-2xl group">
+                <img
+                  src={optimizeImg(CITY_OPERATIONAL_IMAGE?.url || CITY_OPERATIONAL_IMAGE, 1000)}
+                  alt={`Operasional armada distribusi Green Fresh di ${city.name}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  width={1000}
+                  height={750}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#052c17]/40 to-transparent" />
+              </div>
+            </Suspense>
           </div>
         </div>
       </motion.section>
@@ -120,25 +133,39 @@ export default function CityClientPage({ city, CITY_OPERATIONAL_IMAGE }) {
              <p className="text-slate-500 text-xs font-bold mt-2 tracking-widest uppercase">Harga Khusus Wilayah {city.name}</p>
           </div>
           {/* PriceTable mendapatkan data sayuran harian */}
-          <PriceTable data={vegetableData} showHeader={false} />
+          <Suspense fallback={<div className="h-64 bg-slate-100 animate-pulse rounded-2xl" />}>
+            <PriceTable data={vegetableData} showHeader={false} />
+          </Suspense>
         </div>
       </section>
 
       {/* STATISTIK & JAMINAN KUALITAS */}
-      <LiveStats />
-      <QualityGuarantee />
+      <Suspense fallback={<div className="h-32 bg-slate-100 animate-pulse" />}>
+        <LiveStats />
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-32 bg-slate-100 animate-pulse" />}>
+        <QualityGuarantee />
+      </Suspense>
 
       {/* TIMELINE & FAQ */}
       <section className="py-12 lg:py-24 bg-white border-b border-slate-100">
         <div className="max-w-[1600px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
-          <LogisticsTimeline slug={city.slug} cityName={city.name} />
-          <CityFAQ cityName={city.name} />
+          <Suspense fallback={<div className="h-64 bg-slate-100 animate-pulse rounded-2xl" />}>
+            <LogisticsTimeline slug={city.slug} cityName={city.name} />
+          </Suspense>
+          
+          <Suspense fallback={<div className="h-64 bg-slate-100 animate-pulse rounded-2xl" />}>
+            <CityFAQ cityName={city.name} />
+          </Suspense>
         </div>
       </section>
 
       {/* FORM KEMITRAAN B2B */}
       <section id="kemitraan" className="py-16 lg:py-32 bg-[#f7faf7] border-t-2 border-green-200">
-        <PartnershipForm />
+        <Suspense fallback={<div className="h-96 bg-slate-100 animate-pulse rounded-3xl" />}>
+          <PartnershipForm />
+        </Suspense>
       </section>
     </div>
   );

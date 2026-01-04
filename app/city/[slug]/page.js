@@ -7,10 +7,10 @@ import { ChevronRight, Home, MapPin } from 'lucide-react';
 import { galleryData } from '@/data/galleryData';
 import CityClientPage from './CityClientPage';
 
-// --- KONFIGURASI SSR (SERVER SIDE RENDERING) ---
+// --- KONFIGURASI SSR DIPERBAIKI ---
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const runtime = 'edge';
+// export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
 // ----------------------------------------------
 
 /**
@@ -53,37 +53,58 @@ const NearbyCities = ({ currentSlug }) => {
   );
 };
 
-// GENERATE METADATA DINAMIS (SEO)
+// GENERATE METADATA DINAMIS (SEO) - DIPERBAIKI
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  // ✅ PERBAIKAN: Langsung akses params tanpa await
+  const { slug } = params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
-  if (!city) return { title: 'Halaman Tidak Ditemukan' };
+  
+  if (!city) {
+    return {
+      title: 'Halaman Tidak Ditemukan - Green Fresh',
+      description: 'Kota tidak ditemukan'
+    };
+  }
 
   const baseUrl = 'https://greenfresh.co.id';
+  const fullUrl = `${baseUrl}/city/${slug}/`;
+  
   return {
     title: `Supplier Sayur ${city.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
     description: `Supplier sayur segar tangan pertama wilayah ${city.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe wilayah ${city.name}.`,
-    alternates: { canonical: `${baseUrl}/city/${slug}/` },
+    alternates: { canonical: fullUrl },
     openGraph: {
       title: `Supplier Sayur ${city.name} | Green Fresh Cipanas`,
       description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${city.name}.`,
-      url: `${baseUrl}/city/${slug}/`,
+      url: fullUrl,
       type: 'website',
       images: [
         {
-          url: `${baseUrl}/og-image.jpg`,
+          url: `${baseUrl}/og-city-${slug}.jpg`,
           width: 1200,
           height: 630,
           alt: `Green Fresh Cipanas - Supplier Sayur ${city.name}`,
         },
       ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Supplier Sayur ${city.name} | Green Fresh Cipanas`,
+      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${city.name}.`,
+      images: [`${baseUrl}/og-city-${slug}.jpg`]
     }
   };
 }
 
-// SERVER COMPONENT UTAMA
+// SERVER COMPONENT UTAMA - DIPERBAIKI
 export default async function CityPage({ params }) {
-  const { slug } = await params;
+  // ✅ PERBAIKAN: Gunakan Promise.resolve untuk kompatibilitas
+  const resolvedParams = await Promise.resolve(params);
+  const { slug } = resolvedParams;
+  
+  // Atau langsung (tanpa await):
+  // const { slug } = params;
+  
   const cityIndex = jabodetabekCities.findIndex((c) => c.slug === slug);
   const fullCityData = jabodetabekCities[cityIndex];
 

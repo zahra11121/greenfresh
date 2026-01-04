@@ -20,10 +20,10 @@ import { DistrictRoute } from '@/components/district/DistrictRoute';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
-// --- KONFIGURASI SSR (SERVER SIDE RENDERING) ---
+// --- KONFIGURASI SSR DIPERBAIKI ---
 export const dynamic = 'force-dynamic'; 
 export const revalidate = 0; 
-export const runtime = 'edge';
+// export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN SEMENTARA
 
 import districtsData from '@/data/districts.json';
 
@@ -148,11 +148,18 @@ const ClientPortfolio = ({ districtName }) => {
   );
 };
 
-// GENERATE METADATA DINAMIS
+// GENERATE METADATA DINAMIS - DIPERBAIKI
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  // ✅ PERBAIKAN: Langsung akses params tanpa await
+  const { slug } = params;
   const district = districtsData.districts.find((d) => d.slug === slug);
-  if (!district) return { title: 'Not Found' };
+  
+  if (!district) {
+    return {
+      title: 'District Not Found - Green Fresh',
+      description: 'District tidak ditemukan'
+    };
+  }
 
   const baseUrl = 'https://greenfresh.co.id';
   const fullUrl = `${baseUrl}/area/${slug}/`;
@@ -166,13 +173,33 @@ export async function generateMetadata({ params }) {
       description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
       url: fullUrl,
       type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/og-area-${slug}.jpg`,
+          width: 1200,
+          height: 630,
+          alt: `Supplier Sayur ${district.name}`
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
+      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
+      images: [`${baseUrl}/og-area-${slug}.jpg`]
     }
   };
 }
 
-// HALAMAN UTAMA (SERVER COMPONENT)
+// HALAMAN UTAMA (SERVER COMPONENT) - DIPERBAIKI
 export default async function DistrictPage({ params }) {
-  const { slug } = await params;
+  // ✅ PERBAIKAN: Gunakan Promise.resolve untuk kompatibilitas
+  const resolvedParams = await Promise.resolve(params);
+  const { slug } = resolvedParams;
+  
+  // Atau bisa langsung (tanpa await):
+  // const { slug } = params;
+  
   const rawDistrict = districtsData.districts.find((d) => d.slug === slug);
 
   if (!rawDistrict) notFound();
