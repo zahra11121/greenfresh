@@ -23,14 +23,9 @@ import { LiveStats } from '@/components/city/LiveStats';
 // Data
 import districtsData from '@/data/districts.json';
 
-export const dynamic = 'force-static';
-export const dynamicParams = false; 
-
-export async function generateStaticParams() {
-  return districtsData.districts.map((district) => ({
-    slug: district.slug,
-  }));
-}
+// --- KONFIGURASI SSR CLOUDFLARE PAGES ---
+export const runtime = 'edge'; // Wajib untuk SSR di Cloudflare
+export const dynamic = 'force-dynamic'; // Memastikan halaman selalu render terbaru
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -97,8 +92,8 @@ export default async function DistrictPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
-  // Combined Structured Data (Unified Graph for LocalBusiness, Organization, Service)
-const schemaData = {
+  // Combined Structured Data
+  const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -141,7 +136,6 @@ const schemaData = {
                 "areaServed": {
                   "@type": "AdministrativeArea",
                   "name": district.name,
-                  // PERBAIKAN: Menggunakan objek address untuk mendefinisikan negara
                   "address": {
                     "@type": "PostalAddress",
                     "addressCountry": "ID"
@@ -178,6 +172,7 @@ const schemaData = {
       }
     ]
   };
+
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased overflow-x-hidden">
       <script

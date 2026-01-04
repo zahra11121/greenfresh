@@ -13,22 +13,15 @@ import { jabodetabekCities } from '@/data/cities';
 import { galleryData } from '@/data/galleryData';
 
 /**
- * --- KONFIGURASI SSG MURNI ---
+ * --- KONFIGURASI SSR (SERVER-SIDE RENDERING) ---
+ * Menggunakan Edge Runtime agar kompatibel dengan Cloudflare Pages.
  */
-export const dynamic = 'force-static'; 
-export const dynamicParams = false; 
-
-/**
- * generateStaticParams
- */
-export async function generateStaticParams() {
-  return jabodetabekCities.map((city) => ({
-    slug: city.slug,
-  }));
-}
+export const runtime = 'edge'; 
+export const dynamic = 'force-dynamic'; 
 
 /**
  * generateMetadata
+ * Tetap berfungsi di SSR untuk SEO yang dinamis.
  */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -95,7 +88,7 @@ const NearbyCities = ({ currentSlug }) => {
 };
 
 /**
- * SERVER COMPONENT UTAMA
+ * SERVER COMPONENT UTAMA (SSR)
  */
 export default async function CityPage({ params }) {
   const { slug } = await params;
@@ -121,8 +114,7 @@ export default async function CityPage({ params }) {
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
   /**
-   * --- PERBAIKAN SCHEMA GRAPH ---
-   * Menggabungkan WholesaleStore, Organization, Service, dan BreadcrumbList
+   * SCHEMA GRAPH
    */
   const schemaGraph = {
     "@context": "https://schema.org",
@@ -130,7 +122,6 @@ export default async function CityPage({ params }) {
       {
         "@type": "WholesaleStore",
         "@id": `${baseUrl}/#organization`,
-        // Menyatakan halaman ini adalah entitas utama yang membahas bisnis tersebut
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": currentUrl
@@ -168,7 +159,6 @@ export default async function CityPage({ params }) {
                 "areaServed": { 
                   "@type": "City", 
                   "name": city.name,
-                  // PERBAIKAN: Membungkus addressCountry di dalam objek address yang valid
                   "address": {
                     "@type": "PostalAddress",
                     "addressCountry": "ID"
@@ -237,7 +227,7 @@ export default async function CityPage({ params }) {
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE}
         />
 
-        {/* Static Nearby Cities */}
+        {/* Nearby Cities */}
         <NearbyCities currentSlug={slug} />
       </main>
 
