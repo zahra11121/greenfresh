@@ -128,8 +128,13 @@ export default async function CityPage({ params }) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["WholesaleStore", "Organization"],
+        "@type": "WholesaleStore",
         "@id": `${baseUrl}/#organization`,
+        // Menyatakan bahwa halaman ini secara khusus membahas bisnis ini
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": currentUrl
+        },
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
         "logo": {
@@ -148,6 +153,27 @@ export default async function CityPage({ params }) {
           "addressRegion": "Jawa Barat",
           "postalCode": "43253",
           "addressCountry": "ID"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": `Layanan Supply Sayur ${city.name}`,
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": `Supplier Sayur Segar ${city.name}`,
+                "serviceType": "Vegetable Wholesale Supplier",
+                "description": `Layanan supply sayuran grade A harian untuk Hotel, Restoran, dan Cafe di wilayah ${city.name}.`,
+                "areaServed": { 
+                  "@type": "City", 
+                  "name": city.name,
+                  "addressCountry": "ID" 
+                },
+                "provider": { "@id": `${baseUrl}/#organization` }
+              }
+            }
+          ]
         }
       },
       {
@@ -172,35 +198,10 @@ export default async function CityPage({ params }) {
             "item": currentUrl
           }
         ]
-      },
-      {
-        "@type": "Service",
-        "serviceType": "Vegetable Wholesale Supplier",
-        "provider": { "@id": `${baseUrl}/#organization` },
-        "name": `Supplier Sayur Segar ${city.name}`,
-        "description": `Layanan supply sayuran grade A harian untuk Hotel, Restoran, dan Cafe di wilayah ${city.name}.`,
-        "areaServed": { 
-          "@type": "City", 
-          "name": city.name,
-          "addressCountry": "ID" 
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Katalog Sayur Fresh",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Supply Sayuran Grade A Premium"
-              }
-            }
-          ]
-        }
       }
     ]
   };
-
+  
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased selection:bg-green-100 overflow-x-hidden">
       <script

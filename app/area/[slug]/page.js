@@ -102,8 +102,13 @@ export default async function DistrictPage({ params }) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["WholesaleStore", "Organization"],
+        "@type": "WholesaleStore",
         "@id": `${baseUrl}/#organization`,
+        // Menyatakan halaman ini adalah entitas utama yang membahas bisnis tersebut
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": currentUrl
+        },
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
         "logo": {
@@ -122,6 +127,27 @@ export default async function DistrictPage({ params }) {
           "addressRegion": "Jawa Barat",
           "postalCode": "43253",
           "addressCountry": "ID"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": `Katalog Layanan Supply ${district.name}`,
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": `Supplier Sayur Segar ${district.name}`,
+                "serviceType": "Vegetable Supply Chain",
+                "description": `Layanan pengadaan sayuran grade A harian khusus Hotel, Restoran, dan Cafe di wilayah ${district.name}.`,
+                "areaServed": {
+                  "@type": "AdministrativeArea",
+                  "name": district.name,
+                  "addressCountry": "ID"
+                },
+                "provider": { "@id": `${baseUrl}/#organization` }
+              }
+            }
+          ]
         }
       },
       {
@@ -146,35 +172,9 @@ export default async function DistrictPage({ params }) {
             "item": currentUrl
           }
         ]
-      },
-      {
-        "@type": "Service",
-        "serviceType": "Vegetable Supply Chain",
-        "provider": { "@id": `${baseUrl}/#organization` },
-        "name": `Supplier Sayur Segar ${district.name}`,
-        "description": `Layanan pengadaan sayuran grade A harian khusus Hotel, Restoran, dan Cafe di wilayah ${district.name}.`,
-        "areaServed": {
-          "@type": "AdministrativeArea",
-          "name": district.name,
-          "addressCountry": "ID"
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Katalog Supply Area",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Pengiriman Komoditas Grade A Harian"
-              }
-            }
-          ]
-        }
       }
     ]
   };
-
   return (
     <div className="bg-white text-[#052c17] font-sans antialiased overflow-x-hidden">
       <script
