@@ -34,7 +34,7 @@ export async function generateMetadata({ params }) {
   if (!district) return { title: 'Not Found' };
 
   const baseUrl = 'https://greenfresh.co.id';
-  const fullUrl = `${baseUrl}/area/${slug}/`;
+  const fullUrl = `${baseUrl}/area/${slug}`;
 
   return {
     title: `Supplier Sayur ${district.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
@@ -66,7 +66,7 @@ const NearbyAreas = ({ currentSlug }) => {
           {otherAreas.map((area, index) => (
             <Link
               key={area.slug}
-              href={`/area/${area.slug}/`}
+              href={`/area/${area.slug}`}
               className="group p-5 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-1"
             >
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">

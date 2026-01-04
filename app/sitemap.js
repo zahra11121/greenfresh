@@ -5,7 +5,7 @@ export default function sitemap() {
   const baseUrl = 'https://greenfresh.co.id';
   const districts = districtsData.districts || [];
 
-  const staticPages = ['/', '/produk/', '/gallery/', '/about/', '/city/', '/area/'].map(route => ({
+  const staticPages = ['', '/produk', '/gallery', '/about', '/city', '/area'].map(route => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily',
@@ -13,14 +13,14 @@ export default function sitemap() {
   }));
 
   const cityPages = jabodetabekCities.map((city) => ({
-    url: `${baseUrl}/city/${city.slug}/`,
+    url: `${baseUrl}/city/${city.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   const districtPages = districts.map((district) => ({
-    url: `${baseUrl}/area/${district.slug}/`,
+    url: `${baseUrl}/area/${district.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.6,
