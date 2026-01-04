@@ -22,10 +22,9 @@ export default function DistrictGrid({ districts }) {
       <div className="max-w-[1800px] mx-auto px-3 md:px-8">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
           {currentItems.map((district, index) => (
-            <Link 
+            <a
               key={district.slug || index}
               href={`/area/${district.slug}/`}
-              prefetch={false} // PERBAIKAN: Menghindari query string nxtPslug
               className="group relative bg-white rounded-xl md:rounded-[2.5rem] p-4 md:p-6 lg:p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between"
             >
               <Navigation className="absolute -right-2 -bottom-2 text-slate-50 w-16 h-16 md:w-24 lg:w-32 rotate-12 group-hover:text-green-50 transition-colors" />
@@ -51,7 +50,7 @@ export default function DistrictGrid({ districts }) {
                   <ChevronRight size={10} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
 

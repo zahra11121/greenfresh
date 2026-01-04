@@ -34,10 +34,9 @@ const NearbyCities = ({ currentSlug }) => {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {otherCities.map((city, index) => (
-            <Link
+            <a
               key={city.slug}
               href={`/city/${city.slug}/`}
-              prefetch={false} // Mencegah Next.js mengotori URL dengan query param saat prefetch
               className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
             >
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
@@ -46,7 +45,7 @@ const NearbyCities = ({ currentSlug }) => {
               <span className="text-[11px] font-black text-slate-700 group-hover:text-[#166534] uppercase tracking-wider block text-center">
                 {city.name}
               </span>
-            </Link>
+            </a>
           ))}
         </div>
       </div>
