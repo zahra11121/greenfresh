@@ -1,36 +1,39 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. Optimasi Gambar (Sudah benar)
+  // 1. Optimasi Gambar
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'res.cloudinary.com', pathname: '/dukopmsad/**' },
-      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
+      { 
+        protocol: 'https', 
+        hostname: 'res.cloudinary.com', 
+        pathname: '/dukopmsad/**' 
+      },
+      { 
+        protocol: 'https', 
+        hostname: 'images.unsplash.com', 
+        pathname: '/**' 
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },
 
-  // 2. SEO & Routing
+  // 2. SEO & Routing: Menghilangkan garis miring di akhir URL
   trailingSlash: false, 
 
-  // --- PERBAIKAN REDIRECT ---
+  // 3. Sistem Redirect (Pemindahan dari supplier-sayur ke city)
   async redirects() {
     return [
       {
-        // Gunakan nama parameter yang berbeda (misal: :path) 
-        // agar tidak tabrakan dengan [slug] di folder app/city
-        source: '/supplier-sayur/:path*/', 
-        destination: '/city/:path*/',
-        permanent: true,
+        // Menangkap /supplier-sayur/apapun/ (dengan atau tanpa slash)
+        // :slug* menangkap sub-path secara dinamis
+        source: '/supplier-sayur/:slug*',
+        destination: '/city/:slug*',
+        permanent: true, // Status 301 untuk SEO (Permanent Redirect)
       },
-      {
-        source: '/supplier-sayur',
-        destination: '/city/',
-        permanent: true,
-      }
     ];
   },
 
-  // 3. Performa & Security
+  // 4. Keamanan & Header HTTP
   compress: true,
   poweredByHeader: false,
   
@@ -48,6 +51,7 @@ const nextConfig = {
     ];
   },
 
+  // 5. Optimasi Compiler (Menghapus console.log di production)
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
