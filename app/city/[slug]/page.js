@@ -56,7 +56,7 @@ const NearbyCities = ({ currentSlug }) => {
 // GENERATE METADATA DINAMIS (SEO) - DIPERBAIKI
 export async function generateMetadata({ params }) {
   // ✅ PERBAIKAN: Langsung akses params tanpa await
-  const { slug } = params;
+  const { slug } = await params;
   const city = jabodetabekCities.find((c) => c.slug === slug);
   
   if (!city) {

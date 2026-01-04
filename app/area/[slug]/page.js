@@ -151,7 +151,7 @@ const ClientPortfolio = ({ districtName }) => {
 // GENERATE METADATA DINAMIS - DIPERBAIKI
 export async function generateMetadata({ params }) {
   // ✅ PERBAIKAN: Langsung akses params tanpa await
-  const { slug } = params;
+  const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
   
   if (!district) {
