@@ -8,6 +8,7 @@ import { jabodetabekCities } from '@/data/cities';
 // --- KRITIKAL: OPTIMASI SSR & PEMBERSIHAN URL ---
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const runtime = 'edge';
 // ----------------------------------------------
 
 export const metadata = {

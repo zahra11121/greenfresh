@@ -12,6 +12,7 @@ import DistrictGrid from './DistrictGrid';
 // agar sinkron dengan halaman detail yang menggunakan SSR.
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const runtime = 'edge';
 // ---------------------------
 
 export const metadata = {
