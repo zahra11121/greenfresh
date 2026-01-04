@@ -10,7 +10,7 @@ const nextConfig = {
   },
 
   // 2. SEO & Routing
-  trailingSlash: true, 
+  trailingSlash: false, 
 
   // --- PERBAIKAN REDIRECT ---
   async redirects() {
