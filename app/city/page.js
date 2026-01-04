@@ -8,8 +8,7 @@ import { jabodetabekCities } from '@/data/cities';
 // --- PERBAIKAN: MENGAKTIFKAN SSG ---
 // Menghapus force-dynamic dan revalidate 0 agar halaman di-generate saat build time
 export const dynamic = 'auto'; 
-export const runtime = 'nodejs'; // Kembali ke runtime standar untuk stabilitas SSG
-// ----------------------------------------------
+export const runtime = 'edge';
 
 export const metadata = {
   title: 'Network Distribusi Jabodetabek - Green Fresh Supplier',
