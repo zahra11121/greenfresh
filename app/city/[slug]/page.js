@@ -10,7 +10,7 @@ import CityClientPage from './CityClientPage';
 // --- KONFIGURASI SSR DIPERBAIKI ---
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-// export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
+export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
 // ----------------------------------------------
 
 /**

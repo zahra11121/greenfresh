@@ -10,7 +10,7 @@ import DistrictGrid from './DistrictGrid';
 // --- KONFIGURASI DIPERBAIKI ---
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-// export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
+export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN
 
 export const metadata = {
   title: 'Jaringan Operasional & Wilayah Distribusi - Green Fresh',

@@ -23,7 +23,7 @@ import { LiveStats } from '@/components/city/LiveStats';
 // --- KONFIGURASI SSR DIPERBAIKI ---
 export const dynamic = 'force-dynamic'; 
 export const revalidate = 0; 
-// export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN SEMENTARA
+export const runtime = 'edge'; // ✅ DIKOMENTARI/DINONAKTIFKAN SEMENTARA
 
 import districtsData from '@/data/districts.json';
 
