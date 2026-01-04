@@ -1,22 +1,18 @@
-
 import React from 'react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { 
+  Star, ShieldCheck, ChevronRight, Users, 
+  CheckCircle, Building2, ShoppingBag, Utensils, 
+  Heart, GraduationCap, Factory, MapPin 
+} from 'lucide-react';
+
+// Components
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PartnershipForm } from '@/components/PartnershipForm';
 import { PriceTable } from '@/components/PriceTable';
 import { vegetableData } from '@/components/data';
-import {
-  Star, ShieldCheck, ChevronRight, Users,
-  CheckCircle, Building2, ShoppingBag, Utensils,
-  Heart, GraduationCap, Factory, MapPin
-} from 'lucide-center';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-
-
-export const runtime = 'edge';
-
-// District Components
 import { DistrictHero } from '@/components/district/DistrictHero';
 import { DistrictLogistics } from '@/components/district/DistrictLogistics';
 import { DistrictOverview } from '@/components/district/DistrictOverview';
@@ -24,16 +20,18 @@ import { DistrictRoute } from '@/components/district/DistrictRoute';
 import { QualityGuarantee } from '@/components/city/QualityGuarantee';
 import { LiveStats } from '@/components/city/LiveStats';
 
+// Data
 import districtsData from '@/data/districts.json';
 
-// --- KONFIGURASI SSG MURNI ---
-// 1. dynamicParams = false memastikan hanya slug di JSON yang dibuatkan halamannya.
-// 2. Runtime 'edge' DIHAPUS agar generateStaticParams bisa berjalan di Node.js saat build.
-export const dynamicParams = false;
+/**
+ * KONFIGURASI SSG MURNI
+ */
+export const dynamic = 'force-static';
+export const dynamicParams = false; // Mengembalikan 404 jika slug tidak ada di generateStaticParams
 
 /**
  * generateStaticParams
- * Berjalan saat 'next build' untuk menghasilkan HTML statis bagi setiap distrik.
+ * Memaksa Next.js membuat halaman HTML statis untuk setiap district saat build time.
  */
 export async function generateStaticParams() {
   return districtsData.districts.map((district) => ({
@@ -41,13 +39,40 @@ export async function generateStaticParams() {
   }));
 }
 
-// --- KOMPONEN INTERNAL ---
+/**
+ * generateMetadata
+ * SEO Dinamis yang dirender statis.
+ */
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const district = districtsData.districts.find((d) => d.slug === slug);
+  
+  if (!district) return { title: 'Not Found' };
 
+  const baseUrl = 'https://greenfresh.co.id';
+  const fullUrl = `${baseUrl}/area/${slug}/`;
+
+  return {
+    title: `Supplier Sayur ${district.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
+    description: `Supplier sayur segar tangan pertama wilayah ${district.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
+    alternates: { canonical: fullUrl },
+    openGraph: {
+      title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
+      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
+      url: fullUrl,
+      images: [{ url: `${baseUrl}/og-area-${slug}.jpg`, width: 1200, height: 630 }],
+    },
+  };
+}
+
+/**
+ * NearbyAreas Component
+ * Karena SSG, "Randomisasi" hanya terjadi 1x saat build.
+ */
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 6);
+    .slice(0, 6); // Disederhanakan untuk konsistensi static build
 
   const labels = ["Logistik", "Distribusi", "Supply", "Pengiriman", "Area", "Layanan"];
 
@@ -78,120 +103,28 @@ const NearbyAreas = ({ currentSlug }) => {
   );
 };
 
-const RatingSection = ({ districtName }) => (
-  <div className="w-full bg-gradient-to-r from-white to-[#f7faf7] py-6 border-y border-green-50/50 text-center md:text-left">
-    <div className="max-w-[1800px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="flex -space-x-1">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} size={18} className="text-amber-400 fill-amber-400" />
-            ))}
-          </div>
-          <div className="pl-2 border-l border-slate-200">
-            <p className="text-2xl font-black text-[#052c17] leading-none">4.9</p>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Rating</p>
-          </div>
-        </div>
-        <div className="hidden md:block h-8 w-px bg-slate-200" />
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <p className="text-sm font-bold text-[#052c17]">Layanan Terverifikasi di {districtName}</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-3">
-          <Users size={18} className="text-blue-600" />
-          <div>
-            <p className="text-sm font-black text-[#052c17]">150+</p>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Mitra B2B</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <ShieldCheck size={18} className="text-emerald-600" />
-          <div>
-            <p className="text-sm font-black text-[#052c17]">Grade A</p>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Standar QC</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const ClientPortfolio = ({ districtName }) => {
-  const segments = [
-    { icon: <Building2 />, title: "Hospitalitas", list: ["Hotel Bintang 5", "Resort & Villa"] },
-    { icon: <Utensils />, title: "F&B Industry", list: ["Restoran Premium", "Cafe Chain"] },
-    { icon: <ShoppingBag />, title: "Modern Retail", list: ["Supermarket", "Organic Store"] },
-    { icon: <Heart />, title: "Healthcare", list: ["Nutrisi Rumah Sakit", "Diet Center"] },
-    { icon: <GraduationCap />, title: "Institusi", list: ["Sekolah", "Asrama Eksklusif"] },
-    { icon: <Factory />, title: "Produksi", list: ["Food Processing", "Central Kitchen"] },
-  ];
-
-  return (
-    <section className="py-16 md:py-24 bg-[#f8fafc]">
-      <div className="max-w-[1800px] mx-auto px-4 md:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] mb-4 tracking-tighter uppercase">
-            Sektor <span className="text-[#15803d]">Kemitraan.</span>
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto font-medium">
-            Solusi rantai pasok sayuran segar untuk berbagai lini bisnis di {districtName}.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-          {segments.map((seg, i) => (
-            <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="text-[#15803d] mb-4">{seg.icon}</div>
-              <h3 className="text-lg font-black text-[#052c17] mb-3 uppercase tracking-tight">{seg.title}</h3>
-              <div className="space-y-2">
-                {seg.list.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                    <CheckCircle size={12} className="text-green-500" /> {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- METADATA & SCHEMA ---
-
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const district = districtsData.districts.find((d) => d.slug === slug);
-  
-  if (!district) return { title: 'Not Found' };
-
-  const baseUrl = 'https://greenfresh.co.id';
-  return {
-    title: `Supplier Sayur ${district.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
-    description: `Supplier sayur segar tangan pertama wilayah ${district.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
-    alternates: { canonical: `${baseUrl}/area/${slug}/` },
-  };
-}
-
+/**
+ * DistrictPage Main Component
+ */
 export default async function DistrictPage({ params }) {
   const { slug } = await params;
-  const rawDistrict = districtsData.districts.find((d) => d.slug === slug);
+  const district = districtsData.districts.find((d) => d.slug === slug);
 
-  if (!rawDistrict) notFound();
+  if (!district) notFound();
 
-  const district = { ...rawDistrict };
   const baseUrl = 'https://greenfresh.co.id';
+  const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
+  // Structured Data (JSON-LD)
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WholesaleStore",
+        "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
+        "telephone": "+6287780937884",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Cipanas",
@@ -202,7 +135,8 @@ export default async function DistrictPage({ params }) {
       {
         "@type": "Service",
         "name": `Layanan Supply Sayur ${district.name}`,
-        "areaServed": { "@type": "AdministrativeArea", "name": district.name }
+        "areaServed": { "@type": "AdministrativeArea", "name": district.name },
+        "description": `Layanan supply sayuran grade A harian untuk wilayah ${district.name}.`
       }
     ]
   };
@@ -217,6 +151,7 @@ export default async function DistrictPage({ params }) {
       <Header />
 
       <main>
+        {/* Breadcrumbs */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="text-slate-500 hover:text-[#166534]">Beranda</Link>
@@ -227,10 +162,34 @@ export default async function DistrictPage({ params }) {
           </nav>
         </div>
 
+        {/* Hero & Quick Stats */}
         <DistrictHero district={district} />
-        <RatingSection districtName={district.name} />
+        
+        {/* Rating Section Internal */}
+        <div className="w-full bg-gradient-to-r from-white to-[#f7faf7] py-6 border-y border-green-50/50">
+          <div className="max-w-[1800px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} size={18} className="text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <div className="pl-2 border-l border-slate-200">
+                  <p className="text-2xl font-black text-[#052c17]">4.9</p>
+                  <p className="text-[10px] font-bold uppercase text-slate-500">Rating</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <p className="text-sm font-bold text-[#052c17]">Layanan Terverifikasi di {district.name}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <section className="py-16 md:py-24 bg-white border-b border-green-50">
+        {/* Content Section */}
+        <section className="py-16 md:py-24 bg-white">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="grid lg:grid-cols-12 gap-12 items-start">
               <div className="lg:col-span-6">
@@ -243,22 +202,16 @@ export default async function DistrictPage({ params }) {
           </div>
         </section>
 
-        <ClientPortfolio districtName={district.name} />
-
-        <section id="katalog" className="py-16 md:py-24 bg-white">
+        {/* Price Table Section */}
+        <section id="katalog" className="py-16 bg-[#f8fafc]">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="mb-12 text-center md:text-left">
-              <h2 className="text-3xl md:text-4xl font-[1000] text-[#052c17] tracking-tighter uppercase">
+              <h2 className="text-3xl md:text-4xl font-[1000] text-[#052c17] uppercase tracking-tighter">
                 Katalog <span className="text-[#15803d]">Komoditas.</span>
               </h2>
-              <p className="text-slate-500 text-sm font-bold mt-2 uppercase tracking-widest">Update Harga Wilayah {district.name}</p>
+              <p className="text-slate-500 text-sm font-bold mt-2 uppercase tracking-widest">Update Harga Area {district.name}</p>
             </div>
             <PriceTable data={vegetableData.slice(0, 20)} />
-            <div className="mt-8 flex justify-center">
-               <Link href="/produk" className="px-8 py-4 border-2 border-green-100 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-green-50 transition-all">
-                 Lihat Semua Produk
-               </Link>
-            </div>
           </div>
         </section>
 
@@ -268,13 +221,14 @@ export default async function DistrictPage({ params }) {
         
         <NearbyAreas currentSlug={district.slug} />
 
-        <section id="partnership" className="py-20 md:py-32 bg-[#fcfdfc] border-t border-green-100">
+        {/* Form Section */}
+        <section id="partnership" className="py-20 md:py-32 bg-white">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] tracking-tighter uppercase">
+              <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] uppercase tracking-tighter">
                 Hubungi <span className="text-[#15803d]">Sales.</span>
               </h2>
-              <p className="text-slate-500 font-bold uppercase text-[10px] md:text-xs tracking-[0.3em] mt-4">
+              <p className="text-slate-500 font-bold uppercase text-xs tracking-[0.3em] mt-4">
                 Konsultasi Pengadaan Wilayah {district.name}
               </p>
             </div>
