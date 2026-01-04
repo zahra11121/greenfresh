@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `Supplier Sayur ${district.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
-    description: `Supplier sayur segar tangan pertama wilayah ${district.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
+    description: `Supplier sayur segar tangan pertama wilayah ${district.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe wilayah ${district.name}.`,
     alternates: { canonical: fullUrl },
     openGraph: {
       title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
@@ -97,22 +97,30 @@ export default async function DistrictPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
-  // Combined Structured Data (Organization, Service, and Breadcrumbs)
+  // Combined Structured Data (Unified Graph for LocalBusiness, Organization, Service)
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WholesaleStore",
+        "@type": ["WholesaleStore", "Organization"],
         "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
-        "logo": `${baseUrl}/logo.png`,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/logo.svg`,
+          "width": "600",
+          "height": "60"
+        },
+        "image": `${baseUrl}/og-main.jpg`,
         "telephone": "+6287780937884",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Jl. Cipanas Raya",
           "addressLocality": "Cipanas",
           "addressRegion": "Jawa Barat",
+          "postalCode": "43253",
           "addressCountry": "ID"
         }
       },
@@ -141,13 +149,27 @@ export default async function DistrictPage({ params }) {
       },
       {
         "@type": "Service",
-        "serviceType": "Vegetable Supply",
+        "serviceType": "Vegetable Supply Chain",
         "provider": { "@id": `${baseUrl}/#organization` },
-        "name": `Supplier Sayur ${district.name}`,
-        "description": `Layanan pengadaan sayuran grade A harian di wilayah ${district.name}.`,
+        "name": `Supplier Sayur Segar ${district.name}`,
+        "description": `Layanan pengadaan sayuran grade A harian khusus Hotel, Restoran, dan Cafe di wilayah ${district.name}.`,
         "areaServed": {
           "@type": "AdministrativeArea",
-          "name": district.name
+          "name": district.name,
+          "addressCountry": "ID"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Katalog Supply Area",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Pengiriman Komoditas Grade A Harian"
+              }
+            }
+          ]
         }
       }
     ]

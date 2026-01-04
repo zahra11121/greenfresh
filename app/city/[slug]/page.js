@@ -120,22 +120,33 @@ export default async function CityPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
-  // Structured Data (JSON-LD) - Optimized for City Service Area
+  /**
+   * --- PERBAIKAN SCHEMA GRAPH ---
+   * Menggabungkan WholesaleStore, Organization, Service, dan BreadcrumbList
+   */
   const schemaGraph = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WholesaleStore",
+        "@type": ["WholesaleStore", "Organization"],
         "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
-        "logo": { "@type": "ImageObject", "url": `${baseUrl}/logo.png` },
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/logo.svg`,
+          "width": "600",
+          "height": "60"
+        },
+        "image": `${baseUrl}/og-main.jpg`,
         "telephone": "+6287780937884",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Jl. Cipanas Raya",
           "addressLocality": "Cipanas",
           "addressRegion": "Jawa Barat",
+          "postalCode": "43253",
           "addressCountry": "ID"
         }
       },
@@ -151,7 +162,7 @@ export default async function CityPage({ params }) {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Area Distribusi Kota",
+            "name": "City",
             "item": `${baseUrl}/city`
           },
           {
