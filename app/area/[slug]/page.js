@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -8,9 +9,12 @@ import {
   Star, ShieldCheck, ChevronRight, Users,
   CheckCircle, Building2, ShoppingBag, Utensils,
   Heart, GraduationCap, Factory, MapPin
-} from 'lucide-react';
+} from 'lucide-center';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+
+
+export const runtime = 'edge';
 
 // District Components
 import { DistrictHero } from '@/components/district/DistrictHero';
@@ -22,24 +26,23 @@ import { LiveStats } from '@/components/city/LiveStats';
 
 import districtsData from '@/data/districts.json';
 
-// --- KONFIGURASI SSG (MENGGANTIKAN SSR) ---
-export const dynamicParams = false; // Mengunci hanya pada slug yang ada di JSON
-export const runtime = 'edge';
+// --- KONFIGURASI SSG MURNI ---
+// 1. dynamicParams = false memastikan hanya slug di JSON yang dibuatkan halamannya.
+// 2. Runtime 'edge' DIHAPUS agar generateStaticParams bisa berjalan di Node.js saat build.
+export const dynamicParams = false;
+
 /**
  * generateStaticParams
- * Membuat semua halaman area secara statis saat proses build.
+ * Berjalan saat 'next build' untuk menghasilkan HTML statis bagi setiap distrik.
  */
 export async function generateStaticParams() {
   return districtsData.districts.map((district) => ({
     slug: district.slug,
   }));
 }
-// ----------------------------------------------
 
-/**
- * Komponen Internal: Wilayah Terkait
- * Catatan: Karena SSG, randomisasi terjadi saat BUILD TIME.
- */
+// --- KOMPONEN INTERNAL ---
+
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
@@ -157,108 +160,49 @@ const ClientPortfolio = ({ districtName }) => {
   );
 };
 
-// GENERATE METADATA DINAMIS
+// --- METADATA & SCHEMA ---
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
   
-  if (!district) {
-    return {
-      title: 'District Not Found - Green Fresh',
-      description: 'District tidak ditemukan'
-    };
-  }
+  if (!district) return { title: 'Not Found' };
 
   const baseUrl = 'https://greenfresh.co.id';
-  const fullUrl = `${baseUrl}/area/${slug}/`;
-
   return {
     title: `Supplier Sayur ${district.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
     description: `Supplier sayur segar tangan pertama wilayah ${district.name}. Melayani pengadaan komoditas grade A harian khusus Hotel, Restoran, dan Cafe.`,
-    alternates: { canonical: fullUrl },
-    openGraph: {
-      title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
-      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
-      url: fullUrl,
-      type: 'website',
-      images: [
-        {
-          url: `${baseUrl}/og-area-${slug}.jpg`,
-          width: 1200,
-          height: 630,
-          alt: `Supplier Sayur ${district.name}`
-        }
-      ]
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `Supplier Sayur ${district.name} | Green Fresh Cipanas`,
-      description: `Pengadaan sayur harian untuk Hotel, Restoran & Cafe wilayah ${district.name}.`,
-      images: [`${baseUrl}/og-area-${slug}.jpg`]
-    }
+    alternates: { canonical: `${baseUrl}/area/${slug}/` },
   };
 }
 
-// HALAMAN UTAMA (SERVER COMPONENT)
 export default async function DistrictPage({ params }) {
   const { slug } = await params;
-  
   const rawDistrict = districtsData.districts.find((d) => d.slug === slug);
 
   if (!rawDistrict) notFound();
 
   const district = { ...rawDistrict };
   const baseUrl = 'https://greenfresh.co.id';
-  const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WholesaleStore",
-        "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
-        "logo": {
-          "@type": "ImageObject",
-          "url": `${baseUrl}/logo.png`
-        },
-        "telephone": "+6287780937884",
-        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Kp Jl. Kayumanis, RT.04/RW.04, Sukatani",
           "addressLocality": "Cipanas",
           "addressRegion": "Jawa Barat",
-          "postalCode": "43253",
           "addressCountry": "ID"
         }
       },
       {
         "@type": "Service",
         "name": `Layanan Supply Sayur ${district.name}`,
-        "provider": { "@id": `${baseUrl}/#organization` },
-        "serviceType": "B2B Vegetable Supplier",
-        "areaServed": {
-          "@type": "AdministrativeArea",
-          "name": district.name
-        },
-        "description": `Layanan supply sayuran grade A harian untuk wilayah ${district.name}.`,
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Beranda", "item": `${baseUrl}/` },
-          { "@type": "ListItem", "position": 2, "name": "Area", "item": `${baseUrl}/area/` },
-          { "@type": "ListItem", "position": 3, "name": district.name, "item": currentUrl }
-        ]
+        "areaServed": { "@type": "AdministrativeArea", "name": district.name }
       }
     ]
   };
@@ -275,7 +219,7 @@ export default async function DistrictPage({ params }) {
       <main>
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
-            <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">Beranda</Link>
+            <Link href="/" className="text-slate-500 hover:text-[#166534]">Beranda</Link>
             <ChevronRight size={10} className="text-slate-300" />
             <Link href="/area" className="text-slate-500 hover:text-[#166534]">Area</Link>
             <ChevronRight size={10} className="text-slate-300" />
