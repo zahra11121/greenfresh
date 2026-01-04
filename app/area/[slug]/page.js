@@ -23,26 +23,15 @@ import { LiveStats } from '@/components/city/LiveStats';
 // Data
 import districtsData from '@/data/districts.json';
 
-/**
- * KONFIGURASI SSG MURNI
- */
 export const dynamic = 'force-static';
-export const dynamicParams = false; // Mengembalikan 404 jika slug tidak ada di generateStaticParams
+export const dynamicParams = false; 
 
-/**
- * generateStaticParams
- * Memaksa Next.js membuat halaman HTML statis untuk setiap district saat build time.
- */
 export async function generateStaticParams() {
   return districtsData.districts.map((district) => ({
     slug: district.slug,
   }));
 }
 
-/**
- * generateMetadata
- * SEO Dinamis yang dirender statis.
- */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
@@ -65,14 +54,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-/**
- * NearbyAreas Component
- * Karena SSG, "Randomisasi" hanya terjadi 1x saat build.
- */
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
-    .slice(0, 6); // Disederhanakan untuk konsistensi static build
+    .slice(0, 6);
 
   const labels = ["Logistik", "Distribusi", "Supply", "Pengiriman", "Area", "Layanan"];
 
@@ -103,9 +88,6 @@ const NearbyAreas = ({ currentSlug }) => {
   );
 };
 
-/**
- * DistrictPage Main Component
- */
 export default async function DistrictPage({ params }) {
   const { slug } = await params;
   const district = districtsData.districts.find((d) => d.slug === slug);
@@ -115,7 +97,7 @@ export default async function DistrictPage({ params }) {
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/area/${district.slug}/`;
 
-  // Structured Data (JSON-LD)
+  // Combined Structured Data (Organization, Service, and Breadcrumbs)
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -124,19 +106,49 @@ export default async function DistrictPage({ params }) {
         "@id": `${baseUrl}/#organization`,
         "name": "CV Green Fresh Cipanas",
         "url": baseUrl,
+        "logo": `${baseUrl}/logo.png`,
         "telephone": "+6287780937884",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Jl. Cipanas Raya",
           "addressLocality": "Cipanas",
           "addressRegion": "Jawa Barat",
           "addressCountry": "ID"
         }
       },
       {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Beranda",
+            "item": baseUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Area",
+            "item": `${baseUrl}/area`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": district.name,
+            "item": currentUrl
+          }
+        ]
+      },
+      {
         "@type": "Service",
-        "name": `Layanan Supply Sayur ${district.name}`,
-        "areaServed": { "@type": "AdministrativeArea", "name": district.name },
-        "description": `Layanan supply sayuran grade A harian untuk wilayah ${district.name}.`
+        "serviceType": "Vegetable Supply",
+        "provider": { "@id": `${baseUrl}/#organization` },
+        "name": `Supplier Sayur ${district.name}`,
+        "description": `Layanan pengadaan sayuran grade A harian di wilayah ${district.name}.`,
+        "areaServed": {
+          "@type": "AdministrativeArea",
+          "name": district.name
+        }
       }
     ]
   };
@@ -151,7 +163,7 @@ export default async function DistrictPage({ params }) {
       <Header />
 
       <main>
-        {/* Breadcrumbs */}
+        {/* Visual Breadcrumbs */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="text-slate-500 hover:text-[#166534]">Beranda</Link>
@@ -162,10 +174,8 @@ export default async function DistrictPage({ params }) {
           </nav>
         </div>
 
-        {/* Hero & Quick Stats */}
         <DistrictHero district={district} />
         
-        {/* Rating Section Internal */}
         <div className="w-full bg-gradient-to-r from-white to-[#f7faf7] py-6 border-y border-green-50/50">
           <div className="max-w-[1800px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
@@ -177,7 +187,7 @@ export default async function DistrictPage({ params }) {
                 </div>
                 <div className="pl-2 border-l border-slate-200">
                   <p className="text-2xl font-black text-[#052c17]">4.9</p>
-                  <p className="text-[10px] font-bold uppercase text-slate-500">Rating</p>
+                  <p className="text-[10px] font-bold uppercase text-slate-500">Rating Area</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -188,7 +198,6 @@ export default async function DistrictPage({ params }) {
           </div>
         </div>
 
-        {/* Content Section */}
         <section className="py-16 md:py-24 bg-white">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="grid lg:grid-cols-12 gap-12 items-start">
@@ -202,14 +211,13 @@ export default async function DistrictPage({ params }) {
           </div>
         </section>
 
-        {/* Price Table Section */}
         <section id="katalog" className="py-16 bg-[#f8fafc]">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="mb-12 text-center md:text-left">
               <h2 className="text-3xl md:text-4xl font-[1000] text-[#052c17] uppercase tracking-tighter">
                 Katalog <span className="text-[#15803d]">Komoditas.</span>
               </h2>
-              <p className="text-slate-500 text-sm font-bold mt-2 uppercase tracking-widest">Update Harga Area {district.name}</p>
+              <p className="text-slate-500 text-sm font-bold mt-2 uppercase tracking-widest">Update Harga Khusus Area {district.name}</p>
             </div>
             <PriceTable data={vegetableData.slice(0, 20)} />
           </div>
@@ -221,7 +229,6 @@ export default async function DistrictPage({ params }) {
         
         <NearbyAreas currentSlug={district.slug} />
 
-        {/* Form Section */}
         <section id="partnership" className="py-20 md:py-32 bg-white">
           <div className="max-w-[1800px] mx-auto px-6">
             <div className="text-center mb-16">

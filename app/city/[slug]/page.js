@@ -16,11 +16,10 @@ import { galleryData } from '@/data/galleryData';
  * --- KONFIGURASI SSG MURNI ---
  */
 export const dynamic = 'force-static'; 
-export const dynamicParams = false; // Mengembalikan 404 jika slug tidak terdaftar di generateStaticParams
+export const dynamicParams = false; 
 
 /**
  * generateStaticParams
- * Memberitahu Next.js daftar slug yang harus dibuat menjadi file HTML statis saat Build Time.
  */
 export async function generateStaticParams() {
   return jabodetabekCities.map((city) => ({
@@ -30,7 +29,6 @@ export async function generateStaticParams() {
 
 /**
  * generateMetadata
- * SEO Dinamis yang di-generate secara statis.
  */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -60,10 +58,8 @@ export async function generateMetadata({ params }) {
 
 /**
  * COMPONENT: NearbyCities
- * Karena SSG, kita menggunakan slice konstan agar hasil render server dan client sinkron.
  */
 const NearbyCities = ({ currentSlug }) => {
-  // Filter kota lain dan ambil 6 pertama (tanpa random agar build konsisten)
   const otherCities = jabodetabekCities
     .filter(c => c.slug !== currentSlug)
     .slice(0, 6);
@@ -109,7 +105,6 @@ export default async function CityPage({ params }) {
 
   if (!fullCityData) notFound();
 
-  // Mapping data untuk props
   const city = {
     slug: fullCityData.slug,
     name: fullCityData.name,
@@ -119,14 +114,13 @@ export default async function CityPage({ params }) {
     logistics: fullCityData.logistics
   };
 
-  // Pilih gambar dari gallery berdasarkan index kota agar tetap deterministik (statis)
   const imageIndex = cityIndex % galleryData.images.length;
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
   
   const baseUrl = 'https://greenfresh.co.id';
   const currentUrl = `${baseUrl}/city/${city.slug}/`;
 
-  // Structured Data (JSON-LD)
+  // Structured Data (JSON-LD) - Optimized for City Service Area
   const schemaGraph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -139,25 +133,59 @@ export default async function CityPage({ params }) {
         "telephone": "+6287780937884",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Jl. Cipanas Raya",
           "addressLocality": "Cipanas",
           "addressRegion": "Jawa Barat",
           "addressCountry": "ID"
         }
       },
       {
-        "@type": "Service",
-        "name": `Layanan Supply Sayur ${city.name}`,
-        "provider": { "@id": `${baseUrl}/#organization` },
-        "areaServed": { "@type": "City", "name": city.name },
-        "description": `Layanan pengadaan sayuran segar Grade A untuk Horeka di ${city.name}.`
-      },
-      {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
-          { "@type": "ListItem", "position": 2, "name": "City", "item": `${baseUrl}/city` },
-          { "@type": "ListItem", "position": 3, "name": city.name, "item": currentUrl }
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Beranda",
+            "item": baseUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Area Distribusi Kota",
+            "item": `${baseUrl}/city`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": city.name,
+            "item": currentUrl
+          }
         ]
+      },
+      {
+        "@type": "Service",
+        "serviceType": "Vegetable Wholesale Supplier",
+        "provider": { "@id": `${baseUrl}/#organization` },
+        "name": `Supplier Sayur Segar ${city.name}`,
+        "description": `Layanan supply sayuran grade A harian untuk Hotel, Restoran, dan Cafe di wilayah ${city.name}.`,
+        "areaServed": { 
+          "@type": "City", 
+          "name": city.name,
+          "addressCountry": "ID" 
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Katalog Sayur Fresh",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Supply Sayuran Grade A Premium"
+              }
+            }
+          ]
+        }
       }
     ]
   };
@@ -172,11 +200,11 @@ export default async function CityPage({ params }) {
       <Header />
       
       <main>
-        {/* Breadcrumb Section */}
+        {/* Visual Breadcrumb Section */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
-              <Home size={10} /> Home
+              <Home size={10} /> Beranda
             </Link>
             <ChevronRight size={10} className="text-slate-300" />
             <Link href="/city" className="text-slate-500 hover:text-[#166534]">
@@ -187,7 +215,7 @@ export default async function CityPage({ params }) {
           </nav>
         </div>
 
-        {/* Client Page Content (Hydrated via Client Component) */}
+        {/* Client Page Content */}
         <CityClientPage
           city={city}
           CITY_OPERATIONAL_IMAGE={CITY_OPERATIONAL_IMAGE}
