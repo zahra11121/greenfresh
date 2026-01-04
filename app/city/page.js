@@ -1,22 +1,26 @@
 import React from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ChevronRight, Navigation, Star, MapPin, Truck, CheckCircle2, Search } from 'lucide-react';
+import { ChevronRight, Star, MapPin, Truck, Search } from 'lucide-react';
 import Link from 'next/link';
 import { jabodetabekCities } from '@/data/cities';
 
-// --- PERBAIKAN: MENGAKTIFKAN SSG ---
-// Menghapus force-dynamic dan revalidate 0 agar halaman di-generate saat build time
+// --- PERBAIKAN: MENGAKTIFKAN SSG & EDGE ---
 export const dynamic = 'auto'; 
 export const runtime = 'edge';
 
+// --- METADATA DENGAN CANONICAL URL BERSIH ---
 export const metadata = {
   title: 'Network Distribusi Jabodetabek - Green Fresh Supplier',
   description: 'Jaringan distribusi sayur segar harian Green Fresh di 27 wilayah strategis Jabodetabek dengan sistem pengiriman terintegrasi.',
+  alternates: {
+    canonical: 'https://greenfresh.co.id/city',
+  },
 };
 
 /**
  * COMPONENT: STATS CARD
+ * Menghapus (: { label, value }) karena ini JavaScript murni
  */
 const StatItem = ({ label, value }) => (
   <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm">
@@ -27,7 +31,7 @@ const StatItem = ({ label, value }) => (
 
 /**
  * COMPONENT: CITY CARD
- * Perbaikan: Menggunakan Link dari next/link untuk navigasi client-side yang cepat
+ * Menghapus type annotation (: { city, index })
  */
 function CityCard({ city, index }) {
   const isJakarta = city.name.toLowerCase().includes('jakarta');
@@ -38,7 +42,6 @@ function CityCard({ city, index }) {
       href={`/city/${city.slug}`}
       className="group bg-white rounded-3xl border border-slate-200 p-5 md:p-7 hover:border-green-500 hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 flex flex-col justify-between min-h-[220px] relative overflow-hidden"
     >
-      {/* Dekorasi Background Halus */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-slate-50 rounded-full group-hover:bg-green-50 transition-colors duration-500" />
       
       <div className="relative z-10">
@@ -85,7 +88,6 @@ export default function SupplierSayurPage() {
       <Header />
       
       <main className="pt-20">
-        {/* HERO SECTION */}
         <section className="py-16 md:py-28 bg-white border-b border-slate-100">
           <div className="max-w-[1400px] mx-auto px-4 text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 rounded-full mb-6 border border-green-100">
@@ -99,7 +101,6 @@ export default function SupplierSayurPage() {
               Kami melayani pengiriman sayuran Grade-A ke {jabodetabekCities.length} titik distribusi utama di seluruh Jabodetabek setiap harinya.
             </p>
             
-            {/* Quick Stats Dashboard */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               <StatItem label="Active Nodes" value={jabodetabekCities.length} />
               <StatItem label="Daily Capacity" value="12.5 T" />
@@ -109,7 +110,6 @@ export default function SupplierSayurPage() {
           </div>
         </section>
 
-        {/* SEARCH & FILTER AREA */}
         <div className="max-w-[1400px] mx-auto px-4 -mt-8 relative z-20">
           <div className="bg-white p-4 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 w-full relative">
@@ -126,7 +126,6 @@ export default function SupplierSayurPage() {
           </div>
         </div>
 
-        {/* GRID AREA SECTION */}
         <section className="py-16 md:py-24">
           <div className="max-w-[1400px] mx-auto px-4">
             <div className="flex items-center justify-between mb-12">
@@ -148,7 +147,6 @@ export default function SupplierSayurPage() {
           </div>
         </section>
 
-        {/* TRUST BANNER */}
         <section className="py-12 bg-white border-y border-slate-100 mb-20">
            <div className="max-w-[1400px] mx-auto px-4 flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-40 grayscale">
               <h4 className="font-black text-xl italic tracking-tighter">HORECA READY</h4>

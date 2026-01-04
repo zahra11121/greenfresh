@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
   if (!city) return { title: 'City Not Found' };
 
   const baseUrl = 'https://greenfresh.co.id';
-  const fullUrl = `${baseUrl}/city/${slug}/`;
+  const fullUrl = `${baseUrl}/city/${slug}`;
   
   return {
     title: `Supplier Sayur ${city.name} - Stok Stabil Harian | CV Green Fresh Cipanas`,
@@ -111,7 +111,7 @@ export default async function CityPage({ params }) {
   const CITY_OPERATIONAL_IMAGE = galleryData.images[imageIndex];
   
   const baseUrl = 'https://greenfresh.co.id';
-  const currentUrl = `${baseUrl}/city/${city.slug}/`;
+  const currentUrl = `${baseUrl}/city/${city.slug}`;
 
   /**
    * SCHEMA GRAPH

@@ -15,7 +15,7 @@ export const metadata = {
   title: 'Jaringan Operasional & Wilayah Distribusi - Green Fresh',
   description: 'Jelajahi cakupan distribusi Green Fresh. Kami melayani berbagai wilayah dengan sistem pengiriman terjadwal.',
   alternates: {
-    canonical: 'https://greenfresh.co.id/area/'
+    canonical: 'https://greenfresh.co.id/area'
   }
 };
 
