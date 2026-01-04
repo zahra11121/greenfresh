@@ -24,8 +24,8 @@ import { LiveStats } from '@/components/city/LiveStats';
 import districtsData from '@/data/districts.json';
 
 // --- KONFIGURASI SSR CLOUDFLARE PAGES ---
-export const runtime = 'edge'; // Wajib untuk SSR di Cloudflare
-export const dynamic = 'force-dynamic'; // Memastikan halaman selalu render terbaru
+export const runtime = 'edge'; 
+export const dynamic = 'force-dynamic'; 
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -49,6 +49,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
+/**
+ * COMPONENT: NearbyAreas
+ * PERBAIKAN: Kontras warna ditingkatkan dari slate-400 ke slate-600
+ */
 const NearbyAreas = ({ currentSlug }) => {
   const otherAreas = districtsData.districts
     .filter(d => d.slug !== currentSlug)
@@ -69,10 +73,11 @@ const NearbyAreas = ({ currentSlug }) => {
               href={`/area/${area.slug}`}
               className="group p-5 rounded-2xl border border-slate-100 hover:border-[#15803d] hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-1"
             >
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+              {/* PERBAIKAN: text-slate-400 -> text-slate-600 (WCAG Pass) */}
+              <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">
                 {labels[index % labels.length]}
               </span>
-              <span className="text-xs font-black text-slate-700 group-hover:text-[#15803d] uppercase tracking-wider block text-center">
+              <span className="text-xs font-black text-slate-800 group-hover:text-[#15803d] uppercase tracking-wider block text-center">
                 {area.name}
               </span>
             </Link>
@@ -90,7 +95,7 @@ export default async function DistrictPage({ params }) {
   if (!district) notFound();
 
   const baseUrl = 'https://greenfresh.co.id';
-  const currentUrl = `${baseUrl}/area/${district.slug}/`;
+  const currentUrl = `${baseUrl}/area/${district.slug}`;
 
   // Combined Structured Data
   const schemaData = {
@@ -186,10 +191,11 @@ export default async function DistrictPage({ params }) {
         {/* Visual Breadcrumbs */}
         <div className="pt-24 lg:pt-32 bg-white border-b border-slate-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
-            <Link href="/" className="text-slate-500 hover:text-[#166534]">Beranda</Link>
-            <ChevronRight size={10} className="text-slate-300" />
-            <Link href="/area" className="text-slate-500 hover:text-[#166534]">Area</Link>
-            <ChevronRight size={10} className="text-slate-300" />
+            {/* PERBAIKAN: text-slate-500 -> text-slate-700 */}
+            <Link href="/" className="text-slate-700 hover:text-[#166534]">Beranda</Link>
+            <ChevronRight size={10} className="text-slate-400" />
+            <Link href="/area" className="text-slate-700 hover:text-[#166534]">Area</Link>
+            <ChevronRight size={10} className="text-slate-400" />
             <span className="text-[#166534] font-bold tracking-widest">{district.name}</span>
           </nav>
         </div>
@@ -202,17 +208,18 @@ export default async function DistrictPage({ params }) {
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={18} className="text-amber-400 fill-amber-400" />
+                    <Star key={s} size={18} className="text-amber-500 fill-amber-500" />
                   ))}
                 </div>
-                <div className="pl-2 border-l border-slate-200">
+                <div className="pl-2 border-l border-slate-300">
                   <p className="text-2xl font-black text-[#052c17]">4.9</p>
-                  <p className="text-[10px] font-bold uppercase text-slate-500">Rating Area</p>
+                  {/* PERBAIKAN: text-slate-500 -> text-slate-700 */}
+                  <p className="text-[10px] font-bold uppercase text-slate-700">Rating Area</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <p className="text-sm font-bold text-[#052c17]">Layanan Terverifikasi di {district.name}</p>
+                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
+                <p className="text-sm font-black text-[#052c17]">Layanan Terverifikasi di {district.name}</p>
               </div>
             </div>
           </div>
@@ -237,7 +244,8 @@ export default async function DistrictPage({ params }) {
               <h2 className="text-3xl md:text-4xl font-[1000] text-[#052c17] uppercase tracking-tighter">
                 Katalog <span className="text-[#15803d]">Komoditas.</span>
               </h2>
-              <p className="text-slate-500 text-sm font-bold mt-2 uppercase tracking-widest">Update Harga Khusus Area {district.name}</p>
+              {/* PERBAIKAN: text-slate-500 -> text-slate-700 */}
+              <p className="text-slate-700 text-sm font-black mt-2 uppercase tracking-widest">Update Harga Khusus Area {district.name}</p>
             </div>
             <PriceTable data={vegetableData.slice(0, 20)} />
           </div>
@@ -255,7 +263,8 @@ export default async function DistrictPage({ params }) {
               <h2 className="text-3xl md:text-5xl font-[1000] text-[#052c17] uppercase tracking-tighter">
                 Hubungi <span className="text-[#15803d]">Sales.</span>
               </h2>
-              <p className="text-slate-500 font-bold uppercase text-xs tracking-[0.3em] mt-4">
+              {/* PERBAIKAN: text-slate-500 -> text-slate-800 */}
+              <p className="text-slate-800 font-black uppercase text-xs tracking-[0.3em] mt-4">
                 Konsultasi Pengadaan Wilayah {district.name}
               </p>
             </div>

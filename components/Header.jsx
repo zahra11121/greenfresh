@@ -15,7 +15,7 @@ export const Header = () => {
   const [activeMenu, setActiveMenu] = useState(null); 
   const [isPaused, setIsPaused] = useState(false);
 
-  // KONFIGURASI WHATSAPP - Pesan diarahkan untuk pemesanan/order
+  // KONFIGURASI WHATSAPP
   const waNumber = "6287780937884";
   const waText = "Halo Green Fresh, saya ingin melakukan pemesanan sayuran. Mohon informasi stok harian dan prosedur order untuk wilayah saya. Terima kasih.";
   const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`;
@@ -91,7 +91,6 @@ export const Header = () => {
         }`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           
-          {/* Logo Section - TEKS DI BAWAH DIHAPUS */}
           <Link href="/" className="flex items-center gap-3 group outline-none focus:ring-2 focus:ring-green-500 rounded-lg">
             <div className="w-10 h-10 bg-[#052c17] rounded-xl flex items-center justify-center transition-all group-hover:rotate-6 group-hover:bg-[#15803d]">
               <Leaf className="text-[#bef264] w-5 h-5" fill="currentColor" />
@@ -121,7 +120,6 @@ export const Header = () => {
             ))}
           </div>
 
-          {/* CTA - Berubah menjadi 'Pesan Sekarang' */}
           <div className="flex items-center gap-4">
             <Link 
               href={waLink}
@@ -133,9 +131,12 @@ export const Header = () => {
               Pesan Sekarang
             </Link>
             
+            {/* PERBAIKAN: Ditambahkan aria-label dan aria-expanded untuk aksesibilitas */}
             <button 
               onClick={() => setActiveMenu(activeMenu === 'mobile' ? null : 'mobile')}
               className="lg:hidden p-2 text-[#052c17] hover:bg-slate-50 rounded-xl transition-colors border border-slate-100"
+              aria-label={activeMenu === 'mobile' ? "Tutup menu" : "Buka menu navigasi"}
+              aria-expanded={activeMenu === 'mobile'}
             >
               {activeMenu === 'mobile' ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -155,7 +156,12 @@ export const Header = () => {
           >
             <div className="p-6 flex items-center justify-between border-b border-slate-50">
               <span className="text-xs font-black uppercase tracking-[0.3em] text-[#15803d]">Menu Utama</span>
-              <button onClick={() => setActiveMenu(null)} className="p-2 bg-slate-100 rounded-full">
+              {/* PERBAIKAN: Ditambahkan aria-label pada tombol close mobile */}
+              <button 
+                onClick={() => setActiveMenu(null)} 
+                className="p-2 bg-slate-100 rounded-full"
+                aria-label="Tutup menu navigasi"
+              >
                 <X size={20} />
               </button>
             </div>

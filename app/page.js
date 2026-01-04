@@ -12,9 +12,17 @@ import { PartnershipForm } from '@/components/PartnershipForm';
 import { vegetableData } from '@/components/data';
 import { Star } from 'lucide-react';
 
+// --- METADATA DENGAN CANONICAL URL ---
 export const metadata = {
   title: 'Greenfresh.co.id | Supplier Sayur Segar Cipanas - Stok Stabil B2B',
   description: 'Pemasok utama sayuran segar langsung dari petani Cipanas. Melayani kebutuhan Hotel, Restoran, dan Katering di seluruh Jabodetabek dengan sistem cold chain.',
+  alternates: {
+    canonical: 'https://greenfresh.co.id',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 export default function AuthorityPage() {
@@ -78,6 +86,7 @@ export default function AuthorityPage() {
 
   return (
     <div className="bg-white text-[#052c17] font-sans selection:bg-green-100 selection:text-[#052c17] overflow-x-hidden">
+      {/* JSON-LD Structured Data */}
       {homeSchemas.map((schema, index) => (
         <script
           key={index}
@@ -108,7 +117,7 @@ export default function AuthorityPage() {
             <motion.div {...fadeInUp} className="grid lg:grid-cols-2 gap-6 items-end mb-8">
               <div className="text-left">
                 <div className="flex items-center gap-2 mb-2">
-                  {/* PERBAIKAN: Green-600 -> #15803d (Green 700) */}
+                  {/* PERBAIKAN: Warna icon dipertegas ke #15803d */}
                   <Star size={14} className="text-[#15803d] fill-[#15803d]" />
                   <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#15803d]">Premium Selection</span>
                 </div>
@@ -117,10 +126,10 @@ export default function AuthorityPage() {
                 </h2>
               </div>
               <div className="text-left">
-                {/* PERBAIKAN: Slate-500 -> Slate-700 */}
-                <p className="text-slate-700 text-sm lg:text-lg font-medium leading-relaxed max-w-xl border-l-4 border-[#15803d] pl-4">
+                {/* PERBAIKAN: Slate-500 dipergelap ke Slate-700 untuk kontras WCAG */}
+                <p className="text-slate-700 text-sm lg:text-lg font-bold leading-relaxed max-w-xl border-l-4 border-[#15803d] pl-4">
                   Rantai pasok terintegrasi dari 9 klaster petani untuk menjamin 
-                  <span className="text-[#052c17] font-bold"> stabilitas stok harian</span> grade-A.
+                  <span className="text-[#052c17] font-black"> stabilitas stok harian</span> grade-A.
                 </p>
               </div>
             </motion.div>
@@ -148,15 +157,15 @@ export default function AuthorityPage() {
         <section id="kemitraan" className="py-10 lg:py-16 bg-white border-t-2 border-green-200 relative">
           <div className="max-w-[1800px] mx-auto px-6 relative z-10">
             <motion.div {...fadeInUp} className="text-center mb-10">
-              {/* PERBAIKAN: Green-700 solid untuk keterbacaan */}
+              {/* PERBAIKAN: Kontras dipertegas */}
               <span className="text-[#15803d] text-[10px] font-black uppercase tracking-[0.5em] mb-2 block">
                 B2B Enterprise Portal
               </span>
               <h2 className="text-4xl lg:text-7xl font-serif italic text-[#052c17] leading-[0.9] tracking-tighter mb-4">
                 Ajukan <span className="text-[#15803d] not-italic font-sans font-bold">Kontrak</span> Suplai
               </h2>
-              {/* PERBAIKAN: Slate-500 -> Slate-700 */}
-              <p className="text-slate-700 max-w-2xl mx-auto text-sm lg:text-lg font-medium">
+              {/* PERBAIKAN: Slate-500 dipergelap ke Slate-700 */}
+              <p className="text-slate-700 max-w-2xl mx-auto text-sm lg:text-lg font-bold">
                 Akses katalog harga grosir dan termin pembayaran (TOP) khusus entitas bisnis resmi.
               </p>
             </motion.div>
@@ -167,8 +176,8 @@ export default function AuthorityPage() {
 
             <div className="mt-12 flex justify-center items-center gap-4">
                <div className="h-[2px] w-16 bg-green-200" aria-hidden="true" />
-               {/* PERBAIKAN: Green-900 agar kontras di atas putih */}
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-900">Official Partner 2025</span>
+               {/* PERBAIKAN: Text-green-900 untuk visibilitas maksimal */}
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-green-900">Official Partner 2026</span>
                <div className="h-[2px] w-16 bg-green-200" aria-hidden="true" />
             </div>
           </div>

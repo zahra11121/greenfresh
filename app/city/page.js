@@ -5,9 +5,13 @@ import { ChevronRight, Star, MapPin, Truck, Search } from 'lucide-react';
 import Link from 'next/link';
 import { jabodetabekCities } from '@/data/cities';
 
-// --- PERBAIKAN: MENGAKTIFKAN SSG & EDGE ---
-export const dynamic = 'auto'; 
-export const runtime = 'edge';
+/**
+ * PERBAIKAN STABILITAS:
+ * 1. Menggunakan Node.js runtime (default) lebih stabil untuk SSG/ISR.
+ * 2. 'force-static' memastikan halaman ini di-build sebagai HTML statis (SSG).
+ */
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidasi setiap 1 jam (ISR)
 
 // --- METADATA DENGAN CANONICAL URL BERSIH ---
 export const metadata = {
@@ -16,11 +20,14 @@ export const metadata = {
   alternates: {
     canonical: 'https://greenfresh.co.id/city',
   },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 /**
  * COMPONENT: STATS CARD
- * Menghapus (: { label, value }) karena ini JavaScript murni
  */
 const StatItem = ({ label, value }) => (
   <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm">
@@ -31,7 +38,6 @@ const StatItem = ({ label, value }) => (
 
 /**
  * COMPONENT: CITY CARD
- * Menghapus type annotation (: { city, index })
  */
 function CityCard({ city, index }) {
   const isJakarta = city.name.toLowerCase().includes('jakarta');

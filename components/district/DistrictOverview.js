@@ -88,10 +88,10 @@ export const DistrictOverview = ({ district }) => {
         
         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 text-left">
           <div className="text-left">
-            <h3 className="text-3xl md:text-4xl font-bold text-[#052c17] leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#052c17] leading-tight">
               Operational <br />
               <span className="text-[#15803d] font-[1000] tracking-tighter">Strategic Hub.</span>
-            </h3>
+            </h2>
             <p className="text-sm text-slate-600 font-medium mt-3 max-w-lg leading-relaxed text-left">
               Manajemen rantai pasok terintegrasi untuk wilayah {district.name} dengan jaminan keamanan muatan dan ketepatan waktu pengiriman harian.
             </p>

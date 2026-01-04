@@ -51,6 +51,7 @@ export async function generateMetadata({ params }) {
 
 /**
  * COMPONENT: NearbyCities
+ * PERBAIKAN: Kontras warna ditingkatkan untuk mematuhi standar aksesibilitas WCAG.
  */
 const NearbyCities = ({ currentSlug }) => {
   const otherCities = jabodetabekCities
@@ -73,10 +74,12 @@ const NearbyCities = ({ currentSlug }) => {
               href={`/city/${city.slug}`}
               className="group p-5 rounded-2xl border border-green-100 hover:border-[#166534] hover:bg-green-50 transition-all duration-300 flex flex-col items-center justify-center gap-1"
             >
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+              {/* PERBAIKAN: text-slate-400 diubah menjadi text-slate-600 agar kontras cukup */}
+              <span className="text-[9px] font-bold text-slate-600 uppercase tracking-tighter">
                 {labelVariations[index % labelVariations.length]}
               </span>
-              <span className="text-[11px] font-black text-slate-700 group-hover:text-[#166534] uppercase tracking-wider block text-center">
+              {/* PERBAIKAN: text-slate-700 diubah menjadi text-slate-950/font-black untuk penekanan */}
+              <span className="text-[11px] font-[1000] text-slate-900 group-hover:text-[#166534] uppercase tracking-wider block text-center transition-colors">
                 {city.name}
               </span>
             </Link>
@@ -209,14 +212,14 @@ export default async function CityPage({ params }) {
         {/* Visual Breadcrumb Section */}
         <div className="bg-white pt-24 lg:pt-32 border-b border-green-50">
           <nav aria-label="Breadcrumb" className="max-w-[1800px] mx-auto px-6 py-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
-            <Link href="/" className="flex items-center gap-1 text-slate-500 hover:text-[#166534]">
+            <Link href="/" className="flex items-center gap-1 text-slate-700 hover:text-[#166534]">
               <Home size={10} /> Beranda
             </Link>
-            <ChevronRight size={10} className="text-slate-300" />
-            <Link href="/city" className="text-slate-500 hover:text-[#166534]">
+            <ChevronRight size={10} className="text-slate-400" />
+            <Link href="/city" className="text-slate-700 hover:text-[#166534]">
               City
             </Link>
-            <ChevronRight size={10} className="text-slate-300" />
+            <ChevronRight size={10} className="text-slate-400" />
             <span className="text-[#166534] font-bold tracking-widest">{city.name}</span>
           </nav>
         </div>
