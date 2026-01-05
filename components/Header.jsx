@@ -96,7 +96,7 @@ export const Header = () => {
               <Leaf className="text-[#bef264] w-5 h-5" fill="currentColor" />
             </div>
             <span className="text-xl font-[1000] tracking-tighter text-[#052c17] leading-none uppercase">
-              GreenFresh
+              Green Fresh
             </span>
           </Link>
 

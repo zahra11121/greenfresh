@@ -14,7 +14,7 @@ import { Star } from 'lucide-react';
 
 // --- METADATA DENGAN CANONICAL URL ---
 export const metadata = {
-  title: 'Greenfresh.co.id | Supplier Sayur Segar Cipanas - Stok Stabil B2B',
+  title: 'Supplier Sayur Segar Cipanas - CV Green Fresh Cipanas',
   description: 'Pemasok utama sayuran segar langsung dari petani Cipanas. Melayani kebutuhan Hotel, Restoran, dan Katering di seluruh Jabodetabek dengan sistem cold chain.',
   alternates: {
     canonical: 'https://greenfresh.co.id',
