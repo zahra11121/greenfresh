@@ -1,18 +1,23 @@
 import { NextResponse } from 'next/server';
 
-// TAMBAHKAN BARIS INI: Wajib untuk Cloudflare / Edge Deployment
-export const runtime = 'edge'; 
+// 1. WAJIB: Tambahkan ini agar jalan di Cloudflare/Vercel Edge
+export const runtime = 'edge';
 
-export function middleware(request) {
+// 2. WAJIB: Nama fungsi harus "proxy" dan di-export secara eksplisit
+export function proxy(request) {
   const { pathname } = request.nextUrl;
 
+  // Fokus pada rute area dan city untuk optimasi Googlebot
   if (pathname.startsWith('/area/') || pathname.startsWith('/city/')) {
+    
     const ifNoneMatch = request.headers.get('if-none-match');
 
+    // ETag harian untuk memicu perayapan ulang rutin (menghemat Crawl Budget)
     const today = new Date();
     const dateKey = `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()}`;
     const etag = `W/"greenfresh-${pathname}-${dateKey}"`;
 
+    // Validasi 304: Sangat penting untuk SEO Green Fresh
     if (ifNoneMatch === etag) {
       return new Response(null, {
         status: 304,
@@ -33,6 +38,7 @@ export function middleware(request) {
   return NextResponse.next();
 }
 
+// 3. Konfigurasi Matcher
 export const config = {
   matcher: [
     '/area/:path*',
