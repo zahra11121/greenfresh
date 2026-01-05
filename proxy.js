@@ -1,20 +1,18 @@
 import { NextResponse } from 'next/server';
 
-// Nama fungsi diubah menjadi proxy sesuai instruksi error terbaru
-export function proxy(request) {
+// TAMBAHKAN BARIS INI: Wajib untuk Cloudflare / Edge Deployment
+export const runtime = 'edge'; 
+
+export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Fokus pada rute area dan city untuk optimasi Googlebot
   if (pathname.startsWith('/area/') || pathname.startsWith('/city/')) {
-    
     const ifNoneMatch = request.headers.get('if-none-match');
 
-    // ETag harian untuk memicu perayapan ulang rutin sesuai data statistik Anda
     const today = new Date();
     const dateKey = `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()}`;
     const etag = `W/"greenfresh-${pathname}-${dateKey}"`;
 
-    // Validasi 304: Menghemat bandwidth dan Crawl Budget
     if (ifNoneMatch === etag) {
       return new Response(null, {
         status: 304,
