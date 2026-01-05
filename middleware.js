@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 
-// HAPUS BARIS RUNTIME EDGE (Sesuai instruksi error Anda)
+// WAJIB bagi Cloudflare Pages agar build tidak Error Code 1
+export const runtime = 'edge'; 
 
-export function proxy(request) {
+export function middleware(request) {
   const { pathname } = request.nextUrl;
 
+  // Optimasi untuk rute yang sering di-crawl Googlebot
   if (pathname.startsWith('/area/') || pathname.startsWith('/city/')) {
     const ifNoneMatch = request.headers.get('if-none-match');
 
